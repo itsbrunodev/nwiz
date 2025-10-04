@@ -1,0 +1,46 @@
+import type { RouterModel, SwitchModel } from "./devices";
+
+export const INTERFACES = {
+  Router: {
+    "4331": [
+      "GigabitEthernet0/0/0",
+      "GigabitEthernet0/0/1",
+      "GigabitEthernet0/0/2",
+    ],
+    "4321": ["GigabitEthernet0/0/0", "GigabitEthernet0/0/1"],
+    "1941": ["GigabitEthernet0/0", "GigabitEthernet0/1"],
+    "2901": ["GigabitEthernet0/0", "GigabitEthernet0/1"],
+    "2911": ["GigabitEthernet0/0", "GigabitEthernet0/1", "GigabitEthernet0/2"],
+  } as Record<RouterModel, string[]>,
+  Switch: {
+    "2960": [
+      "FastEthernet0/1",
+      "FastEthernet0/2",
+      "FastEthernet0/3",
+      "FastEthernet0/4",
+      "FastEthernet0/5",
+      "FastEthernet0/6",
+      "FastEthernet0/7",
+      "FastEthernet0/8",
+      "FastEthernet0/9",
+      "FastEthernet0/10",
+      "FastEthernet0/12",
+      "FastEthernet0/13",
+      "FastEthernet0/14",
+      "FastEthernet0/15",
+      "FastEthernet0/16",
+      "FastEthernet0/17",
+      "FastEthernet0/18",
+      "FastEthernet0/19",
+      "FastEthernet0/20",
+      "FastEthernet0/21",
+      "FastEthernet0/22",
+      "FastEthernet0/23",
+      "FastEthernet0/24",
+      "GigabitEthernet0/1",
+      "GigabitEthernet0/2",
+    ],
+  } as Record<SwitchModel, string[]>,
+  PC: ["FastEthernet0"] as string[],
+  Server: ["FastEthernet0"] as string[],
+} as const;
