@@ -1,11 +1,12 @@
+import { useAtomValue } from "jotai";
+import { useEffect } from "react";
 import { Outlet } from "react-router";
 
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme/provider";
 import { Toaster } from "@/components/ui/sonner";
-import { useAtomValue } from "jotai";
+
 import { networkAtom } from "@/stores/network";
-import { useEffect } from "react";
 
 export function RootLayout() {
   const network = useAtomValue(networkAtom);

@@ -7,12 +7,10 @@ export function AboutPage() {
     <div className="prose prose-p:!mt-0 prose-headings:!mb-3 prose-headings:not-first:!mt-6 prose-headings:!pb-3 prose-headings:!border-b dark:prose-invert prose-zinc !max-w-none">
       <Alert variant="warning">
         <AlertCircleIcon />
-        <AlertTitle>
-          Early Alpha Version
-        </AlertTitle>
+        <AlertTitle>Early Alpha Version</AlertTitle>
         <AlertDescription>
-          This is a very early alpha version of the project. It is not fully featured and
-          may contain bugs.
+          This is a very early alpha version of the project. It is not fully
+          featured and may contain bugs.
         </AlertDescription>
       </Alert>
       <h1>About</h1>
