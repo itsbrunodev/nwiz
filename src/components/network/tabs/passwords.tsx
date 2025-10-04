@@ -88,7 +88,19 @@ export function DevicePasswordsManager<T extends Device>({
     key: LinePasswordFieldKey | "enableSecret",
     payload: Payload,
   ) => {
-    const updatedEntry = { ...(deviceConfig[key] ?? {}), ...payload };
+    // biome-ignore lint/suspicious/noExplicitAny: simple fix
+    const existingEntry = (deviceConfig as any)[key] ?? {};
+
+    let updatedEntry = { ...existingEntry, ...(payload as T["config"]) };
+
+    if (key === "lineVty" && payload && "password" in payload) {
+      updatedEntry = {
+        from: existingEntry.from ?? 0,
+        to: existingEntry.to ?? 15,
+        ...updatedEntry,
+      };
+    }
+
     const newConfig = { ...device.config, [key]: updatedEntry } as T["config"];
     setDevice({ ...device, config: newConfig });
   };
@@ -111,7 +123,6 @@ export function DevicePasswordsManager<T extends Device>({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Section for Local User Management */}
       <div className="flex flex-col gap-3">
         <div>
           <h3 className="font-medium">Local Users</h3>
@@ -149,7 +160,6 @@ export function DevicePasswordsManager<T extends Device>({
 
       <Separator />
 
-      {/* Section for Enable Secret */}
       <div className="flex flex-col gap-3">
         <div>
           <h3 className="font-medium">Enable Secret</h3>
@@ -174,7 +184,6 @@ export function DevicePasswordsManager<T extends Device>({
 
       <Separator />
 
-      {/* Section for Line Passwords */}
       <div className="flex flex-col gap-3">
         <div>
           <h3 className="font-medium">Line Passwords</h3>
