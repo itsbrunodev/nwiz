@@ -26,6 +26,7 @@ import { useRemoveDevice } from "@/hooks/use-remove-device";
 import { AddDeviceButton } from "../add";
 import { RouterContent } from "./router";
 import { SwitchContent } from "./switch";
+import { cn } from "@/lib/utils";
 
 export function DevicesList() {
   const [devices] = useDevices();
@@ -76,19 +77,25 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
             )}
           </div>
         </div>
-        {["Router", "Switch"].includes(device.deviceType) && (
-          <ButtonGroup
-            className="border-l [&>button]:rounded-l-none"
-            orientation="vertical"
-          >
+        <ButtonGroup
+          className="border-l [&>button]:rounded-l-none"
+          orientation="vertical"
+        >
+          {["Router", "Switch"].includes(device.deviceType) && (
             <DialogTrigger asChild>
               <Button variant="secondary">View</Button>
             </DialogTrigger>
-            <Button variant="destructive" onClick={removeDevice}>
-              Remove
-            </Button>
-          </ButtonGroup>
-        )}
+          )}
+          <Button
+            className={cn(
+              !["Router", "Switch"].includes(device.deviceType) && "h-full",
+            )}
+            variant="destructive"
+            onClick={removeDevice}
+          >
+            Remove
+          </Button>
+        </ButtonGroup>
       </div>
       <DialogContent className="max-h-[90vh] overflow-auto">
         <DialogHeader>
