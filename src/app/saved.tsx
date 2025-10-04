@@ -42,8 +42,10 @@ export function SavedPage() {
               <SaveIcon />
             </EmptyMedia>
           </EmptyHeader>
-          <EmptyTitle>No saved networks</EmptyTitle>
-          <EmptyDescription>There are no saved networks</EmptyDescription>
+          <div>
+            <EmptyTitle>No saved networks</EmptyTitle>
+            <EmptyDescription>There are no saved networks</EmptyDescription>
+          </div>
           <EmptyContent>
             <Button asChild>
               <a href="/">Get Started</a>
