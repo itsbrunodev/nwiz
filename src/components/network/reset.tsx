@@ -1,4 +1,5 @@
 import { useAtom } from "jotai";
+import short from "short-uuid";
 
 import { Button } from "../ui/button";
 import { INITIAL_NETWORK, networkAtom } from "@/stores/network";
@@ -9,7 +10,7 @@ export function ResetNetworkButton() {
   return (
     <Button
       variant="destructive"
-      onClick={() => setNetwork(INITIAL_NETWORK)}
+      onClick={() => setNetwork({ ...INITIAL_NETWORK, id: short.generate() })}
       disabled={
         network.connections.length === 0 && network.devices.length === 0
       }
