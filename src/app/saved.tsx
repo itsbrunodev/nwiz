@@ -1,14 +1,15 @@
-// import { format } from "date-fns";
+import { format } from "date-fns";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { SaveIcon } from "lucide-react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  // CardContent,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -29,7 +30,9 @@ import { decodeCompactBase64 } from "@/lib/encode";
 import { networkAtom } from "@/stores/network";
 
 export function SavedPage() {
-  const setNetwork = useSetAtom(networkAtom);
+  const navigate = useNavigate();
+
+  const [network, setNetwork] = useAtom(networkAtom);
 
   const networkCodes = useLiveQuery(() => dexie.networkCodes.toArray());
 
@@ -60,18 +63,18 @@ export function SavedPage() {
       ) : (
         <div className="grid grid-cols-3 gap-2">
           {networkCodes?.map(({ id, code }) => {
-            const network = decodeCompactBase64(code);
-            const { name, description /* createdAt, updatedAt */ } = network;
+            const decodedNetwork = decodeCompactBase64(code);
+            const { name, description, createdAt, updatedAt } = decodedNetwork;
 
             return (
               <Card key={id}>
                 <CardHeader>
                   <CardTitle>{name || "New Network"}</CardTitle>
-                  <CardDescription>
+                  <CardDescription className="line-clamp-2" title={description}>
                     {description || "No description."}
                   </CardDescription>
                 </CardHeader>
-                {/* <CardContent className="text-sm [&>div>span:first-child]:font-medium [&>div>span:last-child]:text-muted-foreground [&>div]:flex [&>div]:justify-between">
+                <CardContent className="text-sm [&>div>span:first-child]:font-medium [&>div>span:last-child]:text-muted-foreground [&>div]:flex [&>div]:justify-between">
                   <div>
                     <span>Created At</span>
                     <span>{format(createdAt, "MMM do, yyyy")}</span>
@@ -80,8 +83,8 @@ export function SavedPage() {
                     <span>Updated At</span>
                     <span>{format(updatedAt, "MMM do, yyyy")}</span>
                   </div>
-                </CardContent> */}
-                <CardFooter className="justify-end gap-2">
+                </CardContent>
+                <CardFooter className="mt-auto justify-end gap-2">
                   <Button
                     variant="destructive"
                     onClick={() => {
@@ -99,9 +102,10 @@ export function SavedPage() {
                     Remove
                   </Button>
                   <Button
+                    disabled={network.id === id}
                     onClick={() => {
-                      setNetwork(network);
-
+                      setNetwork(decodedNetwork);
+                      navigate("/");
                       toast.success("Network loaded successfully");
                     }}
                   >
