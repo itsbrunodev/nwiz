@@ -7,6 +7,6 @@ export interface Network {
   description?: string;
   devices: Device[];
   connections: Connection[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
