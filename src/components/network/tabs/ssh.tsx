@@ -160,7 +160,9 @@ export function DeviceSshManager<T extends SshCapableDevice>({
         <h3 className="font-medium">RSA Key Generation</h3>
         <div className="flex flex-col gap-1.5">
           <Select
-            value={String(sshConfig.rsaKey?.modulus ?? 1024)}
+            value={
+              sshConfig.rsaKey?.modulus ? String(sshConfig.rsaKey.modulus) : ""
+            }
             onValueChange={(value) =>
               setRsaModulus(Number(value) as SshRsaKeyConfig["modulus"])
             }
