@@ -28,7 +28,7 @@ export function SettingsNetwork() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" size="icon">
+        <Button variant="secondary" size="icon" aria-label="Settings">
           <SettingsIcon />
         </Button>
       </DialogTrigger>
