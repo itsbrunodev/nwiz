@@ -34,7 +34,7 @@ export function IndexPage() {
   const commands = generateCommands(network, {
     enableServicePasswordEncryption: true,
     saveConfiguration: true,
-    verbose: true,
+    verbose: false,
   });
 
   return (
