@@ -23,11 +23,13 @@ export function IndexPage() {
     const urlParams = new URL(url).searchParams;
     const encodedData = urlParams.get("network");
 
+    document.title = `nwiz - ${network?.name || "New Network"}`;
+
     if (encodedData) {
       setNetwork(decodeCompactBase64(encodedData));
       window.history.replaceState({}, "", window.location.href.split("?")[0]);
     }
-  }, [setNetwork, url]);
+  }, [setNetwork, url, network?.name]);
 
   const tree = createNetworkTree(network);
 

@@ -2,6 +2,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { useSetAtom } from "jotai";
 import { SaveIcon } from "lucide-react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,10 @@ export function SavedPage() {
   const setNetwork = useSetAtom(networkAtom);
 
   const networkCodes = useLiveQuery(() => dexie.networkCodes.toArray());
+
+  useEffect(() => {
+    document.title = "nwiz - Saved Networks";
+  }, []);
 
   return (
     <>

@@ -1,8 +1,13 @@
 import { AlertCircleIcon } from "lucide-react";
+import { useEffect } from "react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export function AboutPage() {
+  useEffect(() => {
+    document.title = "nwiz - About";
+  }, []);
+
   return (
     <div className="prose prose-p:!mt-0 prose-headings:!mb-3 prose-headings:not-first:!mt-6 prose-headings:!pb-3 prose-headings:!border-b dark:prose-invert prose-zinc !max-w-none">
       <Alert variant="warning">
