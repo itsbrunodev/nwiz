@@ -1,4 +1,4 @@
-> [!WARNING] Early Alpha Version
+> [!WARNING]
 > This is a very early alpha version of the project. It is not fully featured and may contain bugs.
 
 # nwiz
