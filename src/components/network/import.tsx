@@ -30,6 +30,8 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { ArrowUpRightIcon, CircleQuestionMarkIcon } from "lucide-react";
 
 interface PacketTracerDevice {
   id: string; // full UUID from Packet Tracer
@@ -210,14 +212,37 @@ export function ImportNetwork() {
             <p className="mx-3 font-medium text-muted-foreground text-xs">OR</p>
             <Separator className="flex-1" />
           </div>
-          <Input
-            label="Packet Tracer Response"
-            value={packetTracerResponse}
-            onChange={(e) => {
-              setCode("");
-              handlePacketTracerChange(e.target.value);
-            }}
-          />
+          <div className="space-y-2">
+            <Input
+              label="Packet Tracer Response"
+              value={packetTracerResponse}
+              onChange={(e) => {
+                setCode("");
+                handlePacketTracerChange(e.target.value);
+              }}
+            />
+            <Alert>
+              <CircleQuestionMarkIcon />
+              <AlertTitle>
+                Where can I find my Packet Tracer response?
+              </AlertTitle>
+              <AlertDescription>
+                <div>
+                  Refer to the{" "}
+                  <Button className="!px-0" size="sm" variant="link" asChild>
+                    <a
+                      href="https://github.com/itsbrunodev/nwiz#faq"
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      FAQ
+                    </a>
+                  </Button>{" "}
+                  on how to export your network topology from Packet Tracer.
+                </div>
+              </AlertDescription>
+            </Alert>
+          </div>
         </div>
         <DialogFooter>
           <DialogClose asChild>

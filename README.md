@@ -6,7 +6,7 @@ A simple, powerful tool for generating Cisco Packet Tracer network configuration
 
 <details>
 
-<summary style="font-weight: 500;padding-bottom: 0.5rem;">
+<summary>
 Where can I find my Packet Tracer response?
 </summary>
   
