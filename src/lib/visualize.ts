@@ -50,6 +50,7 @@ export function createNetworkTree(network: Network): string {
     Switch: 2,
     Server: 3,
     PC: 3,
+    Laptop: 3,
   };
 
   const sortedDevices = [...network.devices].sort((a, b) => {

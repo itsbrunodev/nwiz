@@ -5,12 +5,14 @@ import { networkAtom } from "@/stores/network";
 
 import { calculateDeviceName } from "@/lib/network";
 
-export function useAddServer() {
+import type { EndDevice } from "@/types/network/device";
+
+export function useAddEndDevice() {
   const [network, setNetwork] = useAtom(networkAtom);
   const devices = network.devices;
 
-  return () => {
-    const deviceName = calculateDeviceName("Server", "Server", devices);
+  return (deviceType: EndDevice["deviceType"]) => {
+    const deviceName = calculateDeviceName(deviceType, deviceType, devices);
 
     setNetwork({
       ...network,
@@ -20,7 +22,7 @@ export function useAddServer() {
           id: short.generate(),
           name: deviceName,
           hostname: deviceName,
-          deviceType: "Server",
+          deviceType,
           config: {
             ipAddress: "",
             subnetMask: "",

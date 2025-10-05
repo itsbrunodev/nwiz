@@ -17,7 +17,8 @@ interface BaseDevice {
   // position: { x: number; y: number };
 }
 
-export type Device = Router | Switch | PC | Server;
+export type EndDevice = PC | Server | Laptop;
+export type Device = Router | Switch | EndDevice;
 
 export interface Router extends BaseDevice {
   deviceType: "Router";
@@ -39,4 +40,9 @@ export interface PC extends BaseDevice {
 export interface Server extends BaseDevice {
   deviceType: "Server";
   config: ServerConfig;
+}
+
+export interface Laptop extends BaseDevice {
+  deviceType: "Laptop";
+  config: EndDeviceConfig;
 }

@@ -10,18 +10,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useAddPc } from "@/hooks/use-add-pc";
 import { useAddRouter } from "@/hooks/use-add-router";
-import { useAddServer } from "@/hooks/use-add-server";
 import { useAddSwitch } from "@/hooks/use-add-switch";
 
 import { ROUTERS, SWITCHES } from "@/constants/devices";
+import { useAddEndDevice } from "@/hooks/use-add-end-device";
 
 export function AddDeviceButton() {
   const addRouter = useAddRouter();
   const addSwitch = useAddSwitch();
-  const addPc = useAddPc();
-  const addServer = useAddServer();
+  const addEndDevice = useAddEndDevice();
 
   return (
     <DropdownMenu>
@@ -53,8 +51,15 @@ export function AddDeviceButton() {
             </DropdownMenuSubContent>
           </DropdownMenuPortal>
         </DropdownMenuSub>
-        <DropdownMenuItem onClick={() => addPc()}>PC</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => addServer()}>Server</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => addEndDevice("PC")}>
+          PC
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => addEndDevice("Laptop")}>
+          Laptop
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => addEndDevice("Server")}>
+          Server
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
