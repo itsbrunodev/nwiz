@@ -1,9 +1,8 @@
-import { PlusIcon, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 
 import { DeviceInterfaceManager } from "@/components/network/tabs/interfaces";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 import { convertCidr } from "@/lib/network";
 
