@@ -24,10 +24,10 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 
+import { networkAtom } from "@/stores/network";
+
 import { dexie } from "@/lib/dexie";
 import { decodeCompactBase64 } from "@/lib/encode";
-
-import { networkAtom } from "@/stores/network";
 
 export function SavedPage() {
   const navigate = useNavigate();

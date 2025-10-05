@@ -8,11 +8,11 @@ import { ResetNetworkButton } from "@/components/network/reset";
 import { Label } from "@/components/ui/label";
 import { Pre } from "@/components/ui/pre";
 
+import { networkAtom } from "@/stores/network";
+
 import { generateCommands } from "@/lib/commands";
 import { decodeCompactBase64 } from "@/lib/encode";
 import { createNetworkTree } from "@/lib/visualize";
-
-import { networkAtom } from "@/stores/network";
 
 export function IndexPage() {
   const [network, setNetwork] = useAtom(networkAtom);

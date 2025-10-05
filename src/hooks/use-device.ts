@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
 
-import type { Device } from "@/types/network/device";
-
 import { networkAtom } from "@/stores/network";
+
+import type { Device } from "@/types/network/device";
 
 export function useDevice<T extends Device>(
   deviceId: string,

@@ -1,8 +1,9 @@
 import { useAtom } from "jotai";
 import short from "short-uuid";
 
-import { Button } from "../ui/button";
 import { INITIAL_NETWORK, networkAtom } from "@/stores/network";
+
+import { Button } from "../ui/button";
 
 export function ResetNetworkButton() {
   const [network, setNetwork] = useAtom(networkAtom);

@@ -1,9 +1,9 @@
 import { useAtom } from "jotai";
 import short from "short-uuid";
 
-import { calculateDeviceName } from "@/lib/network";
-
 import { networkAtom } from "@/stores/network";
+
+import { calculateDeviceName } from "@/lib/network";
 
 export function useAddServer() {
   const [network, setNetwork] = useAtom(networkAtom);

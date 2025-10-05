@@ -2,6 +2,8 @@ import { useAtomValue } from "jotai";
 import { CopyIcon } from "lucide-react";
 import { toast } from "sonner";
 
+import { networkAtom } from "@/stores/network";
+
 import { encodeCompactBase64 } from "@/lib/encode";
 
 import { Button } from "../ui/button";
@@ -17,7 +19,6 @@ import {
 } from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Pre } from "../ui/pre";
-import { networkAtom } from "@/stores/network";
 
 export function ExportNetwork() {
   const network = useAtomValue(networkAtom);

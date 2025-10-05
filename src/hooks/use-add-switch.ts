@@ -1,11 +1,11 @@
 import { useAtom } from "jotai";
 import short from "short-uuid";
 
+import { networkAtom } from "@/stores/network";
+
 import { calculateDeviceName } from "@/lib/network";
 
 import type { Switch } from "@/types/network/device";
-
-import { networkAtom } from "@/stores/network";
 
 export function useAddSwitch() {
   const [network, setNetwork] = useAtom(networkAtom);

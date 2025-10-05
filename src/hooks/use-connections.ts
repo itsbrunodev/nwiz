@@ -1,8 +1,8 @@
 import { useAtom } from "jotai";
 
-import type { Connection } from "@/types/network/connection";
-
 import { networkAtom } from "@/stores/network";
+
+import type { Connection } from "@/types/network/connection";
 
 export function useConnections(): [
   Connection[],

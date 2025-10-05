@@ -3,6 +3,8 @@ import { useAtom } from "jotai";
 import { SettingsIcon } from "lucide-react";
 import { toast } from "sonner";
 
+import { networkAtom } from "@/stores/network";
+
 import { dexie } from "@/lib/dexie";
 import { encodeCompactBase64 } from "@/lib/encode";
 
@@ -18,7 +20,6 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
-import { networkAtom } from "@/stores/network";
 
 export function SettingsNetwork() {
   const [network, setNetwork] = useAtom(networkAtom);
