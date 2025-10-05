@@ -151,7 +151,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
         value={device.config?.domainName ?? ""}
         onChange={(e) => setConfigValue("domainName", e.target.value)}
       />
-      <div className="flex flex-col gap-3">
+      <div className="space-y-2">
         <h3 className="font-medium">RSA Key Generation</h3>
         <Select
           value={
@@ -173,7 +173,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
           </SelectContent>
         </Select>
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="space-y-3">
         <h3 className="font-medium">SSH Timeouts & Retries</h3>
         <div className="space-y-2">
           {sshFields.map((fieldKey) => (
@@ -192,7 +192,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-3">
+      <div className="space-y-3">
         <h3 className="font-medium">User Public Keys (RSA Authentication)</h3>
         {(sshConfig.userPublicKeys ?? []).length > 0 && (
           <div className="rounded-md border bg-card">

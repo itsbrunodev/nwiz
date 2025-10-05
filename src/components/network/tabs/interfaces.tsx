@@ -150,7 +150,8 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
           />
         </div>
         {renderInterfaceFields?.(interfaceConfig, updateInterface)}
-        <div className="space-y-2">
+        <div className="space-y-3">
+          <h3 className="font-medium">Connection</h3>
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -164,9 +165,7 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
                         (c.to.deviceId === deviceId &&
                           c.to.interfaceName === currentInterface),
                     );
-
                     if (!occupiedConnection) return "Not Connected";
-
                     // Determine the other device and interface
                     const otherDeviceId =
                       occupiedConnection.from.deviceId === deviceId
@@ -179,7 +178,6 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
                     const otherDeviceName =
                       devices.find((d) => d.id === otherDeviceId)?.name ??
                       "Unknown Device";
-
                     return `${otherDeviceName} (${otherInterface})`;
                   })()}
                   <ChevronDown />

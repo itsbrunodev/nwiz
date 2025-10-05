@@ -26,17 +26,12 @@ export function RouterContent({ routerId }: { routerId: string }) {
         currentTab={currentTab}
         onChange={setCurrentTab}
       />
-
       {currentTab === "General" && <GeneralTab routerId={routerId} />}
-
       {currentTab === "Interfaces" && <InterfacesTab routerId={routerId} />}
-
       {currentTab === "Static Routes" && (
         <StaticRoutesTab routerId={routerId} />
       )}
-
       {currentTab === "Passwords" && <PasswordsTab routerId={routerId} />}
-
       {currentTab === "SSH" && <SshTab routerId={routerId} />}
     </div>
   );

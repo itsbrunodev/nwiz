@@ -4,13 +4,13 @@ import { Input } from "@/components/ui/input";
 import { useDevice } from "@/hooks/use-device";
 import { useRemoveDevice } from "@/hooks/use-remove-device";
 
-import type { Router, Switch } from "@/types/network/device";
+import type { Device } from "@/types/network/device";
 
 interface GeneralTabProps {
   deviceId: string;
 }
 
-export function DeviceGeneralManager<T extends Router | Switch>({
+export function DeviceGeneralManager<T extends Device>({
   deviceId,
 }: GeneralTabProps) {
   const [device, setDevice] = useDevice<T>(deviceId);
@@ -21,11 +21,13 @@ export function DeviceGeneralManager<T extends Router | Switch>({
 
   return (
     <div className="space-y-3">
-      <Input
-        label="Hostname"
-        value={device.hostname}
-        onChange={(e) => setDevice({ ...device, hostname: e.target.value })}
-      />
+      {(device.deviceType === "Router" || device.deviceType === "Switch") && (
+        <Input
+          label="Hostname"
+          value={device.hostname}
+          onChange={(e) => setDevice({ ...device, hostname: e.target.value })}
+        />
+      )}
       <Input
         label="Name"
         value={device.name}

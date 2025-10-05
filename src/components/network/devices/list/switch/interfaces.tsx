@@ -22,29 +22,30 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
 
         return (
           <>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="w-fit" variant="secondary">
-                  {config.mode === "access" ? "Access" : "Trunk"}{" "}
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {(["access", "trunk"] as const).map((mode) => (
-                  <DropdownMenuItem
-                    onClick={() => updateInterface({ mode })}
-                    key={mode}
-                  >
-                    {mode === "access" ? "Access" : "Trunk"}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <p className="mx-3 text-muted-foreground text-xs">
-              Select <b>Trunk</b> if you want to allow multiple VLANs to be
-              connected to this interface. Default behavior is <b>Access</b>.
-            </p>
-
+            <div className="mb-3 space-y-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="w-fit" variant="secondary">
+                    {config.mode === "access" ? "Access" : "Trunk"}{" "}
+                    <ChevronDownIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {(["access", "trunk"] as const).map((mode) => (
+                    <DropdownMenuItem
+                      onClick={() => updateInterface({ mode })}
+                      key={mode}
+                    >
+                      {mode === "access" ? "Access" : "Trunk"}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <p className="mx-3 text-muted-foreground text-xs">
+                Select <b>Trunk</b> if you want to allow multiple VLANs to be
+                connected to this interface. Default behavior is <b>Access</b>.
+              </p>
+            </div>
             {config.mode === "access" && (
               <Input
                 label="Access VLAN"

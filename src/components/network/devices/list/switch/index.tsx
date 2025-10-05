@@ -4,6 +4,7 @@ import { TabBar } from "../tab-bar";
 import { GeneralTab } from "./general";
 import { InterfacesTab } from "./interfaces";
 import { PasswordsTab } from "./password";
+import { SshTab } from "./ssh";
 
 const tabs = ["General", "Interfaces", "Passwords", "SSH"] as const;
 type Tab = (typeof tabs)[number];
@@ -18,12 +19,10 @@ export function SwitchContent({ switchId }: { switchId: string }) {
         currentTab={currentTab}
         onChange={setCurrentTab}
       />
-
       {currentTab === "General" && <GeneralTab switchId={switchId} />}
-
       {currentTab === "Interfaces" && <InterfacesTab switchId={switchId} />}
-
       {currentTab === "Passwords" && <PasswordsTab switchId={switchId} />}
+      {currentTab === "SSH" && <SshTab switchId={switchId} />}
     </div>
   );
 }
