@@ -76,7 +76,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
             )}
           </div>
         </div>
-        <div className="[&>button]:!w-1/2 border-t [&>button]:rounded-none">
+        <div className="[&>button]:!flex-1 flex border-t [&>button]:rounded-none">
           <DialogTrigger asChild>
             <Button variant="secondary">View</Button>
           </DialogTrigger>
