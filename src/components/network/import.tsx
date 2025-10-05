@@ -1,5 +1,5 @@
 import { useSetAtom } from "jotai";
-import { CircleQuestionMarkIcon } from "lucide-react";
+import { ArrowUpRightIcon, CircleQuestionMarkIcon } from "lucide-react";
 import { useState } from "react";
 import short from "short-uuid";
 import { toast } from "sonner";
@@ -230,20 +230,20 @@ export function ImportNetwork() {
                 <div>
                   Refer to the{" "}
                   <Button
-                    className="h-fit p-0"
+                    className="!p-0 [&_svg]:!size-3.5 h-fit gap-1"
                     size="sm"
                     variant="link"
                     asChild
                   >
                     <a
-                      href="https://github.com/itsbrunodev/nwiz#faq"
+                      href="https://github.com/itsbrunodev/nwiz?tab=readme-ov-file#import-from-packet-tracer"
                       target="_blank"
                       rel="noopener"
                     >
-                      FAQ
+                      Readme <ArrowUpRightIcon />
                     </a>
                   </Button>{" "}
-                  on how to export your network topology from Packet Tracer.
+                  on how to export your network topology from Packet Tracer and import it here.
                 </div>
               </AlertDescription>
             </Alert>
