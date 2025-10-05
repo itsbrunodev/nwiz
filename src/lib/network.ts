@@ -61,6 +61,66 @@ export function convertCidr(cidr: string) {
   return { ip, mask };
 }
 
+export function isValidIPv4(ip: string, mask?: string | number): boolean {
+  const parseIPv4 = (s: string): number[] | null => {
+    const parts = s.split(".");
+    if (parts.length !== 4) return null;
+    const octets: number[] = [];
+    for (const p of parts) {
+      if (p.length === 0) return null;
+      if (!/^\d+$/.test(p)) return null;
+      const n = Number(p);
+      if (!Number.isFinite(n) || n < 0 || n > 255) return null;
+      octets.push(n);
+    }
+    return octets;
+  };
+
+  const octetsToUint32 = (octets: number[]) =>
+    (((octets[0] << 24) >>> 0) +
+      ((octets[1] << 16) >>> 0) +
+      ((octets[2] << 8) >>> 0) +
+      (octets[3] >>> 0)) >>>
+    0;
+
+  const isContiguousMask = (maskUint: number): boolean => {
+    const inv = ~maskUint >>> 0;
+    return (inv & (inv + 1)) === 0;
+  };
+
+  let ipOnly = ip;
+  let maskParam: string | number | undefined = mask;
+  const slashIndex = ip.indexOf("/");
+  if (slashIndex !== -1 && mask === undefined) {
+    ipOnly = ip.substring(0, slashIndex);
+    maskParam = ip.substring(slashIndex + 1);
+  }
+
+  const ipOctets = parseIPv4(ipOnly.trim());
+  if (!ipOctets) return false;
+
+  if (
+    maskParam === undefined ||
+    maskParam === null ||
+    String(maskParam).trim() === ""
+  ) {
+    return true;
+  }
+
+  const maskStr = String(maskParam).trim();
+
+  const prefixMatch = maskStr.match(/^\/?\s*(\d{1,2})$/);
+  if (prefixMatch) {
+    const prefix = Number(prefixMatch[1]);
+    return Number.isInteger(prefix) && prefix >= 0 && prefix <= 32;
+  }
+
+  const maskOctets = parseIPv4(maskStr);
+  if (!maskOctets) return false;
+  const maskUint = octetsToUint32(maskOctets);
+  return isContiguousMask(maskUint);
+}
+
 export function calculateDeviceName(
   name: string,
   deviceType: Device["deviceType"],
