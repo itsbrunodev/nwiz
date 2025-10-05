@@ -18,6 +18,7 @@ export function IndexPage() {
   const [network, setNetwork] = useAtom(networkAtom);
   const issues = useAtomValue(validationAtom);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: only run on mount
   useEffect(() => {
     try {
       const url = new URL(window.location.href);
