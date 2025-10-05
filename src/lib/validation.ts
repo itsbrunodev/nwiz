@@ -28,6 +28,26 @@ export function validateNetwork(network: Network): ValidationResult[] {
     network.devices.map((d) => [d.id, d]),
   );
 
+  const globallyDefinedVlans = new Set<number>([1]);
+
+  for (let i = 0; i < network.devices.length; i++) {
+    const device = network.devices[i];
+    if (device.deviceType === "Switch") {
+      for (let j = 0; j < device.config.vlans.length; j++) {
+        globallyDefinedVlans.add(device.config.vlans[j].id);
+      }
+    } else if (device.deviceType === "Router") {
+      for (let j = 0; j < device.config.interfaces.length; j++) {
+        const iface = device.config.interfaces[j];
+        if (iface.subInterfaces) {
+          for (let k = 0; k < iface.subInterfaces.length; k++) {
+            globallyDefinedVlans.add(iface.subInterfaces[k].vlanId);
+          }
+        }
+      }
+    }
+  }
+
   for (const device of network.devices) {
     if (device.deviceType === "Router") {
       for (const iface of device.config.interfaces) {
@@ -88,12 +108,14 @@ export function validateNetwork(network: Network): ValidationResult[] {
     }
 
     if (device.deviceType === "Switch") {
-      const definedVlans = new Set(device.config.vlans.map((v) => v.id));
       for (const iface of device.config.interfaces) {
-        if (iface.mode === "access" && !definedVlans.has(iface.accessVlan)) {
+        if (
+          iface.mode === "access" &&
+          !globallyDefinedVlans.has(iface.accessVlan)
+        ) {
           results.push({
             level: "error",
-            message: `Interface ${iface.name} is assigned to VLAN ${iface.accessVlan}, which does not exist on this switch.`,
+            message: `Interface ${iface.name} is assigned to VLAN ${iface.accessVlan}, which is not defined anywhere in the network.`,
             source: {
               deviceId: device.id,
               deviceName: device.name,
@@ -105,7 +127,6 @@ export function validateNetwork(network: Network): ValidationResult[] {
     }
   }
 
-  // pass 2: check connections
   for (const connection of network.connections) {
     const dev1 = deviceMap.get(connection.from.deviceId);
     const dev2 = deviceMap.get(connection.to.deviceId);
@@ -116,7 +137,10 @@ export function validateNetwork(network: Network): ValidationResult[] {
         const iface = device.config.interfaces.find(
           (i) => i.name === interfaceName,
         );
-        if (!iface || !iface.ipAddress) {
+        const hasSubInterfaces =
+          iface?.subInterfaces && iface.subInterfaces.length > 0;
+
+        if ((!iface || !iface.ipAddress) && !hasSubInterfaces) {
           results.push({
             level: "warning",
             message: `Connected interface ${interfaceName} is missing an IP address.`,
@@ -126,7 +150,7 @@ export function validateNetwork(network: Network): ValidationResult[] {
               interfaceName,
             },
           });
-        } else if (iface.ipAddress && !iface.subnetMask) {
+        } else if (iface?.ipAddress && !iface.subnetMask) {
           results.push({
             level: "warning",
             message: `Interface ${interfaceName} is missing a subnet mask.`,
