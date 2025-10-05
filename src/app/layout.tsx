@@ -7,7 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 export function RootLayout() {
   return (
     <ThemeProvider>
-      <div className="mx-auto mb-6 flex w-full max-w-3xl flex-col gap-6">
+      <div className="mx-auto mb-6 flex w-full max-w-3xl flex-col gap-6 px-4 lg:px-0">
         <Navbar />
         <Outlet />
       </div>

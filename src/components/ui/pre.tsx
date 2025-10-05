@@ -5,7 +5,7 @@ export function Pre(props: React.ComponentProps<"pre">) {
     <pre
       {...props}
       className={cn(
-        "w-full overflow-y-auto whitespace-pre-wrap break-all rounded-md border bg-accent p-3",
+        "w-full overflow-auto rounded-md border bg-accent p-3",
         props.className,
       )}
     />

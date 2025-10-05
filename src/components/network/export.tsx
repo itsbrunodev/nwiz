@@ -41,7 +41,7 @@ export function ExportNetwork() {
         <div className="flex flex-col gap-3">
           <div className="relative flex flex-col gap-2">
             <Label>Code</Label>
-            <Pre className="max-h-40 w-full select-all overflow-y-auto">
+            <Pre className="max-h-40 w-full select-all whitespace-pre-wrap break-all">
               {code}
             </Pre>
             <p className="mx-3 text-muted-foreground text-xs">
