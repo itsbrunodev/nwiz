@@ -62,7 +62,7 @@ export function ExportNetwork() {
             <Label>Share</Label>
             <div>
               <Button
-                variant="secondary"
+                variant="outline"
                 size="sm"
                 onClick={() => {
                   const url = new URL(window.location.href);
