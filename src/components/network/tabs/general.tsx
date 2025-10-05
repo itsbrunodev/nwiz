@@ -20,7 +20,7 @@ export function DeviceGeneralManager<T extends Router | Switch>({
   if (!device) return null;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="space-y-3">
       <Input
         label="Hostname"
         value={device.hostname}

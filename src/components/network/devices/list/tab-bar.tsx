@@ -14,7 +14,7 @@ export function TabBar<T extends string>({
     <ButtonGroup aria-label="Tabs">
       {tabs.map((tab) => (
         <Button
-          variant={currentTab === tab ? "default" : "secondary"}
+          variant={currentTab === tab ? "default" : "outline"}
           onClick={() => onChange(tab)}
           key={tab}
         >

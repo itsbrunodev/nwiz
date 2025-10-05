@@ -3,6 +3,7 @@ import { useId, useState } from "react";
 import short from "short-uuid";
 
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 
 import { useConnections } from "@/hooks/use-connections";
@@ -124,10 +124,13 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
 
   return (
     <div className="grid grid-cols-3 gap-3">
-      <div className="col-span-1 flex h-96 flex-col gap-2 overflow-y-auto">
+      <ButtonGroup
+        className="col-span-1 flex h-96 w-full flex-col overflow-y-auto"
+        orientation="vertical"
+      >
         {interfaces.map((int) => (
           <Button
-            variant={currentInterface === int ? "default" : "secondary"}
+            variant={currentInterface === int ? "default" : "outline"}
             size="sm"
             onClick={() => setCurrentInterface(int)}
             key={int}
@@ -136,21 +139,18 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
             {int}
           </Button>
         ))}
-      </div>
-      <div className="col-span-2 flex flex-col gap-3 overflow-y-auto">
-        <div className="flex flex-col gap-2">
-          <div className="mb-2 flex flex-row gap-2">
-            <Label htmlFor={portStatusId}>Port Status</Label>
-            <Switch
-              id={portStatusId}
-              checked={interfaceConfig.enabled}
-              onCheckedChange={(enabled) => updateInterface({ enabled })}
-            />
-          </div>
-          {renderInterfaceFields?.(interfaceConfig, updateInterface)}
+      </ButtonGroup>
+      <div className="col-span-2 space-y-6 overflow-y-auto">
+        <div className="mb-3 flex flex-row gap-2">
+          <Label htmlFor={portStatusId}>Port Status</Label>
+          <Switch
+            id={portStatusId}
+            checked={interfaceConfig.enabled}
+            onCheckedChange={(enabled) => updateInterface({ enabled })}
+          />
         </div>
-        <Separator />
-        <div className="flex flex-col gap-2">
+        {renderInterfaceFields?.(interfaceConfig, updateInterface)}
+        <div className="space-y-2">
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

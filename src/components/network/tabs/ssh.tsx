@@ -1,4 +1,4 @@
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, XIcon } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -134,7 +134,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-6">
       <Alert>
         <AlertCircleIcon />
         <AlertTitle className="font-semibold">Prerequisites for SSH</AlertTitle>
@@ -147,94 +147,90 @@ export function DeviceSshManager<T extends SshCapableDevice>({
           </p>
         </AlertDescription>
       </Alert>
-
       <Input
         label="Domain Name"
         value={device.config?.domainName ?? ""}
         onChange={(e) => setConfigValue("domainName", e.target.value)}
       />
-
-      <Separator />
-
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         <h3 className="font-medium">RSA Key Generation</h3>
-        <div className="flex flex-col gap-1.5">
-          <Select
-            value={
-              sshConfig.rsaKey?.modulus ? String(sshConfig.rsaKey.modulus) : ""
-            }
-            onValueChange={(value) =>
-              setRsaModulus(Number(value) as SshRsaKeyConfig["modulus"])
-            }
-          >
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="Select a modulus" />
-            </SelectTrigger>
-            <SelectContent>
-              {rsaModulusOptions.map((option) => (
-                <SelectItem key={option} value={String(option)}>
-                  {option}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <Select
+          value={
+            sshConfig.rsaKey?.modulus ? String(sshConfig.rsaKey.modulus) : ""
+          }
+          onValueChange={(value) =>
+            setRsaModulus(Number(value) as SshRsaKeyConfig["modulus"])
+          }
+        >
+          <SelectTrigger className="w-48">
+            <SelectValue placeholder="Select a modulus" />
+          </SelectTrigger>
+          <SelectContent>
+            {rsaModulusOptions.map((option) => (
+              <SelectItem key={option} value={String(option)}>
+                {option}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="flex flex-col gap-3">
+        <h3 className="font-medium">SSH Timeouts & Retries</h3>
+        <div className="space-y-2">
+          {sshFields.map((fieldKey) => (
+            <Input
+              key={fieldKey}
+              label={camelToTitleCase(fieldKey)}
+              type="number"
+              value={sshConfig[fieldKey] ?? ""}
+              onChange={(e) =>
+                setSshValue(
+                  fieldKey,
+                  e.target.value ? Number(e.target.value) : undefined,
+                )
+              }
+            />
+          ))}
         </div>
       </div>
-
-      <Separator />
-
-      <div className="flex flex-col gap-2">
-        <h3 className="font-medium">SSH Timeouts & Retries</h3>
-        {sshFields.map((fieldKey) => (
-          <Input
-            key={fieldKey}
-            label={camelToTitleCase(fieldKey)}
-            type="number"
-            value={sshConfig[fieldKey] ?? ""}
-            onChange={(e) =>
-              setSshValue(
-                fieldKey,
-                e.target.value ? Number(e.target.value) : undefined,
-              )
-            }
-          />
-        ))}
-      </div>
-
-      <Separator />
-
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         <h3 className="font-medium">User Public Keys (RSA Authentication)</h3>
-        {(sshConfig.userPublicKeys ?? []).map((user, index) => (
-          <div
-            key={user.username}
-            className="flex flex-col gap-2 rounded border p-3"
-          >
-            <Input
-              label="Username"
-              value={user.username}
-              onChange={(e) =>
-                updateUserPublicKey(index, "username", e.target.value)
-              }
-            />
-            <Input
-              label="Key String"
-              value={user.keyString}
-              onChange={(e) =>
-                updateUserPublicKey(index, "keyString", e.target.value)
-              }
-            />
-            <Button
-              variant="destructive"
-              size="sm"
-              className="ml-auto w-fit"
-              onClick={() => removeUserPublicKey(index)}
-            >
-              Remove
-            </Button>
+        {(sshConfig.userPublicKeys ?? []).length > 0 && (
+          <div className="rounded-md border bg-card">
+            {sshConfig.userPublicKeys?.map((user, index) => (
+              <div
+                key={user.username}
+                className="flex items-center gap-2 border-b p-3 last:border-0"
+              >
+                <div className="grid w-full grid-cols-2 gap-2">
+                  <Input
+                    label="Username"
+                    value={user.username}
+                    onChange={(e) =>
+                      updateUserPublicKey(index, "username", e.target.value)
+                    }
+                  />
+                  <Input
+                    label="Key String"
+                    value={user.keyString}
+                    onChange={(e) =>
+                      updateUserPublicKey(index, "keyString", e.target.value)
+                    }
+                  />
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Remove User Public Key"
+                  onClick={() => removeUserPublicKey(index)}
+                >
+                  <XIcon />
+                </Button>
+              </div>
+            ))}
           </div>
-        ))}
-        <Button onClick={addUserPublicKey} className="w-fit">
+        )}
+        <Button className="w-fit" size="sm" onClick={addUserPublicKey}>
           Add User Public Key
         </Button>
       </div>

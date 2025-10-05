@@ -4,7 +4,6 @@ import short from "short-uuid";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 
 import { useDevice } from "@/hooks/use-device";
 
@@ -115,15 +114,15 @@ export function DevicePasswordsManager<T extends Device>({
   };
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-3">
+    <div className="space-y-6">
+      <div className="space-y-3">
         <div>
           <h3 className="font-medium">Local Users</h3>
           <p className="text-muted-foreground text-xs">
             Manage local username and password credentials for device access.
           </p>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="space-y-2">
           {(deviceConfig.localUsers ?? []).map((user, index) => (
             <div key={user.id} className="flex items-center gap-2">
               <Input
@@ -145,22 +144,24 @@ export function DevicePasswordsManager<T extends Device>({
               </Button>
             </div>
           ))}
-          <Button onClick={addUser} className="w-fit">
+          <Button
+            className="w-fit"
+            variant="outline"
+            size="sm"
+            onClick={addUser}
+          >
             Add User
           </Button>
         </div>
       </div>
-
-      <Separator />
-
-      <div className="flex flex-col gap-3">
+      <div className="space-y-3">
         <div>
           <h3 className="font-medium">Enable Secret</h3>
           <p className="text-muted-foreground text-xs">
             Set the password for privileged (enable) mode.
           </p>
         </div>
-        <div className="flex flex-col items-start gap-3">
+        <div className="flex flex-col items-start gap-2">
           <Input
             label="Enable Secret"
             containerClassName="w-full"
@@ -174,19 +175,16 @@ export function DevicePasswordsManager<T extends Device>({
           </Button>
         </div>
       </div>
-
-      <Separator />
-
-      <div className="flex flex-col gap-3">
+      <div className="space-y-3">
         <div>
           <h3 className="font-medium">Line Passwords</h3>
           <p className="text-muted-foreground text-xs">
             Set passwords for console, VTY, and auxiliary lines.
           </p>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           {linePasswordFields.map((fieldKey) => (
-            <div key={fieldKey} className="flex flex-col gap-3">
+            <div key={fieldKey} className="flex flex-col gap-2">
               <Input
                 label={camelToTitleCase(fieldKey)}
                 value={deviceConfig[fieldKey]?.password ?? ""}

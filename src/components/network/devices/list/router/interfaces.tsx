@@ -1,14 +1,7 @@
-import { Plus, Trash2 } from "lucide-react";
+import { PlusIcon, XIcon } from "lucide-react";
 
 import { DeviceInterfaceManager } from "@/components/network/tabs/interfaces";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -66,7 +59,7 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
 
         return (
           <>
-            <div>
+            <div className="mb-3">
               <Input
                 label="IP Address"
                 value={config.ipAddress || ""}
@@ -97,108 +90,107 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
                 (e.g. 192.168.0.1/24) to calculate the subnet mask.
               </p>
             </div>
-
             <Input
               label="Subnet Mask"
               value={config.subnetMask || ""}
               onChange={(e) => updateInterface({ subnetMask: e.target.value })}
             />
-
-            <div className="mt-4 flex flex-col gap-2">
-              <div className="flex items-center justify-between">
-                <Label>Subinterfaces (802.1Q)</Label>
-                <Button variant="outline" size="sm" onClick={addSubInterface}>
-                  <Plus className="mr-1 h-4 w-4" />
-                  Add
-                </Button>
-              </div>
-
-              {config.subInterfaces && config.subInterfaces.length > 0 && (
-                <div className="flex flex-col gap-2">
-                  {config.subInterfaces.map((subInt, index) => (
-                    <Card key={subInt.vlanId}>
-                      <CardHeader>
-                        <CardTitle>
-                          {config.name}.{subInt.vlanId}
-                        </CardTitle>
-                        <CardAction>
+            <div className="space-y-3">
+              <h3 className="font-medium">Subinterfaces (802.1Q)</h3>
+              <Button variant="outline" size="sm" onClick={addSubInterface}>
+                Add Subinterface
+              </Button>
+              <div className="space-y-2">
+                {!config.subInterfaces ||
+                  (config.subInterfaces.length === 0 && (
+                    <p className="text-muted-foreground text-xs">
+                      No subinterfaces configured.
+                    </p>
+                  ))}
+                {config.subInterfaces && config.subInterfaces.length > 0 && (
+                  <div className="flex flex-col rounded-md border bg-card">
+                    {config.subInterfaces.map((subInt, index) => (
+                      <div
+                        className="space-y-2 border-b p-3 last:border-b-0"
+                        key={subInt.vlanId}
+                      >
+                        <div className="flex items-center justify-between">
+                          <p>
+                            {config.name}.{subInt.vlanId}
+                          </p>
                           <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => removeSubInterface(index)}
                           >
-                            <Trash2 className="h-3 w-3 text-destructive" />
+                            <XIcon />
                           </Button>
-                        </CardAction>
-                      </CardHeader>
-                      <CardContent className="space-y-2 text-sm">
-                        <Input
-                          label="VLAN ID"
-                          type="number"
-                          min="1"
-                          max="4094"
-                          value={subInt.vlanId}
-                          onChange={(e) =>
-                            updateSubInterface(index, {
-                              vlanId: Number(e.target.value) || 1,
-                            })
-                          }
-                        />
-
-                        <Input
-                          label="Description (optional)"
-                          value={subInt.description || ""}
-                          // placeholder="Optional"
-                          onChange={(e) =>
-                            updateSubInterface(index, {
-                              description: e.target.value,
-                            })
-                          }
-                        />
-
-                        <Input
-                          label="IP Address"
-                          value={subInt.ipAddress}
-                          onChange={(e) =>
-                            updateSubInterface(index, {
-                              ipAddress: e.target.value,
-                            })
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              const ipAddress = e.currentTarget.value;
-
-                              let subnetMask = "";
-
-                              try {
-                                subnetMask = convertCidr(ipAddress).mask;
-                              } catch (error) {
-                                console.error(error);
-
-                                subnetMask = "";
-                              }
+                        </div>
+                        <div className="space-y-2">
+                          <Input
+                            label="VLAN ID"
+                            type="number"
+                            min="1"
+                            max="4094"
+                            value={subInt.vlanId}
+                            onChange={(e) =>
                               updateSubInterface(index, {
-                                ipAddress,
-                                subnetMask,
-                              });
+                                vlanId: Number(e.target.value) || 1,
+                              })
                             }
-                          }}
-                        />
+                          />
+                          <Input
+                            label="Description (optional)"
+                            value={subInt.description || ""}
+                            onChange={(e) =>
+                              updateSubInterface(index, {
+                                description: e.target.value,
+                              })
+                            }
+                          />
+                          <Input
+                            label="IP Address"
+                            value={subInt.ipAddress}
+                            onChange={(e) =>
+                              updateSubInterface(index, {
+                                ipAddress: e.target.value,
+                              })
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                const ipAddress = e.currentTarget.value;
 
-                        <Input
-                          label="Subnet Mask"
-                          value={subInt.subnetMask}
-                          onChange={(e) =>
-                            updateSubInterface(index, {
-                              subnetMask: e.target.value,
-                            })
-                          }
-                        />
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
+                                let subnetMask = "";
+
+                                try {
+                                  subnetMask = convertCidr(ipAddress).mask;
+                                } catch (error) {
+                                  console.error(error);
+
+                                  subnetMask = "";
+                                }
+                                updateSubInterface(index, {
+                                  ipAddress,
+                                  subnetMask,
+                                });
+                              }
+                            }}
+                          />
+                          <Input
+                            label="Subnet Mask"
+                            value={subInt.subnetMask}
+                            onChange={(e) =>
+                              updateSubInterface(index, {
+                                subnetMask: e.target.value,
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </>
         );

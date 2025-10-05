@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 
 import { networkAtom } from "@/stores/network";
 
@@ -152,21 +151,21 @@ export function StaticRoutesTab({ routerId }: { routerId: string }) {
             onChange={(e) => setSubnetMask(e.target.value)}
           />
         </div>
-        <div>
+        <div className="space-y-3">
           <Label>Forwarding Type</Label>
           <RadioGroup
             value={forwardingType}
             // biome-ignore lint/suspicious/noExplicitAny: simple fix
             onValueChange={(val) => setForwardingType(val as any)}
-            className="mt-2 flex items-center gap-2"
+            className="flex items-center gap-2"
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="nextHop" id={nextHopRadioId} />
-              <Label htmlFor="r1">Next Hop IP</Label>
+              <Label htmlFor={nextHopRadioId}>Next Hop IP</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="exitInterface" id={exitInterfaceRadioId} />
-              <Label htmlFor="r2">Exit Interface</Label>
+              <Label htmlFor={exitInterfaceRadioId}>Exit Interface</Label>
             </div>
           </RadioGroup>
         </div>
@@ -191,52 +190,56 @@ export function StaticRoutesTab({ routerId }: { routerId: string }) {
             </SelectContent>
           </Select>
         )}
-        <Button disabled={!destination || !subnetMask} onClick={handleAddRoute}>
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={!destination || !subnetMask}
+          onClick={handleAddRoute}
+        >
           Add Route
         </Button>
       </div>
-
-      <Separator />
-
-      <div className="space-y-2">
+      <div className="space-y-3">
         <h3 className="font-medium">Configured Routes</h3>
-        <Button variant="outline" size="sm" onClick={handleAutoGenerate}>
-          <Wand2Icon />
-          Calculate Missing Routes
-        </Button>
-        {existingRoutes.length === 0 ? (
-          <p className="text-muted-foreground text-xs">
-            No static routes configured.
-          </p>
-        ) : (
-          <div className="rounded-md border">
-            {existingRoutes.map((route) => (
-              <div
-                key={route.id}
-                className="flex items-center justify-between border-b p-3 last:border-b-0"
-              >
-                <div>
-                  <p className="font-medium font-mono text-sm">
-                    {route.destinationNetwork} {route.subnetMask}
-                  </p>
-                  <p className="text-muted-foreground text-xs">
-                    via{" "}
-                    {route.forwarding.type === "nextHop"
-                      ? route.forwarding.address
-                      : route.forwarding.interfaceName}
-                  </p>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleDeleteRoute(route.id)}
+        <div className="space-y-2">
+          <Button variant="outline" size="sm" onClick={handleAutoGenerate}>
+            <Wand2Icon />
+            Calculate Missing Routes
+          </Button>
+          {existingRoutes.length === 0 ? (
+            <p className="text-muted-foreground text-xs">
+              No static routes configured.
+            </p>
+          ) : (
+            <div className="rounded-md border">
+              {existingRoutes.map((route) => (
+                <div
+                  className="flex items-center justify-between border-b p-3 last:border-b-0"
+                  key={route.id}
                 >
-                  <XIcon />
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
+                  <div>
+                    <p className="font-medium font-mono text-sm">
+                      {route.destinationNetwork} {route.subnetMask}
+                    </p>
+                    <p className="text-muted-foreground text-xs">
+                      via{" "}
+                      {route.forwarding.type === "nextHop"
+                        ? route.forwarding.address
+                        : route.forwarding.interfaceName}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleDeleteRoute(route.id)}
+                  >
+                    <XIcon />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
