@@ -1,4 +1,8 @@
-import { ArrowUpRightIcon, ChevronsLeftRightEllipsisIcon } from "lucide-react";
+import {
+  ArrowUpRightIcon,
+  ChevronsLeftRightEllipsisIcon,
+  MenuIcon,
+} from "lucide-react";
 
 import { ExportNetwork } from "./network/export";
 import { ImportNetwork } from "./network/import";
@@ -6,6 +10,15 @@ import { SettingsNetwork } from "./network/settings";
 import { ThemeMenu } from "./theme/menu";
 import { Button } from "./ui/button";
 import { ButtonGroup } from "./ui/button-group";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "./ui/drawer";
 
 export function Navbar() {
   return (
@@ -22,21 +35,10 @@ export function Navbar() {
           {import.meta.env.APP_VERSION || "0.0.0"}
         </span>
       </a>
-      <div className="flex items-center gap-2 text-sm">
+      <div className="hidden items-center gap-2 text-sm md:flex">
         <div className="space-x-1">
-          <Button variant="ghost" asChild>
-            <a
-              href="https://github.com/itsbrunodev/nwiz#readme"
-              target="_blank"
-              rel="noopener"
-            >
-              About
-              <ArrowUpRightIcon />
-            </a>
-          </Button>
-          <Button variant="ghost" asChild>
-            <a href="/saved">Saved</a>
-          </Button>
+          <AboutButton />
+          <SavedButton />
         </div>
         <SettingsNetwork />
         <ButtonGroup>
@@ -45,6 +47,62 @@ export function Navbar() {
         </ButtonGroup>
         <ThemeMenu />
       </div>
+      <div className="md:hidden">
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MenuIcon />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-sm">
+              <DrawerHeader>
+                <DrawerTitle>Navigation Menu</DrawerTitle>
+                <DrawerDescription>
+                  nwiz v{import.meta.env.APP_VERSION || "0.0.0"}
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="flex flex-col gap-3 p-3 pb-0">
+                <AboutButton />
+                <SavedButton />
+              </div>
+              <DrawerFooter>
+                <div className="flex justify-center gap-2">
+                  <SettingsNetwork />
+                  <ButtonGroup>
+                    <ImportNetwork />
+                    <ExportNetwork />
+                  </ButtonGroup>
+                  <ThemeMenu />
+                </div>
+              </DrawerFooter>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
     </div>
+  );
+}
+
+function AboutButton() {
+  return (
+    <Button variant="ghost" asChild>
+      <a
+        href="https://github.com/itsbrunodev/nwiz#readme"
+        target="_blank"
+        rel="noopener"
+      >
+        About
+        <ArrowUpRightIcon />
+      </a>
+    </Button>
+  );
+}
+
+function SavedButton() {
+  return (
+    <Button variant="ghost" asChild>
+      <a href="/saved">Saved</a>
+    </Button>
   );
 }
