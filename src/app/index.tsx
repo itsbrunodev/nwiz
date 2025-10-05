@@ -6,7 +6,6 @@ import { AddDeviceButton } from "@/components/network/devices/add";
 import { DevicesList } from "@/components/network/devices/list";
 import { NetworkIssues } from "@/components/network/issues";
 import { ResetNetworkButton } from "@/components/network/reset";
-import { Label } from "@/components/ui/label";
 import { Pre } from "@/components/ui/pre";
 
 import { networkAtom, validationAtom } from "@/stores/network";
@@ -53,25 +52,25 @@ export function IndexPage() {
         <AddDeviceButton />
         <ResetNetworkButton />
       </div>
-      <div className="flex flex-col gap-2">
-        <Label>Devices</Label>
+      <div className="flex flex-col gap-2 text-lg">
+        <h3 className="font-medium">Devices</h3>
         <DevicesList />
       </div>
       {issues.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <Label>Issues</Label>
+        <div className="flex flex-col gap-2 text-lg">
+          <h3 className="font-medium">Issues</h3>
           <NetworkIssues />
         </div>
       )}
       {tree && (
-        <div className="flex flex-col gap-2">
-          <Label>Network</Label>
+        <div className="flex flex-col gap-2 text-lg">
+          <h3 className="font-medium">Network</h3>
           <Pre>{tree}</Pre>
         </div>
       )}
       {commands.size > 0 && (
-        <div className="flex flex-col gap-2">
-          <Label>Commands</Label>
+        <div className="flex flex-col gap-2 text-lg">
+          <h3 className="font-medium">Commands</h3>
           <Commands commandsMap={commands} devices={network.devices} />
         </div>
       )}
