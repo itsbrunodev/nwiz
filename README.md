@@ -1,3 +1,6 @@
+> [!WARNING] Early Alpha Version
+> This is a very early alpha version of the project. It is not fully featured and may contain bugs.
+
 # nwiz
 
 A simple, powerful tool for generating Cisco Packet Tracer network configurations.
