@@ -134,7 +134,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
       <Alert>
         <AlertCircleIcon />
         <AlertTitle className="font-semibold">Prerequisites for SSH</AlertTitle>
@@ -156,7 +156,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
 
       <Separator />
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <h3 className="font-medium">RSA Key Generation</h3>
         <div className="flex flex-col gap-1.5">
           <Select
@@ -183,7 +183,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
 
       <Separator />
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <h3 className="font-medium">SSH Timeouts & Retries</h3>
         {sshFields.map((fieldKey) => (
           <Input
@@ -203,7 +203,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
 
       <Separator />
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         <h3 className="font-medium">User Public Keys (RSA Authentication)</h3>
         {(sshConfig.userPublicKeys ?? []).map((user, index) => (
           <div
