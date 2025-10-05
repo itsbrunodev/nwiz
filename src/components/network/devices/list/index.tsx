@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { AddDeviceButton } from "../add";
 import { RouterContent } from "./router";
 import { SwitchContent } from "./switch";
+import { EndDeviceContent } from "./end-device";
 
 export function DevicesList() {
   const [devices] = useDevices();
@@ -82,18 +83,10 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
           className="border-l [&>button]:rounded-l-none"
           orientation="vertical"
         >
-          {["Router", "Switch"].includes(device.deviceType) && (
-            <DialogTrigger asChild>
-              <Button variant="secondary">View</Button>
-            </DialogTrigger>
-          )}
-          <Button
-            className={cn(
-              !["Router", "Switch"].includes(device.deviceType) && "h-full",
-            )}
-            variant="destructive"
-            onClick={removeDevice}
-          >
+          <DialogTrigger asChild>
+            <Button variant="secondary">View</Button>
+          </DialogTrigger>
+          <Button variant="destructive" onClick={removeDevice}>
             Remove
           </Button>
         </ButtonGroup>
@@ -115,6 +108,9 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
         )}
         {device.deviceType === "Switch" && (
           <SwitchContent switchId={device.id} />
+        )}
+        {(device.deviceType === "PC" || device.deviceType === "Server") && (
+          <EndDeviceContent deviceId={device.id} />
         )}
       </DialogContent>
     </Dialog>
