@@ -10,11 +10,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useAddEndDevice } from "@/hooks/use-add-end-device";
 import { useAddRouter } from "@/hooks/use-add-router";
 import { useAddSwitch } from "@/hooks/use-add-switch";
 
 import { ROUTERS, SWITCHES } from "@/constants/devices";
-import { useAddEndDevice } from "@/hooks/use-add-end-device";
 
 export function AddDeviceButton() {
   const addRouter = useAddRouter();

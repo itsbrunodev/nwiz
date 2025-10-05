@@ -1,7 +1,6 @@
 import { RouterIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Dialog,
   DialogContent,
@@ -65,8 +64,8 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
 
   return (
     <Dialog key={device.id}>
-      <div className="flex h-[72px] overflow-hidden rounded-md border bg-card shadow-sm">
-        <div className="flex w-full items-center justify-center">
+      <div className="flex h-28 flex-col overflow-hidden rounded-md border bg-card shadow-sm">
+        <div className="flex size-full items-center justify-center">
           <div className="text-center">
             <p className="font-medium text-card-foreground text-sm">
               {device.name}
@@ -77,17 +76,14 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
             )}
           </div>
         </div>
-        <ButtonGroup
-          className="-mt-px border-r-0 border-l [&>button]:rounded-none"
-          orientation="vertical"
-        >
+        <div className="[&>button]:!w-1/2 border-t [&>button]:rounded-none">
           <DialogTrigger asChild>
             <Button variant="secondary">View</Button>
           </DialogTrigger>
           <Button variant="destructive" onClick={removeDevice}>
             Remove
           </Button>
-        </ButtonGroup>
+        </div>
       </div>
       <DialogContent className="max-h-[90vh] overflow-auto">
         <DialogHeader>
