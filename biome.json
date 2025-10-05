@@ -47,6 +47,8 @@
               ":BLANK_LINE:",
               "@/hooks/**",
               ":BLANK_LINE:",
+              "@/stores/**",
+              ":BLANK_LINE:",
               "@/lib/**",
               ":BLANK_LINE:",
               "@/constants/**",
