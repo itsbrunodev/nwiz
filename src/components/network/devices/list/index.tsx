@@ -65,7 +65,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
 
   return (
     <Dialog key={device.id}>
-      <div className="flex h-[72px] rounded-md border bg-card shadow-sm">
+      <div className="flex h-[72px] overflow-hidden rounded-md border bg-card shadow-sm">
         <div className="flex w-full items-center justify-center">
           <div className="text-center">
             <p className="font-medium text-card-foreground text-sm">
@@ -78,7 +78,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
           </div>
         </div>
         <ButtonGroup
-          className="border-l [&>button]:rounded-l-none"
+          className="-mt-px border-r-0 border-l [&>button]:rounded-none"
           orientation="vertical"
         >
           <DialogTrigger asChild>
