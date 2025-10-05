@@ -52,25 +52,25 @@ export function IndexPage() {
         <AddDeviceButton />
         <ResetNetworkButton />
       </div>
-      <div className="flex flex-col gap-2 text-lg">
-        <h3 className="font-medium">Devices</h3>
+      <div className="flex flex-col gap-2">
+        <h3 className="font-medium text-lg">Devices</h3>
         <DevicesList />
       </div>
       {issues.length > 0 && (
-        <div className="flex flex-col gap-2 text-lg">
-          <h3 className="font-medium">Issues</h3>
+        <div className="flex flex-col gap-2">
+          <h3 className="font-medium text-lg">Issues</h3>
           <NetworkIssues />
         </div>
       )}
       {tree && (
-        <div className="flex flex-col gap-2 text-lg">
-          <h3 className="font-medium">Network</h3>
+        <div className="flex flex-col gap-2">
+          <h3 className="font-medium text-lg">Network</h3>
           <Pre>{tree}</Pre>
         </div>
       )}
       {commands.size > 0 && (
-        <div className="flex flex-col gap-2 text-lg">
-          <h3 className="font-medium">Commands</h3>
+        <div className="flex flex-col gap-2">
+          <h3 className="font-medium text-lg">Commands</h3>
           <Commands commandsMap={commands} devices={network.devices} />
         </div>
       )}
