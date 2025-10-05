@@ -229,7 +229,12 @@ export function ImportNetwork() {
               <AlertDescription>
                 <div>
                   Refer to the{" "}
-                  <Button className="!px-0" size="sm" variant="link" asChild>
+                  <Button
+                    className="h-fit p-0"
+                    size="sm"
+                    variant="link"
+                    asChild
+                  >
                     <a
                       href="https://github.com/itsbrunodev/nwiz#faq"
                       target="_blank"
