@@ -73,7 +73,7 @@ export function SettingsNetwork() {
                     code: encodeCompactBase64(network),
                   });
 
-                  return toast.success("Network updated successfully");
+                  return toast.success("Successfully updated network.");
                 }
 
                 dexie.networkCodes.add({
@@ -81,11 +81,11 @@ export function SettingsNetwork() {
                   code: encodeCompactBase64(network),
                 });
 
-                toast.success("Network saved successfully");
+                toast.success("Successfully saved network.");
               } catch (error) {
                 console.error(error);
 
-                toast.error("Failed to save network");
+                toast.error("Failed to save network.");
               }
             }}
           >

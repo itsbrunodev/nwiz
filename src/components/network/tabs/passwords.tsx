@@ -28,9 +28,6 @@ type PasswordsConfigShape = {
   lineAux?: ConsoleLineConfig;
 };
 
-/**
- * A manager for all device authentication, including local users and line passwords.
- */
 export function DevicePasswordsManager<T extends Device>({
   deviceId,
 }: {
@@ -38,8 +35,6 @@ export function DevicePasswordsManager<T extends Device>({
 }) {
   const [device, setDevice] = useDevice<T>(deviceId);
 
-  // Dynamically determine the available line password fields based on device type.
-  // Routers have an auxiliary port, but switches do not.
   const linePasswordFields = useMemo(() => {
     if (device?.deviceType === "Router") {
       return ["lineConsole", "lineVty", "lineAux"] as const;
@@ -50,8 +45,6 @@ export function DevicePasswordsManager<T extends Device>({
   if (!device) return null;
 
   const deviceConfig = (device.config ?? {}) as PasswordsConfigShape;
-
-  // --- Handlers ---
 
   const setUsers = (users: LocalUser[]) => {
     setDevice({

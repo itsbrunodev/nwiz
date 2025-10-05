@@ -1,6 +1,5 @@
 import type { Network } from "@/types/network";
 
-import { addAutoStaticRoutes } from "./auto-routing";
 import { generateRouterCommands } from "./devices/router";
 import { generateSwitchCommands } from "./devices/switch";
 import { type CommandGenerationOptions, createLogger, logger } from "./types";
@@ -15,8 +14,7 @@ export function generateCommands(
   createLogger(options.verbose || false);
   logger("Starting command generation process...");
 
-  const networkCopy = JSON.parse(JSON.stringify(network));
-  addAutoStaticRoutes(networkCopy);
+  const networkCopy: Network = JSON.parse(JSON.stringify(network));
 
   const allCommands = new Map<string, string[]>();
   for (const device of networkCopy.devices) {

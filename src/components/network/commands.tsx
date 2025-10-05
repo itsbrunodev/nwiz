@@ -45,7 +45,7 @@ export function Commands({
               aria-label="Copy to clipboard"
               onClick={() => {
                 navigator.clipboard.writeText(commandString);
-                toast.success("Copied to clipboard");
+                toast.success("Copied to clipboard.");
               }}
             >
               <CopyIcon />

@@ -1,5 +1,8 @@
+import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import short from "short-uuid";
+
+import { type ValidationResult, validateNetwork } from "@/lib/validation";
 
 import type { Network } from "@/types/network";
 
@@ -12,3 +15,8 @@ export const INITIAL_NETWORK: Network = {
 };
 
 export const networkAtom = atomWithStorage<Network>("network", INITIAL_NETWORK);
+
+export const validationAtom = atom<ValidationResult[]>((get) => {
+  const currentNetwork = get(networkAtom);
+  return validateNetwork(currentNetwork);
+});

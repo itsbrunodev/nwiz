@@ -44,17 +44,23 @@ function findPathBFS(
   return null;
 }
 
-export function addAutoStaticRoutes(network: Network): void {
+export function addAutoStaticRoutes(network: Network): Network {
   logger("Starting automatic static route calculation.");
-  const routers = network.devices.filter(
+
+  const networkCopy: Network = JSON.parse(JSON.stringify(network));
+
+  const routers = networkCopy.devices.filter(
     (d): d is Router => d.deviceType === "Router",
   );
+
   if (routers.length < 2) {
     logger("Skipping static routing: fewer than 2 routers found.");
-    return;
+
+    return networkCopy;
   }
 
   logger("Clearing old auto-generated routes...");
+
   for (const router of routers) {
     if (router.config.staticRoutes) {
       router.config.staticRoutes = router.config.staticRoutes.filter(
@@ -89,6 +95,7 @@ export function addAutoStaticRoutes(network: Network): void {
   const routerGraph: RouterGraph = new Map(
     routers.map((r) => [r.id, new Set()]),
   );
+
   for (const conn of network.connections) {
     if (
       routerInfo.has(conn.from.deviceId) &&
@@ -147,4 +154,6 @@ export function addAutoStaticRoutes(network: Network): void {
       }
     }
   }
+
+  return networkCopy;
 }

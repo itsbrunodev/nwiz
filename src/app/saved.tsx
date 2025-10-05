@@ -91,11 +91,11 @@ export function SavedPage() {
                       try {
                         dexie.networkCodes.delete(id);
 
-                        toast.success("Network removed successfully");
+                        toast.success("Successfully removed network.");
                       } catch (error) {
                         console.error(error);
 
-                        toast.error("Failed to remove network");
+                        toast.error("Failed to remove network.");
                       }
                     }}
                   >
@@ -106,7 +106,7 @@ export function SavedPage() {
                     onClick={() => {
                       setNetwork(decodedNetwork);
                       navigate("/");
-                      toast.success("Network loaded successfully");
+                      toast.success("Successfully loaded network.");
                     }}
                   >
                     Load

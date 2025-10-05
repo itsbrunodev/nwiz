@@ -5,8 +5,15 @@ import { GeneralTab } from "./general";
 import { InterfacesTab } from "./interfaces";
 import { PasswordsTab } from "./password";
 import { SshTab } from "./ssh";
+import { StaticRoutesTab } from "./static-routes";
 
-const tabs = ["General", "Interfaces", "Passwords", "SSH"] as const;
+const tabs = [
+  "General",
+  "Interfaces",
+  "Static Routes",
+  "Passwords",
+  "SSH",
+] as const;
 type Tab = (typeof tabs)[number];
 
 export function RouterContent({ routerId }: { routerId: string }) {
@@ -23,6 +30,10 @@ export function RouterContent({ routerId }: { routerId: string }) {
       {currentTab === "General" && <GeneralTab routerId={routerId} />}
 
       {currentTab === "Interfaces" && <InterfacesTab routerId={routerId} />}
+
+      {currentTab === "Static Routes" && (
+        <StaticRoutesTab routerId={routerId} />
+      )}
 
       {currentTab === "Passwords" && <PasswordsTab routerId={routerId} />}
 

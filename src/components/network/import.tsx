@@ -177,10 +177,12 @@ export function ImportNetwork() {
   const handleImport = () => {
     if (parsedPtNetwork) {
       setNetwork(parsedPtNetwork);
-      toast.success("Network imported from Packet Tracer successfully");
+
+      toast.success("Successfully imported network from Packet Tracer.");
     } else if (code) {
       setNetwork(decodeCompactBase64(code));
-      toast.success("Network imported successfully");
+
+      toast.success("Successfully imported network from code.");
     }
   };
 

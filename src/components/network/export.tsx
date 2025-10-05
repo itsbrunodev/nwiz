@@ -52,7 +52,7 @@ export function ExportNetwork() {
               size="icon"
               onClick={() => {
                 navigator.clipboard.writeText(code);
-                toast.success("Copied to clipboard");
+                toast.success("Copied to clipboard.");
               }}
             >
               <CopyIcon />
@@ -68,7 +68,7 @@ export function ExportNetwork() {
                   const url = new URL(window.location.href);
                   url.searchParams.set("network", code);
                   navigator.clipboard.writeText(url.href);
-                  toast.success("Copied to clipboard");
+                  toast.success("Copied to clipboard.");
                 }}
               >
                 Copy URL

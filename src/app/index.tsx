@@ -1,14 +1,15 @@
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { useEffect } from "react";
 
 import { Commands } from "@/components/network/commands";
 import { AddDeviceButton } from "@/components/network/devices/add";
 import { DevicesList } from "@/components/network/devices/list";
+import { NetworkIssues } from "@/components/network/issues";
 import { ResetNetworkButton } from "@/components/network/reset";
 import { Label } from "@/components/ui/label";
 import { Pre } from "@/components/ui/pre";
 
-import { networkAtom } from "@/stores/network";
+import { networkAtom, validationAtom } from "@/stores/network";
 
 import { generateCommands } from "@/lib/commands";
 import { decodeCompactBase64 } from "@/lib/encode";
@@ -16,6 +17,7 @@ import { createNetworkTree } from "@/lib/visualize";
 
 export function IndexPage() {
   const [network, setNetwork] = useAtom(networkAtom);
+  const issues = useAtomValue(validationAtom);
 
   const url = window.location.href;
 
@@ -55,6 +57,12 @@ export function IndexPage() {
         <Label>Devices</Label>
         <DevicesList />
       </div>
+      {issues.length > 0 && (
+        <div className="flex flex-col gap-2">
+          <Label>Issues</Label>
+          <NetworkIssues />
+        </div>
+      )}
       {tree && (
         <div className="flex flex-col gap-2">
           <Label>Network</Label>
