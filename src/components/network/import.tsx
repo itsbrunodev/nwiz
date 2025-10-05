@@ -243,7 +243,8 @@ export function ImportNetwork() {
                       Readme <ArrowUpRightIcon />
                     </a>
                   </Button>{" "}
-                  on how to export your network topology from Packet Tracer and import it here.
+                  on how to export your network topology from Packet Tracer and
+                  import it here.
                 </div>
               </AlertDescription>
             </Alert>

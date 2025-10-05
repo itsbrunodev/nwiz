@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import { IndexPage } from "./app";
-import { AboutPage } from "./app/about";
 import { RootLayout } from "./app/layout";
 import { SavedPage } from "./app/saved";
 
@@ -16,7 +15,6 @@ createRoot(document.getElementById("root")!).render(
       <Routes>
         <Route element={<RootLayout />}>
           <Route index element={<IndexPage />} />
-          <Route path="about" element={<AboutPage />} />
           <Route path="saved" element={<SavedPage />} />
         </Route>
       </Routes>

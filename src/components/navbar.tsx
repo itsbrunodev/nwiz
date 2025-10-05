@@ -1,4 +1,4 @@
-import { ChevronsLeftRightEllipsisIcon } from "lucide-react";
+import { ArrowUpRightIcon, ChevronsLeftRightEllipsisIcon } from "lucide-react";
 
 import { ExportNetwork } from "./network/export";
 import { ImportNetwork } from "./network/import";
@@ -25,21 +25,18 @@ export function Navbar() {
       <div className="flex items-center gap-2 text-sm">
         <div className="space-x-1">
           <Button variant="ghost" asChild>
-            <a href="/about">About</a>
+            <a
+              href="https://github.com/itsbrunodev/nwiz#readme"
+              target="_blank"
+              rel="noopener"
+            >
+              About
+              <ArrowUpRightIcon />
+            </a>
           </Button>
           <Button variant="ghost" asChild>
             <a href="/saved">Saved</a>
           </Button>
-          {/* <Button variant="ghost" asChild>
-            <a
-              href="https://github.com/itsbrunodv/nwiz"
-              target="_blank"
-              rel="noopener"
-            >
-              GitHub
-              <ArrowUpRightIcon />
-            </a>
-          </Button> */}
         </div>
         <SettingsNetwork />
         <ButtonGroup>
