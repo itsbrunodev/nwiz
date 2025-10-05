@@ -1,27 +1,16 @@
 import type { Network } from "@/types/network";
 import type { Device } from "@/types/network/device";
 
-// Helper type for easier connection handling
 interface DeviceConnection {
   neighborId: string;
   localInterface: string;
   neighborInterface: string;
 }
 
-/**
- * Replaces long interface names with common shorter aliases.
- */
 function aliasPortName(name: string): string {
   return name.replace("GigabitEthernet", "Gig").replace("FastEthernet", "Fa");
 }
 
-/**
- * Creates a hierarchical, file tree-like visualization of the network,
- * prioritizing Routers as the roots of the network trees.
- *
- * @param network The network object containing devices and connections.
- * @returns A string representing the network tree with aliased port names.
- */
 export function createNetworkTree(network: Network): string {
   if (!network?.devices?.length) {
     return "";
@@ -32,7 +21,6 @@ export function createNetworkTree(network: Network): string {
   );
   const adjacencyList = new Map<string, DeviceConnection[]>();
 
-  // --- Setup Phase ---
   for (const device of network.devices) {
     adjacencyList.set(device.id, []);
   }
@@ -57,9 +45,6 @@ export function createNetworkTree(network: Network): string {
     }
   }
 
-  // --- Tree Building Phase ---
-
-  // Define the logical hierarchy order. Lower numbers have higher priority.
   const deviceTypeOrder: Record<Device["deviceType"], number> = {
     Router: 1,
     Switch: 2,
@@ -67,7 +52,6 @@ export function createNetworkTree(network: Network): string {
     PC: 3,
   };
 
-  // Sort devices to ensure routers are always processed first as potential tree roots.
   const sortedDevices = [...network.devices].sort((a, b) => {
     const rankA = deviceTypeOrder[a.deviceType] ?? 99;
     const rankB = deviceTypeOrder[b.deviceType] ?? 99;
@@ -77,11 +61,9 @@ export function createNetworkTree(network: Network): string {
   const visited = new Set<string>();
   let fullTree = "";
 
-  // Iterate over the sorted devices. This ensures that if a Router exists
-  // in any connected component, it will be chosen as the root of that tree.
   for (const device of sortedDevices) {
     if (!visited.has(device.id)) {
-      if (fullTree) fullTree += "\n"; // Add space between disconnected trees
+      if (fullTree) fullTree += "\n";
       fullTree += `${device.name} (${device.deviceType})\n`;
       fullTree += buildSubTree(
         device.id,
@@ -96,10 +78,6 @@ export function createNetworkTree(network: Network): string {
   return fullTree.trim();
 }
 
-/**
- * Recursively builds the tree structure for a given device's connections
- * using a pure Depth-First Search.
- */
 function buildSubTree(
   deviceId: string,
   prefix: string,
@@ -119,14 +97,14 @@ function buildSubTree(
     const newPrefix = prefix + (isLast ? "    " : "│   ");
 
     const neighbor = deviceMap.get(conn.neighborId);
-    if (!neighbor) return; // Safely skip if neighbor data is missing
+
+    if (!neighbor) return;
 
     const localPort = aliasPortName(conn.localInterface);
     const neighborPort = aliasPortName(conn.neighborInterface);
 
     subTree += `${prefix}${connector} [${localPort} <-> ${neighborPort}] ${neighbor.name} (${neighbor.deviceType})\n`;
 
-    // Recurse for the neighbor's connections, building the nested tree
     subTree += buildSubTree(
       neighbor.id,
       newPrefix,
