@@ -1,4 +1,5 @@
 import { useSetAtom } from "jotai";
+import { CircleQuestionMarkIcon } from "lucide-react";
 import { useState } from "react";
 import short from "short-uuid";
 import { toast } from "sonner";
@@ -17,6 +18,7 @@ import type {
   Switch,
 } from "@/types/network/device";
 
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Button } from "../ui/button";
 import {
   Dialog,
@@ -30,8 +32,6 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { ArrowUpRightIcon, CircleQuestionMarkIcon } from "lucide-react";
 
 interface PacketTracerDevice {
   id: string; // full UUID from Packet Tracer
@@ -214,7 +214,7 @@ export function ImportNetwork() {
           </div>
           <div className="space-y-2">
             <Input
-              label="Packet Tracer Response"
+              label="Packet Tracer response"
               value={packetTracerResponse}
               onChange={(e) => {
                 setCode("");
