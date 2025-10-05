@@ -1,6 +1,8 @@
 import type { Network } from "@/types/network";
 import type { Device } from "@/types/network/device";
 
+import { isValidIPv4 } from "./network";
+
 export interface ValidationResult {
   level: "error" | "warning";
   message: string;
@@ -27,29 +29,59 @@ export function validateNetwork(network: Network): ValidationResult[] {
   );
 
   for (const device of network.devices) {
-    const checkIpUniqueness = (
-      ip: string,
-      source: ValidationResult["source"],
-    ) => {
-      if (ipAddressMap.has(ip)) {
-        const original = ipAddressMap.get(ip);
-        results.push({
-          level: "error",
-          message: `Duplicate IP address ${ip} also found on ${original?.deviceName}${original?.interfaceName ? ` (${original?.interfaceName})` : ""}.`,
-          source,
-        });
-      } else {
-        ipAddressMap.set(ip, source);
-      }
-    };
-
     if (device.deviceType === "Router") {
       for (const iface of device.config.interfaces) {
         if (iface.ipAddress) {
-          checkIpUniqueness(iface.ipAddress, {
-            deviceId: device.id,
-            deviceName: device.name,
-            interfaceName: iface.name,
+          if (!isValidIPv4(iface.ipAddress)) {
+            results.push({
+              level: "error",
+              message: `Invalid IPv4 address format: "${iface.ipAddress}".`,
+              source: {
+                deviceId: device.id,
+                deviceName: device.name,
+                interfaceName: iface.name,
+              },
+            });
+          } else {
+            const source = {
+              deviceId: device.id,
+              deviceName: device.name,
+              interfaceName: iface.name,
+            };
+            if (ipAddressMap.has(iface.ipAddress)) {
+              const original = ipAddressMap.get(iface.ipAddress);
+              results.push({
+                level: "error",
+                message: `Duplicate IP address ${iface.ipAddress} also found on ${original?.deviceName} (${original?.interfaceName}).`,
+                source,
+              });
+            } else {
+              ipAddressMap.set(iface.ipAddress, source);
+            }
+          }
+        }
+
+        if (iface.ipAddress && iface.enabled === false) {
+          results.push({
+            level: "warning",
+            message: `Interface ${iface.name} has an IP address but is disabled.`,
+            source: {
+              deviceId: device.id,
+              deviceName: device.name,
+              interfaceName: iface.name,
+            },
+          });
+        }
+
+        if (iface.subnetMask && !isValidIPv4("0.0.0.0", iface.subnetMask)) {
+          results.push({
+            level: "error",
+            message: `Invalid subnet mask format: "${iface.subnetMask}".`,
+            source: {
+              deviceId: device.id,
+              deviceName: device.name,
+              interfaceName: iface.name,
+            },
           });
         }
       }
@@ -73,12 +105,13 @@ export function validateNetwork(network: Network): ValidationResult[] {
     }
   }
 
+  // pass 2: check connections
   for (const connection of network.connections) {
     const dev1 = deviceMap.get(connection.from.deviceId);
     const dev2 = deviceMap.get(connection.to.deviceId);
     if (!dev1 || !dev2) continue;
 
-    const checkMissingIp = (device: Device, interfaceName: string) => {
+    const checkConnectedInterface = (device: Device, interfaceName: string) => {
       if (device.deviceType === "Router") {
         const iface = device.config.interfaces.find(
           (i) => i.name === interfaceName,
@@ -90,15 +123,25 @@ export function validateNetwork(network: Network): ValidationResult[] {
             source: {
               deviceId: device.id,
               deviceName: device.name,
-              interfaceName: interfaceName,
+              interfaceName,
+            },
+          });
+        } else if (iface.ipAddress && !iface.subnetMask) {
+          results.push({
+            level: "warning",
+            message: `Interface ${interfaceName} is missing a subnet mask.`,
+            source: {
+              deviceId: device.id,
+              deviceName: device.name,
+              interfaceName,
             },
           });
         }
       }
     };
 
-    checkMissingIp(dev1, connection.from.interfaceName);
-    checkMissingIp(dev2, connection.to.interfaceName);
+    checkConnectedInterface(dev1, connection.from.interfaceName);
+    checkConnectedInterface(dev2, connection.to.interfaceName);
 
     if (dev1.deviceType === "Router" && dev2.deviceType === "Router") {
       const iface1 = dev1.config.interfaces.find(
@@ -108,7 +151,16 @@ export function validateNetwork(network: Network): ValidationResult[] {
         (i) => i.name === connection.to.interfaceName,
       );
 
-      if (iface1?.ipAddress && iface2?.ipAddress) {
+      if (
+        iface1?.ipAddress &&
+        isValidIPv4(iface1.ipAddress) &&
+        iface1.subnetMask &&
+        isValidIPv4("0.0.0.0", iface1.subnetMask) &&
+        iface2?.ipAddress &&
+        isValidIPv4(iface2.ipAddress) &&
+        iface2.subnetMask &&
+        isValidIPv4("0.0.0.0", iface2.subnetMask)
+      ) {
         const subnet1 = getSubnet(iface1.ipAddress, iface1.subnetMask);
         const subnet2 = getSubnet(iface2.ipAddress, iface2.subnetMask);
         if (subnet1 && subnet2 && subnet1 !== subnet2) {
@@ -125,6 +177,10 @@ export function validateNetwork(network: Network): ValidationResult[] {
       }
     }
   }
+
+  results.sort((a, b) =>
+    a.source.deviceName.localeCompare(b.source.deviceName),
+  );
 
   return results;
 }
