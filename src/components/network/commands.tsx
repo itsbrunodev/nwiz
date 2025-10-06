@@ -38,7 +38,7 @@ export function Commands({
             <div className="rounded-t-md border-x border-t bg-accent p-3">
               <Label>{deviceName}</Label>
             </div>
-            <Pre className="rounded-t-none">{commandString}</Pre>
+            <Pre className="min-h-16 rounded-t-none">{commandString}</Pre>
             <Button
               className="absolute top-13 right-3"
               size="icon"
