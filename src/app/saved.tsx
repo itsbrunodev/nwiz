@@ -28,6 +28,17 @@ import { networkAtom } from "@/stores/network";
 
 import { dexie } from "@/lib/dexie";
 import { decodeCompactBase64 } from "@/lib/encode";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function SavedPage() {
   const navigate = useNavigate();
@@ -85,22 +96,37 @@ export function SavedPage() {
                   </div>
                 </CardContent>
                 <CardFooter className="mt-auto justify-end gap-2">
-                  <Button
-                    variant="destructive"
-                    onClick={() => {
-                      try {
-                        dexie.networkCodes.delete(id);
-
-                        toast.success("Successfully removed network.");
-                      } catch (error) {
-                        console.error(error);
-
-                        toast.error("Failed to remove network.");
-                      }
-                    }}
-                  >
-                    Remove
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive">Remove</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Remove Network</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          Are you sure you want to remove this network?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel asChild>
+                          <Button variant="secondary">Cancel</Button>
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => {
+                            try {
+                              dexie.networkCodes.delete(id);
+                              toast.success("Successfully removed network.");
+                            } catch (error) {
+                              console.error(error);
+                              toast.error("Failed to remove network.");
+                            }
+                          }}
+                        >
+                          Remove
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                   <Button
                     disabled={network.id === id}
                     onClick={() => {

@@ -102,7 +102,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction onClick={removeDevice}>
-                  Yes, Remove
+                  Remove
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>

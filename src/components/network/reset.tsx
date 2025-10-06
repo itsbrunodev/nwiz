@@ -46,7 +46,7 @@ export function ResetNetworkButton() {
               setNetwork({ ...INITIAL_NETWORK, id: short.generate() })
             }
           >
-            Yes, Reset
+            Reset
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
