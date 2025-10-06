@@ -2,8 +2,9 @@ import { useState } from "react";
 
 import { TabBar } from "../tab-bar";
 import { GeneralTab } from "./general";
+import { InterfacesTab } from "./interfaces";
 
-const tabs = ["General"] as const;
+const tabs = ["General", "Interfaces"] as const;
 type Tab = (typeof tabs)[number];
 
 export function EndDeviceContent({ deviceId }: { deviceId: string }) {
@@ -16,8 +17,8 @@ export function EndDeviceContent({ deviceId }: { deviceId: string }) {
         currentTab={currentTab}
         onChange={setCurrentTab}
       />
-
       {currentTab === "General" && <GeneralTab deviceId={deviceId} />}
+      {currentTab === "Interfaces" && <InterfacesTab deviceId={deviceId} />}
     </div>
   );
 }

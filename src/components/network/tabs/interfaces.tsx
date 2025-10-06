@@ -25,22 +25,31 @@ import { getInterfacesForDevice } from "@/lib/network";
 
 import type { RouterInterface } from "@/types/network/config/router";
 import type { SwitchInterface } from "@/types/network/config/switch";
-import type { Router, Switch as SwitchDevice } from "@/types/network/device";
+import type {
+  Device,
+  EndDevice,
+  Router,
+  Switch as SwitchDevice,
+} from "@/types/network/device";
 
 type InterfaceConfig = RouterInterface | SwitchInterface;
 
-interface InterfaceManagerProps {
+type RenderFieldsFn<T extends Device> = T extends Router | SwitchDevice
+  ? (
+      interfaceConfig: InterfaceConfig,
+      updateInterface: (config: Partial<InterfaceConfig>) => void,
+    ) => React.ReactNode
+  : () => React.ReactNode;
+
+interface InterfaceManagerProps<T extends Device> {
   deviceId: string;
-  renderInterfaceFields?: (
-    interfaceConfig: InterfaceConfig,
-    updateInterface: (config: Partial<InterfaceConfig>) => void,
-  ) => React.ReactNode;
+  renderInterfaceFields?: RenderFieldsFn<T>;
 }
 
-export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
+export function DeviceInterfaceManager<T extends Device>({
   deviceId,
   renderInterfaceFields,
-}: InterfaceManagerProps) {
+}: InterfaceManagerProps<T>) {
   const [devices] = useDevices();
   const [device, setDevice] = useDevice<T>(deviceId);
   const [connections, setConnections] = useConnections();
@@ -51,36 +60,43 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
   );
   const portStatusId = useId();
 
-  const isSwitch = device.deviceType === "Switch";
+  const isNetworkDevice = (d: Device): d is Router | SwitchDevice => {
+    return d.deviceType === "Router" || d.deviceType === "Switch";
+  };
 
-  const interfaceConfig =
-    device.config.interfaces.find((int) => int.name === currentInterface) ||
-    ({
-      name: currentInterface,
-      enabled: false,
-      ...(isSwitch && {
-        mode: "access",
-        accessVlan: 1,
-      }),
-    } as InterfaceConfig);
+  const interfaceConfig = isNetworkDevice(device)
+    ? device.config.interfaces.find((int) => int.name === currentInterface) ||
+      ({
+        name: currentInterface,
+        enabled: false,
+        ...(device.deviceType === "Switch" && {
+          mode: "access",
+          accessVlan: 1,
+        }),
+      } as InterfaceConfig)
+    : undefined;
 
   const updateInterface = (updates: Partial<InterfaceConfig>) => {
+    if (!isNetworkDevice(device) || !interfaceConfig) return;
+
     const updatedInterface = {
       ...interfaceConfig,
       ...updates,
       name: currentInterface,
     };
 
+    const newInterfaces = [
+      ...device.config.interfaces.filter(
+        (int) => int.name !== currentInterface,
+      ),
+      updatedInterface as RouterInterface & SwitchInterface,
+    ];
+
     setDevice({
       ...device,
       config: {
         ...device.config,
-        interfaces: [
-          ...device.config.interfaces.filter(
-            (int) => int.name !== currentInterface,
-          ),
-          updatedInterface as RouterInterface & SwitchInterface,
-        ],
+        interfaces: newInterfaces,
       },
     } as T);
   };
@@ -91,10 +107,8 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
         !(
           (c.from.deviceId === deviceId &&
             c.from.interfaceName === currentInterface) ||
-          (c.to.deviceId === targetDeviceId &&
-            c.to.interfaceName === targetInterface) ||
-          (c.from.deviceId === targetDeviceId &&
-            c.from.interfaceName === targetInterface)
+          (c.to.deviceId === deviceId &&
+            c.to.interfaceName === currentInterface)
         ),
     );
 
@@ -108,17 +122,13 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
     ]);
   };
 
-  const isOccupied = (interfaceName: string) => {
-    return (
-      connections.some(
-        (c) =>
-          c.from.deviceId === deviceId &&
-          c.from.interfaceName === interfaceName,
-      ) ||
-      connections.some(
-        (c) =>
-          c.to.deviceId === deviceId && c.to.interfaceName === interfaceName,
-      )
+  const isOccupied = (lookupDeviceId: string, interfaceName: string) => {
+    return connections.some(
+      (c) =>
+        (c.from.deviceId === lookupDeviceId &&
+          c.from.interfaceName === interfaceName) ||
+        (c.to.deviceId === lookupDeviceId &&
+          c.to.interfaceName === interfaceName),
     );
   };
 
@@ -134,22 +144,37 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
             size="sm"
             onClick={() => setCurrentInterface(int)}
             key={int}
+            className="flex justify-start gap-2"
           >
-            {isOccupied(int) && <EthernetPortIcon />}
-            {int}
+            {isOccupied(deviceId, int) ? (
+              <EthernetPortIcon className="h-4 w-4" />
+            ) : (
+              <div className="w-4" />
+            )}
+            <span>{int}</span>
           </Button>
         ))}
       </ButtonGroup>
       <div className="col-span-2 space-y-6 overflow-y-auto">
-        <div className="mb-3 flex flex-row gap-2">
-          <Label htmlFor={portStatusId}>Port Status</Label>
-          <Switch
-            id={portStatusId}
-            checked={interfaceConfig.enabled}
-            onCheckedChange={(enabled) => updateInterface({ enabled })}
-          />
-        </div>
-        {renderInterfaceFields?.(interfaceConfig, updateInterface)}
+        {isNetworkDevice(device) && interfaceConfig && (
+          <div className="mb-3 flex flex-row items-center gap-2">
+            <Switch
+              id={portStatusId}
+              checked={interfaceConfig.enabled}
+              onCheckedChange={(enabled) => updateInterface({ enabled })}
+            />
+            <Label htmlFor={portStatusId}>Port Status</Label>
+          </div>
+        )}
+
+        {renderInterfaceFields &&
+          (isNetworkDevice(device) && interfaceConfig
+            ? (renderInterfaceFields as RenderFieldsFn<Router | SwitchDevice>)(
+                interfaceConfig,
+                updateInterface,
+              )
+            : (renderInterfaceFields as RenderFieldsFn<EndDevice>)())}
+
         <div className="space-y-3">
           <h3 className="font-medium">Connection</h3>
           <div className="flex gap-2">
@@ -157,7 +182,6 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
               <DropdownMenuTrigger asChild>
                 <Button className="w-fit" variant="outline">
                   {(() => {
-                    // Check if the current interface is connected (either as from or to)
                     const occupiedConnection = connections.find(
                       (c) =>
                         (c.from.deviceId === deviceId &&
@@ -166,7 +190,7 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
                           c.to.interfaceName === currentInterface),
                     );
                     if (!occupiedConnection) return "Not Connected";
-                    // Determine the other device and interface
+
                     const otherDeviceId =
                       occupiedConnection.from.deviceId === deviceId
                         ? occupiedConnection.to.deviceId
@@ -178,6 +202,7 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
                     const otherDeviceName =
                       devices.find((d) => d.id === otherDeviceId)?.name ??
                       "Unknown Device";
+
                     return `${otherDeviceName} (${otherInterface})`;
                   })()}
                   <ChevronDown />
@@ -191,37 +216,22 @@ export function DeviceInterfaceManager<T extends Router | SwitchDevice>({
                       <DropdownMenuSubTrigger>{d.name}</DropdownMenuSubTrigger>
                       <DropdownMenuPortal>
                         <DropdownMenuSubContent className="max-h-96 overflow-auto">
-                          {getInterfacesForDevice(d).map((int) => {
-                            const isOccupied = connections.some(
-                              (c) =>
-                                (c.from.deviceId === d.id &&
-                                  c.from.interfaceName === int) ||
-                                (c.to.deviceId === d.id &&
-                                  c.to.interfaceName === int),
-                            );
-                            return (
-                              <DropdownMenuItem
-                                disabled={isOccupied}
-                                onClick={() => handleConnect(d.id, int)}
-                                key={int}
-                              >
-                                {int}
-                              </DropdownMenuItem>
-                            );
-                          })}
+                          {getInterfacesForDevice(d).map((int) => (
+                            <DropdownMenuItem
+                              disabled={isOccupied(d.id, int)}
+                              onClick={() => handleConnect(d.id, int)}
+                              key={int}
+                            >
+                              {int}
+                            </DropdownMenuItem>
+                          ))}
                         </DropdownMenuSubContent>
                       </DropdownMenuPortal>
                     </DropdownMenuSub>
                   ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            {connections.some(
-              (c) =>
-                (c.from.deviceId === deviceId &&
-                  c.from.interfaceName === currentInterface) ||
-                (c.to.deviceId === deviceId &&
-                  c.to.interfaceName === currentInterface),
-            ) && (
+            {isOccupied(deviceId, currentInterface) && (
               <Button
                 variant="destructive"
                 size="icon"
