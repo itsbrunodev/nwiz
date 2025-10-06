@@ -2,7 +2,8 @@ import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import short from "short-uuid";
 
-import { type ValidationResult, validateNetwork } from "@/lib/validation";
+import { validateNetwork } from "@/lib/validation";
+import type { ValidationResult } from "@/lib/validation/types";
 
 import type { Network } from "@/types/network";
 
