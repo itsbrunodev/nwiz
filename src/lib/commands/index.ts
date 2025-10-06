@@ -1,5 +1,6 @@
 import type { Network } from "@/types/network";
 
+import { generateEndDeviceCommands } from "./devices/end";
 import { generateRouterCommands } from "./devices/router";
 import { generateSwitchCommands } from "./devices/switch";
 import { type CommandGenerationOptions, createLogger, logger } from "./types";
@@ -37,8 +38,11 @@ export function generateCommands(
         );
         break;
       }
-      default: {
-        continue;
+      case "PC":
+      case "Server":
+      case "Laptop": {
+        deviceCommands = generateEndDeviceCommands(device);
+        break;
       }
     }
     if (deviceCommands.length > 0) {

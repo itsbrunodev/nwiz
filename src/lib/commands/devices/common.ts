@@ -31,5 +31,6 @@ export function generateBaseDeviceCommands(device: Router | Switch): string[] {
     );
 
   commands.push(...generateLineVtyCommands(config.lineVty, !!config.ssh));
+
   return commands;
 }
