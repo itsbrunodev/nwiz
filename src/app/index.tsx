@@ -58,8 +58,6 @@ export function IndexPage() {
 
   const commands = useMemo(() => {
     return generateCommands(network, {
-      enableServicePasswordEncryption: true,
-      saveConfiguration: true,
       verbose: false,
     });
   }, [network]);
