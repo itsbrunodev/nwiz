@@ -26,6 +26,16 @@ import { AddDeviceButton } from "../add";
 import { EndDeviceContent } from "./end-device";
 import { RouterContent } from "./router";
 import { SwitchContent } from "./switch";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export function DevicesList() {
   const [devices] = useDevices();
@@ -80,9 +90,23 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
           <DialogTrigger asChild>
             <Button variant="secondary">View</Button>
           </DialogTrigger>
-          <Button variant="destructive" onClick={removeDevice}>
-            Remove
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">Remove</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogTitle>Remove {device.name}</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to remove {device.name}?
+              </AlertDialogDescription>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={removeDevice}>
+                  Yes, Remove
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
       <DialogContent className="max-h-[90vh] overflow-auto">
