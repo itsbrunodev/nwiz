@@ -16,6 +16,8 @@ export interface RouterConfig {
   localUsers?: LocalUser[];
   domainName?: string;
   ssh?: SshConfig;
+  encryptPasswords?: boolean;
+  saveConfiguration?: boolean;
   enableSecret?: EnableSecretConfig;
   lineConsole?: ConsoleLineConfig;
   lineVty?: VtyLineConfig;

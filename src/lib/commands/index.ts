@@ -12,30 +12,34 @@ export function generateCommands(
   options: CommandGenerationOptions = {},
 ): Map<string, string[]> {
   createLogger(options.verbose || false);
+
   logger("Starting command generation process...");
 
   const networkCopy: Network = JSON.parse(JSON.stringify(network));
 
   const allCommands = new Map<string, string[]>();
+
   for (const device of networkCopy.devices) {
     let deviceCommands: string[] = [];
+
     switch (device.deviceType) {
-      case "Router":
+      case "Router": {
         deviceCommands = generateRouterCommands(
           device,
           networkCopy.connections,
-          options,
         );
         break;
-      case "Switch":
+      }
+      case "Switch": {
         deviceCommands = generateSwitchCommands(
           device,
           networkCopy.connections,
-          options,
         );
         break;
-      default:
+      }
+      default: {
         continue;
+      }
     }
     if (deviceCommands.length > 0) {
       allCommands.set(device.id, deviceCommands);

@@ -1,9 +1,11 @@
 import { Trash2Icon } from "lucide-react";
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import short from "short-uuid";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 import { useDevice } from "@/hooks/use-device";
 
@@ -20,6 +22,7 @@ import type { Device } from "@/types/network/device";
 type LinePasswordFieldKey = "lineConsole" | "lineVty" | "lineAux";
 
 type PasswordsConfigShape = {
+  encryptPasswords?: boolean;
   localUsers?: LocalUser[];
   enableSecret?: EnableSecretConfig;
   lineConsole?: ConsoleLineConfig;
@@ -33,6 +36,8 @@ export function DevicePasswordsManager<T extends Device>({
   deviceId: string;
 }) {
   const [device, setDevice] = useDevice<T>(deviceId);
+
+  const encryptPasswordsId = useId();
 
   const linePasswordFields = useMemo(() => {
     if (device?.deviceType === "Router") {
@@ -152,6 +157,31 @@ export function DevicePasswordsManager<T extends Device>({
           >
             Add User
           </Button>
+        </div>
+      </div>
+      <div className="space-y-3">
+        <div>
+          <h3 className="font-medium">Password Encryption</h3>
+          <p className="text-muted-foreground text-xs">
+            Toggle whether passwords are stored in an encrypted format within
+            the device configuration.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Label htmlFor={encryptPasswordsId}>Encrypt Passwords</Label>
+          <Switch
+            checked={deviceConfig.encryptPasswords}
+            id={encryptPasswordsId}
+            onCheckedChange={(checked) =>
+              setDevice({
+                ...device,
+                config: {
+                  ...device.config,
+                  encryptPasswords: checked,
+                } as T["config"],
+              })
+            }
+          />
         </div>
       </div>
       <div className="space-y-3">

@@ -1,6 +1,4 @@
 export interface CommandGenerationOptions {
-  enableServicePasswordEncryption?: boolean;
-  saveConfiguration?: boolean;
   verbose?: boolean;
 }
 

@@ -4,18 +4,15 @@ import { generateAclCommands } from "../features/acl";
 import { generateSshCommands } from "../features/ssh";
 import { generateLocalUserCommands } from "../features/user";
 import { generateLineVtyCommands } from "../features/vty";
-import type { CommandGenerationOptions } from "../types";
 
-export function generateBaseDeviceCommands(
-  device: Router | Switch,
-  options: CommandGenerationOptions,
-): string[] {
+export function generateBaseDeviceCommands(device: Router | Switch): string[] {
   const { config, hostname } = device;
   const commands: string[] = [];
 
   commands.push("enable", "configure terminal", `hostname ${hostname}`);
-  if (options.enableServicePasswordEncryption)
-    commands.push("service password-encryption");
+
+  if (config.encryptPasswords) commands.push("service password-encryption");
+
   commands.push("no ip domain-lookup");
 
   if (config.enableSecret?.password)

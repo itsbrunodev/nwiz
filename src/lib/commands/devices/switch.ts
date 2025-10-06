@@ -1,15 +1,13 @@
 import type { Connection } from "@/types/network/connection";
 import type { Switch } from "@/types/network/device";
 
-import type { CommandGenerationOptions } from "../types";
 import { generateBaseDeviceCommands } from "./common";
 
 export function generateSwitchCommands(
   sw: Switch,
   connections: Connection[],
-  options: CommandGenerationOptions,
 ): string[] {
-  const commands = generateBaseDeviceCommands(sw, options);
+  const commands = generateBaseDeviceCommands(sw);
   const { config } = sw;
 
   config.vlans?.forEach((vlan) => {
@@ -46,6 +44,8 @@ export function generateSwitchCommands(
   });
 
   commands.push("end");
-  if (options.saveConfiguration) commands.push("write memory");
+
+  if (config.saveConfiguration) commands.push("write memory");
+
   return commands;
 }

@@ -1,15 +1,13 @@
 import type { Connection } from "@/types/network/connection";
 import type { Router } from "@/types/network/device";
 
-import type { CommandGenerationOptions } from "../types";
 import { generateBaseDeviceCommands } from "./common";
 
 export function generateRouterCommands(
   router: Router,
   connections: Connection[],
-  options: CommandGenerationOptions,
 ): string[] {
-  const commands = generateBaseDeviceCommands(router, options);
+  const commands = generateBaseDeviceCommands(router);
   const { config } = router;
 
   config.interfaces.forEach((iface) => {
@@ -62,6 +60,8 @@ export function generateRouterCommands(
   });
 
   commands.push("end");
-  if (options.saveConfiguration) commands.push("write memory");
+
+  if (config.saveConfiguration) commands.push("write memory");
+
   return commands;
 }
