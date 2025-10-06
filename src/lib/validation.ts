@@ -191,6 +191,14 @@ function validateEndDeviceConfig(
     }
   }
 
+  if (ipAddress && defaultGateway && ipAddress === defaultGateway) {
+    results.push({
+      level: "error",
+      message: "Device IP address cannot be the same as its default gateway.",
+      source,
+    });
+  }
+
   if (ipAddress && subnetMask && defaultGateway && results.length === 0) {
     const deviceSubnet = getSubnet(ipAddress, subnetMask);
     const gatewaySubnet = getSubnet(defaultGateway, subnetMask);
