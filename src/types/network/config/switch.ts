@@ -10,6 +10,7 @@ export interface SwitchConfig {
   vlans: VLAN[];
   interfaces: SwitchInterface[];
   accessLists?: AccessControlList[];
+  defaultGateway?: string;
   // security
   localUsers?: LocalUser[];
   domainName?: string;

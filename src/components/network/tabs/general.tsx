@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "@/components/ui/switch"; // Renamed to avoid conflict
 
 import { useDevice } from "@/hooks/use-device";
 import { useRemoveDevice } from "@/hooks/use-remove-device";
 
-import type { Device } from "@/types/network/device";
+import type { Device, Switch as SwitchDevice } from "@/types/network/device";
 
 interface GeneralTabProps {
   deviceId: string;
@@ -32,6 +32,18 @@ export function DeviceGeneralManager<T extends Device>({
         value={device.name}
         onChange={(e) => setDevice({ ...device, name: e.target.value })}
       />
+      {device.deviceType === "Switch" && (
+        <Input
+          label="Default Gateway"
+          value={(device as SwitchDevice).config.defaultGateway || ""}
+          onChange={(e) =>
+            setDevice({
+              ...device,
+              config: { ...device.config, defaultGateway: e.target.value },
+            })
+          }
+        />
+      )}
       {(device.deviceType === "Router" || device.deviceType === "Switch") && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">

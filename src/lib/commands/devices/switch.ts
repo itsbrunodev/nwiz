@@ -10,6 +10,10 @@ export function generateSwitchCommands(
   const commands = generateBaseDeviceCommands(sw);
   const { config } = sw;
 
+  if (config.defaultGateway) {
+    commands.push(`ip default-gateway ${config.defaultGateway}`);
+  }
+
   config.vlans?.forEach((vlan) => {
     commands.push(`vlan ${vlan.id}`, `  name ${vlan.name}`, "  exit");
   });
