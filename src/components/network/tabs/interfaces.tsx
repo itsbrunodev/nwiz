@@ -140,18 +140,14 @@ export function DeviceInterfaceManager<T extends Device>({
       >
         {interfaces.map((int) => (
           <Button
+            className="justify-start"
             variant={currentInterface === int ? "default" : "outline"}
             size="sm"
             onClick={() => setCurrentInterface(int)}
             key={int}
-            className="flex justify-start gap-2"
           >
-            {isOccupied(deviceId, int) ? (
-              <EthernetPortIcon className="h-4 w-4" />
-            ) : (
-              <div className="w-4" />
-            )}
-            <span>{int}</span>
+            {isOccupied(deviceId, int) && <EthernetPortIcon />}
+            {int}
           </Button>
         ))}
       </ButtonGroup>
