@@ -1,6 +1,10 @@
 {
   "name": "nwiz",
   "short_name": "nwiz",
+  "description": "A simple, powerful tool for generating Cisco Packet Tracer network configurations.",
+  "display": "standalone",
+  "start_url": "/",
+  "lang": "en-US",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -17,5 +21,5 @@
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "prefer_related_applications": true
 }
