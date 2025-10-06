@@ -50,7 +50,7 @@ export function Navbar() {
       <div className="md:hidden">
         <Drawer>
           <DrawerTrigger asChild>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" aria-label="Open Menu">
               <MenuIcon />
             </Button>
           </DrawerTrigger>
