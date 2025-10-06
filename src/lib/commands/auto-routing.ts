@@ -8,8 +8,10 @@ type RouterGraph = Map<string, Set<string>>;
 
 function getSubnet(ip?: string, mask?: string): string | null {
   if (!ip || !mask) return null;
+
   const ipParts = ip.split(".").map(Number);
   const maskParts = mask.split(".").map(Number);
+
   if (
     ipParts.length !== 4 ||
     maskParts.length !== 4 ||
@@ -17,6 +19,7 @@ function getSubnet(ip?: string, mask?: string): string | null {
     maskParts.some(Number.isNaN)
   )
     return null;
+
   const subnetParts = ipParts.map((part, i) => part & maskParts[i]);
   return subnetParts.join(".");
 }
@@ -27,13 +30,18 @@ function findPathBFS(
   graph: RouterGraph,
 ): string[] | null {
   if (startId === endId) return [startId];
+
   const queue: string[][] = [[startId]];
   const visited = new Set([startId]);
+
   while (queue.length > 0) {
     const path = queue.shift() || [];
     const lastNode = path[path.length - 1];
+
     if (lastNode === endId) return path;
+
     const neighbors = graph.get(lastNode) || new Set();
+
     for (const neighbor of neighbors) {
       if (!visited.has(neighbor)) {
         visited.add(neighbor);
@@ -45,7 +53,7 @@ function findPathBFS(
 }
 
 export function addAutoStaticRoutes(network: Network): Network {
-  logger("Starting automatic static route calculation.");
+  logger("Starting static route calculation.");
 
   const networkCopy: Network = JSON.parse(JSON.stringify(network));
 
@@ -55,12 +63,10 @@ export function addAutoStaticRoutes(network: Network): Network {
 
   if (routers.length < 2) {
     logger("Skipping static routing: fewer than 2 routers found.");
-
     return networkCopy;
   }
 
-  logger("Clearing old auto-generated routes...");
-
+  // clear any previously auto-generated routes, respecting manual ones
   for (const router of routers) {
     if (router.config.staticRoutes) {
       router.config.staticRoutes = router.config.staticRoutes.filter(
@@ -78,13 +84,25 @@ export function addAutoStaticRoutes(network: Network): Network {
 
   for (const router of routers) {
     const directlyConnectedSubnets = new Set<string>();
+
     router.config.interfaces.forEach((iface) => {
-      const subnet = getSubnet(iface.ipAddress, iface.subnetMask);
-      if (subnet && iface.subnetMask) {
-        directlyConnectedSubnets.add(subnet);
-        allSubnets.set(subnet, iface.subnetMask);
-        subnetToRouterMap.set(subnet, router.id);
+      const mainSubnet = getSubnet(iface.ipAddress, iface.subnetMask);
+
+      if (mainSubnet && iface.subnetMask) {
+        directlyConnectedSubnets.add(mainSubnet);
+        allSubnets.set(mainSubnet, iface.subnetMask);
+        subnetToRouterMap.set(mainSubnet, router.id);
       }
+
+      iface.subInterfaces?.forEach((sub) => {
+        const subInterfaceSubnet = getSubnet(sub.ipAddress, sub.subnetMask);
+
+        if (subInterfaceSubnet && sub.subnetMask) {
+          directlyConnectedSubnets.add(subInterfaceSubnet);
+          allSubnets.set(subInterfaceSubnet, sub.subnetMask);
+          subnetToRouterMap.set(subInterfaceSubnet, router.id);
+        }
+      });
     });
     routerInfo.set(router.id, {
       device: router,
@@ -119,7 +137,9 @@ export function addAutoStaticRoutes(network: Network): Network {
     for (const remoteSubnet of remoteSubnets) {
       const targetRouterId = subnetToRouterMap.get(remoteSubnet);
       if (!targetRouterId) continue;
+
       const path = findPathBFS(sourceRouter.id, targetRouterId, routerGraph);
+
       if (path && path.length > 1) {
         const nextHopRouterId = path[1];
         const connection = network.connections.find(
@@ -134,10 +154,12 @@ export function addAutoStaticRoutes(network: Network): Network {
             connection.from.deviceId === nextHopRouterId
               ? connection.from
               : connection.to;
+
           const nextHopRouter = routerInfo.get(nextHopRouterId)?.device;
           const nextHopInterface = nextHopRouter?.config.interfaces.find(
             (i) => i.name === nextHopEndpoint.interfaceName,
           );
+
           if (nextHopInterface?.ipAddress) {
             const newRoute: StaticRoute = {
               id: `auto-route-${sourceRouter.id}-${remoteSubnet}`,
