@@ -58,7 +58,6 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
                 }
               />
             )}
-
             {config.mode === "trunk" && (
               <Input
                 label="Native VLAN"
