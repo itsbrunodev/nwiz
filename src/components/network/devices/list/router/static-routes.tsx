@@ -44,29 +44,37 @@ export function StaticRoutesTab({ routerId }: { routerId: string }) {
   )!;
 
   const handleAutoGenerate = () => {
-    const originalRoutesCount = network.devices
-      .filter((d): d is Router => d.deviceType === "Router")
-      .reduce((acc, r) => acc + (r.config.staticRoutes?.length ?? 0), 0);
+    try {
+      const originalRoutesCount = network.devices
+        .filter((d): d is Router => d.deviceType === "Router")
+        .reduce((acc, r) => acc + (r.config.staticRoutes?.length ?? 0), 0);
 
-    const networkWithAutoRoutes = addAutoStaticRoutes(network);
+      const networkWithAutoRoutes = addAutoStaticRoutes(network);
 
-    const newRoutesCount = networkWithAutoRoutes.devices
-      .filter((d): d is Router => d.deviceType === "Router")
-      .reduce((acc, r) => acc + (r.config.staticRoutes?.length ?? 0), 0);
+      const newRoutesCount = networkWithAutoRoutes.devices
+        .filter((d): d is Router => d.deviceType === "Router")
+        .reduce((acc, r) => acc + (r.config.staticRoutes?.length ?? 0), 0);
 
-    const addedCount = newRoutesCount - originalRoutesCount;
+      const addedCount = newRoutesCount - originalRoutesCount;
 
-    if (addedCount > 0) {
-      setNetwork({
-        ...networkWithAutoRoutes,
-        updatedAt: new Date().toISOString(),
-      });
+      if (addedCount > 0) {
+        setNetwork({
+          ...networkWithAutoRoutes,
+          updatedAt: new Date().toISOString(),
+        });
 
-      toast.success(
-        `Successfully added ${addedCount} missing static route${addedCount > 1 ? "s" : ""}.`,
+        toast.success(
+          `Successfully added ${addedCount} missing static route${addedCount > 1 ? "s" : ""}.`,
+        );
+      } else {
+        toast.info("No missing static routes to add.");
+      }
+    } catch (error) {
+      console.error("Failed to auto-generate static routes:", error);
+
+      toast.error(
+        "An unexpected error occurred. Please check the console for details.",
       );
-    } else {
-      toast.info("No missing static routes to add.");
     }
   };
 
