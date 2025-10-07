@@ -77,7 +77,11 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
                 connected to this interface. Default behavior is <b>Access</b>.
               </p>
             </div>
-            <Button onClick={handleCalculateSwitchports} variant="outline">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCalculateSwitchports}
+            >
               <Wand2Icon />
               Calculate Switchports
             </Button>
