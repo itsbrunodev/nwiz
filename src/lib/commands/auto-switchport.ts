@@ -59,24 +59,43 @@ export function addAutoSwitchport(network: Network): Network {
       if (!connectedDevice) continue;
 
       switch (connectedDevice.deviceType) {
-        case "Router":
-        case "Switch":
-          iface.mode = "trunk";
-          break;
-        case "PC":
-        case "Server":
-        case "Laptop":
-          {
-            iface.mode = "access";
-            const endDevice = connectedDevice as EndDevice;
-            const gatewayIp = endDevice.config.defaultGateway;
-            if (gatewayIp && gatewayToVlanMap.has(gatewayIp)) {
-              iface.accessVlan = gatewayToVlanMap.get(gatewayIp) ?? 1;
+        case "Router": {
+          const router = connectedDevice as Router;
+          const routerInterfaceName =
+            connection.from.deviceId === router.id
+              ? connection.from.interfaceName
+              : connection.to.interfaceName;
+          const routerInterface = router.config.interfaces.find(
+            (i) => i.name === routerInterfaceName,
+          );
+
+          if (routerInterface) {
+            if (
+              routerInterface.subInterfaces &&
+              routerInterface.subInterfaces.length > 0
+            ) {
+              iface.mode = "trunk";
             } else {
-              iface.accessVlan = 1; // default to VLAN 1 if gateway is unknown
+              iface.mode = "access";
+              iface.accessVlan =
+                gatewayToVlanMap.get(routerInterface.ipAddress ?? "") ?? 1;
             }
           }
           break;
+        }
+        case "Switch": {
+          iface.mode = "trunk";
+          break;
+        }
+        case "PC":
+        case "Server":
+        case "Laptop": {
+          iface.mode = "access";
+          const endDevice = connectedDevice as EndDevice;
+          const gatewayIp = endDevice.config.defaultGateway;
+          iface.accessVlan = gatewayToVlanMap.get(gatewayIp ?? "") ?? 1;
+          break;
+        }
       }
     }
   }
