@@ -18,7 +18,7 @@ nwiz creates Cisco IOS command scripts from a visual network topology. You can i
 
 ## How to Use
 
-Check out the [Wiki](https://github.com/itsbrunodev/nwiz/wiki) to learn how to use nwiz.
+Check out the [Wiki](https://github.com/itsbrunodev/nwiz/wiki/How-to-Use) to learn how to use nwiz.
 
 ## Import from Packet Tracer
 
