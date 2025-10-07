@@ -16,6 +16,10 @@ nwiz creates Cisco IOS command scripts from a visual network topology. You can i
 - Import your existing Packet Tracer networks.
 - Export your network as a shareable code.
 
+## How to Use
+
+Check out the [Wiki](https://github.com/itsbrunodev/nwiz/wiki) to learn how to use nwiz.
+
 ## Import from Packet Tracer
 
 You can import a network you already built in Packet Tracer.
