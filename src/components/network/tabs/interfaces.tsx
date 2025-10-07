@@ -65,6 +65,14 @@ export function DeviceInterfaceManager<T extends Device>({
     return d.deviceType === "Router" || d.deviceType === "Switch";
   };
 
+  const isEndDevice = (d: Device): d is EndDevice => {
+    return (
+      d.deviceType === "PC" ||
+      d.deviceType === "Server" ||
+      d.deviceType === "Laptop"
+    );
+  };
+
   const interfaceConfig = isNetworkDevice(device)
     ? device.config.interfaces.find((int) => int.name === currentInterface) ||
       ({
@@ -163,7 +171,7 @@ export function DeviceInterfaceManager<T extends Device>({
             <Label htmlFor={portStatusId}>Port Status</Label>
           </div>
         )}
-        <Separator className="my-3" />
+        {!isEndDevice(device) && <Separator className="my-3" />}
         {renderInterfaceFields &&
           (isNetworkDevice(device) && interfaceConfig
             ? (renderInterfaceFields as RenderFieldsFn<Router | SwitchDevice>)(
