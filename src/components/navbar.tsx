@@ -19,6 +19,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
+import { TauriLink } from "./tauri-link";
 
 export function Navbar() {
   return (
@@ -87,14 +88,14 @@ export function Navbar() {
 function AboutButton() {
   return (
     <Button variant="ghost" asChild>
-      <a
+      <TauriLink
         href="https://github.com/itsbrunodev/nwiz#readme"
         target="_blank"
         rel="noopener"
       >
         About
         <ArrowUpRightIcon />
-      </a>
+      </TauriLink>
     </Button>
   );
 }

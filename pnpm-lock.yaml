@@ -47,6 +47,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.14
         version: 4.1.14(rolldown-vite@7.1.15(@types/node@24.6.2)(esbuild@0.25.10)(jiti@2.6.1)(terser@5.44.0))
+      '@tauri-apps/plugin-opener':
+        specifier: ~2
+        version: 2.5.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1158,6 +1161,9 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7
 
+  '@tauri-apps/api@2.8.0':
+    resolution: {integrity: sha512-ga7zdhbS2GXOMTIZRT0mYjKJtR9fivsXzsyq5U3vjDL0s6DTMwYRm0UHNjzTY5dh4+LSC68Sm/7WEiimbQNYlw==}
+
   '@tauri-apps/cli-darwin-arm64@2.8.4':
     resolution: {integrity: sha512-BKu8HRkYV01SMTa7r4fLx+wjgtRK8Vep7lmBdHDioP6b8XH3q2KgsAyPWfEZaZIkZ2LY4SqqGARaE9oilNe0oA==}
     engines: {node: '>= 10'}
@@ -1228,6 +1234,9 @@ packages:
     resolution: {integrity: sha512-ejUZBzuQRcjFV+v/gdj/DcbyX/6T4unZQjMSBZwLzP/CymEjKcc2+Fc8xTORThebHDUvqoXMdsCZt8r+hyN15g==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@tauri-apps/plugin-opener@2.5.0':
+    resolution: {integrity: sha512-B0LShOYae4CZjN8leiNDbnfjSrTwoZakqKaWpfoH6nXiJwt6Rgj6RnVIffG3DoJiKsffRhMkjmBV9VeilSb4TA==}
 
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
@@ -2718,6 +2727,8 @@ snapshots:
       tailwindcss: 4.1.14
       vite: rolldown-vite@7.1.15(@types/node@24.6.2)(esbuild@0.25.10)(jiti@2.6.1)(terser@5.44.0)
 
+  '@tauri-apps/api@2.8.0': {}
+
   '@tauri-apps/cli-darwin-arm64@2.8.4':
     optional: true
 
@@ -2764,6 +2775,10 @@ snapshots:
       '@tauri-apps/cli-win32-arm64-msvc': 2.8.4
       '@tauri-apps/cli-win32-ia32-msvc': 2.8.4
       '@tauri-apps/cli-win32-x64-msvc': 2.8.4
+
+  '@tauri-apps/plugin-opener@2.5.0':
+    dependencies:
+      '@tauri-apps/api': 2.8.0
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
