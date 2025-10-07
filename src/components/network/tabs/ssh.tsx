@@ -21,6 +21,7 @@ import type {
   SshUserPublicKey,
 } from "@/types/network/config/ssh";
 import type { Router, Switch } from "@/types/network/device";
+import { Separator } from "@/components/ui/separator";
 
 const sshFields = ["timeout", "authenticationRetries"] as const;
 const rsaModulusOptions = [1024, 2048, 4096] as const;
@@ -133,7 +134,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="space-y-6">
       <Alert>
         <AlertCircleIcon />
         <AlertTitle className="font-semibold">Prerequisites for SSH</AlertTitle>
@@ -151,7 +152,8 @@ export function DeviceSshManager<T extends SshCapableDevice>({
         value={device.config?.domainName ?? ""}
         onChange={(e) => setConfigValue("domainName", e.target.value)}
       />
-      <div className="space-y-2">
+      <Separator className="my-3" />
+      <div className="space-y-3">
         <h3 className="font-medium">RSA Key Generation</h3>
         <Select
           value={
@@ -173,6 +175,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
           </SelectContent>
         </Select>
       </div>
+      <Separator className="my-3" />
       <div className="space-y-3">
         <h3 className="font-medium">SSH Timeouts & Retries</h3>
         <div className="space-y-2">
@@ -192,6 +195,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
           ))}
         </div>
       </div>
+      <Separator className="my-3" />
       <div className="space-y-3">
         <h3 className="font-medium">User Public Keys (RSA Authentication)</h3>
         {(sshConfig.userPublicKeys ?? []).length > 0 && (

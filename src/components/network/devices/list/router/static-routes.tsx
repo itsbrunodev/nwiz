@@ -22,6 +22,7 @@ import { addAutoStaticRoutes } from "@/lib/commands/auto-routing";
 
 import type { Router } from "@/types/network/device";
 import type { StaticRoute } from "@/types/network/route/static";
+import { Separator } from "@/components/ui/separator";
 
 export function StaticRoutesTab({ routerId }: { routerId: string }) {
   const [network, setNetwork] = useAtom(networkAtom);
@@ -207,8 +208,15 @@ export function StaticRoutesTab({ routerId }: { routerId: string }) {
           Add Route
         </Button>
       </div>
+      <Separator className="my-3" />
       <div className="space-y-3">
-        <h3 className="font-medium">Configured Routes</h3>
+        <div>
+          <h3 className="font-medium">Configured Routes</h3>
+          <p className="text-muted-foreground text-xs">
+            These static routes will be added to the router&apos;s
+            configuration.
+          </p>
+        </div>
         <div className="space-y-2">
           <Button variant="outline" size="sm" onClick={handleAutoGenerate}>
             <Wand2Icon />

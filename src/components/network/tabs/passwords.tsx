@@ -18,6 +18,7 @@ import type {
 } from "@/types/network/config/password";
 import type { LocalUser } from "@/types/network/config/user";
 import type { Device } from "@/types/network/device";
+import { Separator } from "@/components/ui/separator";
 
 type LinePasswordFieldKey = "lineConsole" | "lineVty" | "lineAux";
 
@@ -159,6 +160,7 @@ export function DevicePasswordsManager<T extends Device>({
           </Button>
         </div>
       </div>
+      <Separator className="my-3" />
       <div className="space-y-3">
         <div>
           <h3 className="font-medium">Password Encryption</h3>
@@ -184,6 +186,7 @@ export function DevicePasswordsManager<T extends Device>({
           />
         </div>
       </div>
+      <Separator className="my-3" />
       <div className="space-y-3">
         <div>
           <h3 className="font-medium">Enable Secret</h3>
@@ -205,6 +208,7 @@ export function DevicePasswordsManager<T extends Device>({
           </Button>
         </div>
       </div>
+      <Separator className="my-3" />
       <div className="space-y-3">
         <div>
           <h3 className="font-medium">Line Passwords</h3>

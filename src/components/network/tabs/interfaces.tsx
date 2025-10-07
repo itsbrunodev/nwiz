@@ -31,6 +31,7 @@ import type {
   Router,
   Switch as SwitchDevice,
 } from "@/types/network/device";
+import { Separator } from "@/components/ui/separator";
 
 type InterfaceConfig = RouterInterface | SwitchInterface;
 
@@ -162,7 +163,7 @@ export function DeviceInterfaceManager<T extends Device>({
             <Label htmlFor={portStatusId}>Port Status</Label>
           </div>
         )}
-
+        <Separator className="my-3" />
         {renderInterfaceFields &&
           (isNetworkDevice(device) && interfaceConfig
             ? (renderInterfaceFields as RenderFieldsFn<Router | SwitchDevice>)(
@@ -170,9 +171,14 @@ export function DeviceInterfaceManager<T extends Device>({
                 updateInterface,
               )
             : (renderInterfaceFields as RenderFieldsFn<EndDevice>)())}
-
+        <Separator className="my-3" />
         <div className="space-y-3">
-          <h3 className="font-medium">Connection</h3>
+          <div>
+            <h3 className="font-medium">Connection</h3>
+            <p className="text-muted-foreground text-xs">
+              To which device and interface this interface is connected.
+            </p>
+          </div>
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

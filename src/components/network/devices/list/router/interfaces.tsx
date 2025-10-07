@@ -11,6 +11,7 @@ import type {
   SubInterface,
 } from "@/types/network/config/router";
 import type { Router } from "@/types/network/device";
+import { Separator } from "@/components/ui/separator";
 
 export function InterfacesTab({ routerId }: { routerId: string }) {
   return (
@@ -57,7 +58,13 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
         };
 
         return (
-          <>
+          <div className="space-y-3">
+            <div>
+              <h3 className="font-medium">General</h3>
+              <p className="text-muted-foreground text-xs">
+                Configure the general settings for the interface.
+              </p>
+            </div>
             <div className="mb-3">
               <Input
                 label="IP Address"
@@ -94,8 +101,15 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
               value={config.subnetMask || ""}
               onChange={(e) => updateInterface({ subnetMask: e.target.value })}
             />
+            <Separator className="my-3" />
             <div className="space-y-3">
-              <h3 className="font-medium">Subinterfaces (802.1Q)</h3>
+              <div>
+                <h3 className="font-medium">Subinterfaces (802.1Q)</h3>
+                <p className="text-muted-foreground text-xs">
+                  Divide one physical interface into multiple logical
+                  interfaces.
+                </p>
+              </div>
               <Button variant="outline" size="sm" onClick={addSubInterface}>
                 Add Subinterface
               </Button>
@@ -191,7 +205,7 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
                 )}
               </div>
             </div>
-          </>
+          </div>
         );
       }}
     />

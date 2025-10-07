@@ -52,7 +52,21 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
         const config = interfaceConfig as SwitchInterface;
 
         return (
-          <>
+          <div className="space-y-3">
+            <div>
+              <h3 className="font-medium">Switch Ports</h3>
+              <p className="text-muted-foreground text-xs">
+                Configure the switch ports for access or trunk mode.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCalculateSwitchports}
+            >
+              <Wand2Icon />
+              Calculate Switch Ports
+            </Button>
             <div className="mb-3 space-y-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -77,14 +91,6 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
                 connected to this interface. Default behavior is <b>Access</b>.
               </p>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCalculateSwitchports}
-            >
-              <Wand2Icon />
-              Calculate Switchports
-            </Button>
             {config.mode === "access" && (
               <Input
                 label="Access VLAN"
@@ -109,7 +115,7 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
                 }
               />
             )}
-          </>
+          </div>
         );
       }}
     />
