@@ -43,4 +43,5 @@ export const INTERFACES = {
   } as Record<SwitchModel, string[]>,
   PC: ["FastEthernet0"] as string[],
   Server: ["FastEthernet0"] as string[],
+  Laptop: ["FastEthernet0"] as string[],
 } as const;

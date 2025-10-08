@@ -36,6 +36,7 @@ import { AddDeviceButton } from "../add";
 import { EndDeviceContent } from "./end-device";
 import { RouterContent } from "./router";
 import { SwitchContent } from "./switch";
+import { isEndDevice } from "@/lib/network";
 
 export function DevicesList() {
   const [devices] = useDevices();
@@ -127,9 +128,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
         {device.deviceType === "Switch" && (
           <SwitchContent switchId={device.id} />
         )}
-        {(device.deviceType === "PC" || device.deviceType === "Server") && (
-          <EndDeviceContent deviceId={device.id} />
-        )}
+        {isEndDevice(device) && <EndDeviceContent deviceId={device.id} />}
       </DialogContent>
     </Dialog>
   );

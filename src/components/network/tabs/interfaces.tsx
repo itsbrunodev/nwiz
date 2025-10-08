@@ -22,7 +22,11 @@ import { useConnections } from "@/hooks/use-connections";
 import { useDevice } from "@/hooks/use-device";
 import { useDevices } from "@/hooks/use-devices";
 
-import { getInterfacesForDevice } from "@/lib/network";
+import {
+  getInterfacesForDevice,
+  isEndDevice,
+  isNetworkDevice,
+} from "@/lib/network";
 
 import type { RouterInterface } from "@/types/network/config/router";
 import type { SwitchInterface } from "@/types/network/config/switch";
@@ -60,18 +64,6 @@ export function DeviceInterfaceManager<T extends Device>({
     interfaces[0],
   );
   const portStatusId = useId();
-
-  const isNetworkDevice = (d: Device): d is Router | SwitchDevice => {
-    return d.deviceType === "Router" || d.deviceType === "Switch";
-  };
-
-  const isEndDevice = (d: Device): d is EndDevice => {
-    return (
-      d.deviceType === "PC" ||
-      d.deviceType === "Server" ||
-      d.deviceType === "Laptop"
-    );
-  };
 
   const interfaceConfig = isNetworkDevice(device)
     ? device.config.interfaces.find((int) => int.name === currentInterface) ||

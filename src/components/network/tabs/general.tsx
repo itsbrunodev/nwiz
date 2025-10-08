@@ -5,12 +5,9 @@ import { Switch } from "@/components/ui/switch";
 
 import { useDevice } from "@/hooks/use-device";
 import { useRemoveDevice } from "@/hooks/use-remove-device";
+import { isNetworkDevice } from "@/lib/network";
 
-import type {
-  Device,
-  Router,
-  Switch as SwitchDevice,
-} from "@/types/network/device";
+import type { Device, Switch as SwitchDevice } from "@/types/network/device";
 
 interface GeneralTabProps {
   deviceId: string;
@@ -21,10 +18,6 @@ export function DeviceGeneralManager<T extends Device>({
 }: GeneralTabProps) {
   const [device, setDevice] = useDevice<T>(deviceId);
   const removeDevice = useRemoveDevice(deviceId);
-
-  const isNetworkDevice = (d: Device): d is Router | SwitchDevice => {
-    return d.deviceType === "Router" || d.deviceType === "Switch";
-  };
 
   return (
     <div className="space-y-3">

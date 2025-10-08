@@ -1,6 +1,6 @@
 import { INTERFACES } from "@/constants/interfaces";
 
-import type { Device } from "@/types/network/device";
+import type { Device, EndDevice, Router, Switch } from "@/types/network/device";
 
 /**
  * Converts a CIDR string or plain IP to an IP address and mask.
@@ -136,9 +136,9 @@ export function getInterfacesForDevice(device: Device): string[] {
     case "Switch":
       return INTERFACES.Switch[device.model];
     case "PC":
-      return INTERFACES.PC;
     case "Server":
-      return INTERFACES.Server;
+    case "Laptop":
+      return INTERFACES[device.deviceType];
     default:
       return [];
   }
@@ -146,4 +146,16 @@ export function getInterfacesForDevice(device: Device): string[] {
 
 export function aliasPortName(name: string): string {
   return name.replace("GigabitEthernet", "Gig").replace("FastEthernet", "Fa");
+}
+
+export function isEndDevice(d: Device): d is EndDevice {
+  return (
+    d.deviceType === "PC" ||
+    d.deviceType === "Server" ||
+    d.deviceType === "Laptop"
+  );
+}
+
+export function isNetworkDevice(device: Device): device is Router | Switch {
+  return device.deviceType === "Router" || device.deviceType === "Switch";
 }
