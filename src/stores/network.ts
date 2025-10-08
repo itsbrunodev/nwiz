@@ -30,3 +30,11 @@ export const VISUALIZATION_TYPES = [
 export const networkVisualizationAtom = atomWithStorage<
   (typeof VISUALIZATION_TYPES)[number]["value"]
 >("network-visualization", "graph");
+
+const INITIAL_GRAPH_VISUALIZATION = {
+  showPortLabels: true,
+};
+
+export const graphVisualizationAtom = atomWithStorage<
+  typeof INITIAL_GRAPH_VISUALIZATION
+>("graph-visualization", INITIAL_GRAPH_VISUALIZATION);

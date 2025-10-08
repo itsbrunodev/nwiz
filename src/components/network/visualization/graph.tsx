@@ -1,18 +1,12 @@
 import * as d3 from "d3";
 import { useAtom } from "jotai";
-import { MaximizeIcon } from "lucide-react";
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { MaximizeIcon, TagIcon } from "lucide-react";
+import { useCallback, useEffect, useId, useMemo, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 
-import { networkAtom } from "@/stores/network";
+import { graphVisualizationAtom, networkAtom } from "@/stores/network";
 
 import { aliasPortName } from "@/lib/network";
 import { ensureNetworkLayout } from "@/lib/visualization/graph";
@@ -77,12 +71,12 @@ function computeEdgeEndpoints(
 
 export function NetworkVisualizationGraph() {
   const [network, setNetwork] = useAtom(networkAtom);
+  const [graphState, setGraphState] = useAtom(graphVisualizationAtom);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown>>(null);
 
   const graphRootId = useId();
-  const [transform, setTransform] = useState(d3.zoomIdentity);
 
   useEffect(() => {
     const layout = ensureNetworkLayout(network);
@@ -188,7 +182,6 @@ export function NetworkVisualizationGraph() {
       .scaleExtent([0.2, 5])
       .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         g.attr("transform", event.transform.toString());
-        setTransform(event.transform);
       });
 
     zoomRef.current = zoom;
@@ -259,38 +252,22 @@ export function NetworkVisualizationGraph() {
       results.push({
         key: `src-${edge.id}`,
         text: edge.sourceInterface,
-        x: srcX * transform.k + transform.x,
-        y: srcY * transform.k + transform.y,
+        x: srcX,
+        y: srcY,
       });
       results.push({
         key: `tgt-${edge.id}`,
         text: edge.targetInterface,
-        x: tgtX * transform.k + transform.x,
-        y: tgtY * transform.k + transform.y,
+        x: tgtX,
+        y: tgtY,
       });
     });
 
     return results;
-  }, [edges, transform]);
+  }, [edges]);
 
   return (
     <div className="relative overflow-hidden rounded-md border bg-card">
-      <div className="pointer-events-none absolute inset-0">
-        {labelData.map((label) => (
-          <div
-            className="-translate-1/2 absolute cursor-default select-none whitespace-nowrap bg-accent px-0.5 text-accent-foreground tabular-nums shadow-sm"
-            title={label.text}
-            style={{
-              left: `${label.x}px`,
-              top: `${label.y}px`,
-              fontSize: `${10 * transform.k}px`,
-            }}
-            key={label.key}
-          >
-            {label.text}
-          </div>
-        ))}
-      </div>
       <svg className="aspect-[4/3] w-full" ref={svgRef}>
         <title>Network Visualization</title>
         <g id={graphRootId}>
@@ -327,7 +304,7 @@ export function NetworkVisualizationGraph() {
               <title>{node.name}</title>
               <circle className={getNodeColorClasses(node.deviceType)} r={12} />
               <text
-                className="pointer-events-none select-none fill-card-foreground font-medium text-xs"
+                className="pointer-events-none select-none fill-card-foreground font-medium text-[10px]"
                 textAnchor="middle"
                 dy={24}
               >
@@ -335,9 +312,59 @@ export function NetworkVisualizationGraph() {
               </text>
             </g>
           ))}
+          {graphState.showPortLabels &&
+            labelData.map((label) => {
+              const displayText =
+                label.text.length > 10
+                  ? `${label.text.slice(0, 9)}…`
+                  : label.text;
+
+              const rectWidth = displayText.length * 6 + 2;
+              const rectHeight = 14;
+              const rectX = -rectWidth / 2;
+              const rectY = -rectHeight / 2;
+
+              return (
+                <g
+                  className="cursor-default"
+                  transform={`translate(${label.x}, ${label.y})`}
+                  key={label.key}
+                >
+                  <title>{label.text}</title>
+                  <rect
+                    className="fill-accent"
+                    x={rectX}
+                    y={rectY}
+                    width={rectWidth}
+                    height={rectHeight}
+                  />
+                  <text
+                    className="pointer-events-none select-none fill-accent-foreground text-[10px] text-xs"
+                    textAnchor="middle"
+                    dy=".3em"
+                  >
+                    {displayText}
+                  </text>
+                </g>
+              );
+            })}
         </g>
       </svg>
-      <div className="absolute bottom-3 left-3">
+      <ButtonGroup className="absolute bottom-3 left-3" orientation="vertical">
+        <Button
+          variant={graphState.showPortLabels ? "default" : "secondary"}
+          size="icon"
+          aria-label="Toggle Port Labels"
+          title="Toggle Port Labels"
+          onClick={() =>
+            setGraphState((prev) => ({
+              ...prev,
+              showPortLabels: !prev.showPortLabels,
+            }))
+          }
+        >
+          <TagIcon />
+        </Button>
         <Button
           variant="secondary"
           size="icon"
@@ -347,7 +374,7 @@ export function NetworkVisualizationGraph() {
         >
           <MaximizeIcon className="h-4 w-4" />
         </Button>
-      </div>
+      </ButtonGroup>
     </div>
   );
 }
