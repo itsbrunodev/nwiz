@@ -33,6 +33,7 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
+import { useNavigate } from "react-router";
 
 interface PacketTracerDevice {
   id: string; // full UUID from Packet Tracer
@@ -52,8 +53,11 @@ interface PacketTracerTopology {
 }
 
 export function ImportNetwork() {
+  const navigate = useNavigate();
+
   const setNetwork = useSetAtom(networkAtom);
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [code, setCode] = useState("");
   const [packetTracerResponse, setPacketTracerResponse] = useState("");
 
@@ -188,7 +192,7 @@ export function ImportNetwork() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button variant="secondary">Import</Button>
       </DialogTrigger>
@@ -257,7 +261,16 @@ export function ImportNetwork() {
           <DialogClose asChild>
             <Button variant="secondary">Close</Button>
           </DialogClose>
-          <Button disabled={!code && !parsedPtNetwork} onClick={handleImport}>
+          <Button
+            disabled={!code && !parsedPtNetwork}
+            onClick={() => {
+              handleImport();
+
+              setIsDialogOpen(false);
+
+              if (window.location.pathname !== "/") navigate("/");
+            }}
+          >
             Import
           </Button>
         </DialogFooter>

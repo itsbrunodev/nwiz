@@ -28,11 +28,14 @@ import {
 } from "../ui/empty";
 import { Label } from "../ui/label";
 import { Pre } from "../ui/pre";
+import { useNavigate } from "react-router";
 
 export function ExportNetwork() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const network = useAtomValue(networkAtom);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const code = encodeCompactBase64(network);
 
@@ -64,7 +67,13 @@ export function ExportNetwork() {
               <EmptyDescription>Edit the network to export it</EmptyDescription>
             </div>
             <EmptyContent>
-              <Button onClick={() => setIsDialogOpen(false)}>
+              <Button
+                onClick={() => {
+                  setIsDialogOpen(false);
+
+                  if (window.location.pathname !== "/") navigate("/");
+                }}
+              >
                 Get Started
               </Button>
             </EmptyContent>
