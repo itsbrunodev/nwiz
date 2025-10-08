@@ -12,6 +12,10 @@ export interface RouterConfig {
   dhcpPools?: DHCPPool[];
   staticRoutes?: StaticRoute[];
   accessLists?: AccessControlList[];
+  motd?: {
+    content: string;
+    wrapper: string;
+  };
   // security
   localUsers?: LocalUser[];
   domainName?: string;

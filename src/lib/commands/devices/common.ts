@@ -15,6 +15,11 @@ export function generateBaseDeviceCommands(device: Router | Switch): string[] {
 
   commands.push("no ip domain-lookup");
 
+  if (config.motd) {
+    const w = config.motd.wrapper || "#";
+    commands.push(`banner motd ${w}${config.motd.content}${w}`);
+  }
+
   if (config.enableSecret?.password)
     commands.push(`enable secret ${config.enableSecret.password}`);
 

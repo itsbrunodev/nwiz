@@ -6,7 +6,11 @@ import { Switch } from "@/components/ui/switch"; // Renamed to avoid conflict
 import { useDevice } from "@/hooks/use-device";
 import { useRemoveDevice } from "@/hooks/use-remove-device";
 
-import type { Device, Switch as SwitchDevice } from "@/types/network/device";
+import type {
+  Device,
+  Router,
+  Switch as SwitchDevice,
+} from "@/types/network/device";
 
 interface GeneralTabProps {
   deviceId: string;
@@ -18,9 +22,13 @@ export function DeviceGeneralManager<T extends Device>({
   const [device, setDevice] = useDevice<T>(deviceId);
   const removeDevice = useRemoveDevice(deviceId);
 
+  const isNetworkDevice = (d: Device): d is Router | SwitchDevice => {
+    return d.deviceType === "Router" || d.deviceType === "Switch";
+  };
+
   return (
     <div className="space-y-3">
-      {(device.deviceType === "Router" || device.deviceType === "Switch") && (
+      {isNetworkDevice(device) && (
         <Input
           label="Hostname"
           value={device.hostname}
@@ -44,7 +52,46 @@ export function DeviceGeneralManager<T extends Device>({
           }
         />
       )}
-      {(device.deviceType === "Router" || device.deviceType === "Switch") && (
+      {isNetworkDevice(device) && (
+        <div className="flex gap-2">
+          <Input
+            containerClassName="flex-1"
+            label="Message of the Day (MOTD)"
+            value={device.config.motd?.content}
+            onChange={(e) =>
+              setDevice({
+                ...device,
+                config: {
+                  ...device.config,
+                  motd: {
+                    ...device.config.motd,
+                    content: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+          <Input
+            containerClassName="w-21"
+            label="Wrapper"
+            value={device.config.motd?.wrapper}
+            maxLength={1}
+            onChange={(e) =>
+              setDevice({
+                ...device,
+                config: {
+                  ...device.config,
+                  motd: {
+                    ...device.config.motd,
+                    wrapper: e.target.value,
+                  },
+                },
+              })
+            }
+          />
+        </div>
+      )}
+      {isNetworkDevice(device) && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <Label>Save Device Configuration</Label>

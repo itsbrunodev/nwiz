@@ -11,6 +11,10 @@ export interface SwitchConfig {
   interfaces: SwitchInterface[];
   accessLists?: AccessControlList[];
   defaultGateway?: string;
+  motd?: {
+    content: string;
+    wrapper: string;
+  };
   // security
   localUsers?: LocalUser[];
   domainName?: string;
