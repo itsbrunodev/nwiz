@@ -14,7 +14,7 @@ interface BaseDevice {
    * Name shown in the CLI
    */
   hostname: string;
-  // position: { x: number; y: number };
+  position?: { x?: number; y?: number };
 }
 
 export type EndDevice = PC | Server | Laptop;

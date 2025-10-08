@@ -6,17 +6,28 @@ import { AddDeviceButton } from "@/components/network/devices/add";
 import { DevicesList } from "@/components/network/devices/list";
 import { NetworkIssues } from "@/components/network/issues";
 import { ResetNetworkButton } from "@/components/network/reset";
-import { Pre } from "@/components/ui/pre";
+import { NetworkVisualizationGraph } from "@/components/network/visualization/graph";
+import { NetworkVisualizationTree } from "@/components/network/visualization/tree";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 
-import { networkAtom, validationAtom } from "@/stores/network";
+import {
+  networkAtom,
+  networkVisualizationAtom,
+  VISUALIZATION_TYPES,
+  validationAtom,
+} from "@/stores/network";
 
 import { generateCommands } from "@/lib/commands";
 import { decodeCompactBase64 } from "@/lib/encode";
-import { createNetworkTree } from "@/lib/visualize";
 
 export function IndexPage() {
   const [network, setNetwork] = useAtom(networkAtom);
   const issues = useAtomValue(validationAtom);
+
+  const [visualizationType, setVisualizationType] = useAtom(
+    networkVisualizationAtom,
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: only run on mount
   useEffect(() => {
@@ -52,9 +63,13 @@ export function IndexPage() {
     }
   }, [network?.name]);
 
-  const tree = useMemo(() => {
+  /* const tree = useMemo(() => {
     return createNetworkTree(network);
   }, [network]);
+
+  const graph = useMemo(() => {
+    return createNetworkGraph(network);
+  }, [network]); */
 
   const commands = useMemo(() => {
     return generateCommands(network, {
@@ -84,10 +99,25 @@ export function IndexPage() {
           <NetworkIssues />
         </div>
       )}
-      {tree && (
+      {network?.devices && network.devices.length > 0 && (
         <div className="flex flex-col gap-2">
-          <h3 className="font-medium text-lg">Network</h3>
-          <Pre>{tree}</Pre>
+          <div className="flex items-center justify-between">
+            <h3 className="font-medium text-lg">Network Visualization</h3>
+            <ButtonGroup>
+              {VISUALIZATION_TYPES.map(({ label, value }) => (
+                <Button
+                  variant={value === visualizationType ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setVisualizationType(value)}
+                  key={value}
+                >
+                  {label}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </div>
+          {visualizationType === "tree" && <NetworkVisualizationTree />}
+          {visualizationType === "graph" && <NetworkVisualizationGraph />}
         </div>
       )}
       {commands.size > 0 && (

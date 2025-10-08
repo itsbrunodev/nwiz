@@ -143,3 +143,7 @@ export function getInterfacesForDevice(device: Device): string[] {
       return [];
   }
 }
+
+export function aliasPortName(name: string): string {
+  return name.replace("GigabitEthernet", "Gig").replace("FastEthernet", "Fa");
+}

@@ -21,3 +21,12 @@ export const validationAtom = atom<ValidationResult[]>((get) => {
   const currentNetwork = get(networkAtom);
   return validateNetwork(currentNetwork);
 });
+
+export const VISUALIZATION_TYPES = [
+  { label: "Graph", value: "graph" },
+  { label: "Tree", value: "tree" },
+] as const;
+
+export const networkVisualizationAtom = atomWithStorage<
+  (typeof VISUALIZATION_TYPES)[number]["value"]
+>("network-visualization", "graph");

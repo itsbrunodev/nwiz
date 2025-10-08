@@ -1,14 +1,12 @@
 import type { Network } from "@/types/network";
 import type { Device } from "@/types/network/device";
 
+import { aliasPortName } from "../network";
+
 interface DeviceConnection {
   neighborId: string;
   localInterface: string;
   neighborInterface: string;
-}
-
-function aliasPortName(name: string): string {
-  return name.replace("GigabitEthernet", "Gig").replace("FastEthernet", "Fa");
 }
 
 export function createNetworkTree(network: Network): string {
