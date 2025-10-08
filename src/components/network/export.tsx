@@ -1,6 +1,7 @@
 import { useAtomValue } from "jotai";
 import { CopyIcon, ShareIcon } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import { networkAtom } from "@/stores/network";
@@ -28,7 +29,6 @@ import {
 } from "../ui/empty";
 import { Label } from "../ui/label";
 import { Pre } from "../ui/pre";
-import { useNavigate } from "react-router";
 
 export function ExportNetwork() {
   const navigate = useNavigate();

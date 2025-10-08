@@ -1,6 +1,7 @@
 import { useSetAtom } from "jotai";
 import { ArrowUpRightIcon, CircleQuestionMarkIcon } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import short from "short-uuid";
 import { toast } from "sonner";
 
@@ -33,7 +34,6 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { useNavigate } from "react-router";
 
 interface PacketTracerDevice {
   id: string; // full UUID from Packet Tracer
