@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 import { networkAtom } from "@/stores/network";
 
@@ -22,7 +23,6 @@ import { addAutoStaticRoutes } from "@/lib/commands/auto-routing";
 
 import type { Router } from "@/types/network/device";
 import type { StaticRoute } from "@/types/network/route/static";
-import { Separator } from "@/components/ui/separator";
 
 export function StaticRoutesTab({ routerId }: { routerId: string }) {
   const [network, setNetwork] = useAtom(networkAtom);

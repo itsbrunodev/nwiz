@@ -5,6 +5,7 @@ import short from "short-uuid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 
 import { useDevice } from "@/hooks/use-device";
@@ -18,7 +19,6 @@ import type {
 } from "@/types/network/config/password";
 import type { LocalUser } from "@/types/network/config/user";
 import type { Device } from "@/types/network/device";
-import { Separator } from "@/components/ui/separator";
 
 type LinePasswordFieldKey = "lineConsole" | "lineVty" | "lineAux";
 

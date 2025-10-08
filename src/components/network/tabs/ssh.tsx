@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 import { useDevice } from "@/hooks/use-device";
 
@@ -21,7 +22,6 @@ import type {
   SshUserPublicKey,
 } from "@/types/network/config/ssh";
 import type { Router, Switch } from "@/types/network/device";
-import { Separator } from "@/components/ui/separator";
 
 const sshFields = ["timeout", "authenticationRetries"] as const;
 const rsaModulusOptions = [1024, 2048, 4096] as const;

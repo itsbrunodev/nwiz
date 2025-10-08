@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 
 import { useConnections } from "@/hooks/use-connections";
@@ -31,7 +32,6 @@ import type {
   Router,
   Switch as SwitchDevice,
 } from "@/types/network/device";
-import { Separator } from "@/components/ui/separator";
 
 type InterfaceConfig = RouterInterface | SwitchInterface;
 

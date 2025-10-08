@@ -29,15 +29,15 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
       const newNetworkJson = JSON.stringify(newNetwork);
 
       if (newNetworkJson === originalNetworkJson) {
-        toast.info("All switchports are already configured correctly.");
+        toast.info("All switch ports are already configured correctly.");
       } else {
         setNetwork(newNetwork);
         toast.success(
-          "Switchports calculated successfully for every interface.",
+          "Switch ports calculated successfully for every interface.",
         );
       }
     } catch (error) {
-      console.error("Failed to calculate switchports:", error);
+      console.error("Failed to calculate switch ports:", error);
 
       toast.error(
         "An unexpected error occurred. Please check the console for details.",
