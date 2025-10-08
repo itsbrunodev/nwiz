@@ -17,7 +17,11 @@ const getRank = (node: Device): number => {
 };
 
 export function ensureNetworkLayout(network: Network): Network {
-  if (network.devices.every((d) => d.position)) {
+  if (
+    network.devices.every(
+      (d) => d.position?.x !== undefined && d.position?.y !== undefined,
+    )
+  ) {
     return network;
   }
 
@@ -40,8 +44,10 @@ export function ensureNetworkLayout(network: Network): Network {
     .force(
       "link",
       d3
-        .forceLink(validEdges)
-        .id((d) => (d as { id: string }).id)
+        .forceLink<SimulationNode, d3.SimulationLinkDatum<SimulationNode>>(
+          validEdges,
+        )
+        .id((d) => d.id)
         .distance(180)
         .strength(1),
     )

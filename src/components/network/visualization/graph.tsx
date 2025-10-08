@@ -1,15 +1,42 @@
 import * as d3 from "d3";
 import { useAtom } from "jotai";
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { MaximizeIcon } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import { Button } from "@/components/ui/button";
 
 import { networkAtom } from "@/stores/network";
 
 import { aliasPortName } from "@/lib/network";
 import { ensureNetworkLayout } from "@/lib/visualization/graph";
 
+import type { Connection } from "@/types/network/connection";
 import type { Device } from "@/types/network/device";
 
 type PositionedNode = Device & { x: number; y: number };
+
+interface ComputedEdge extends Connection {
+  sourceNode: PositionedNode | undefined;
+  targetNode: PositionedNode | undefined;
+  sourceInterface: string;
+  targetInterface: string;
+  index: number;
+  total: number;
+}
+
+interface LabelData {
+  key: string;
+  text: string;
+  x: number;
+  y: number;
+}
 
 function getNodeColorClasses(deviceType: string): string {
   switch (deviceType) {
@@ -50,7 +77,9 @@ function computeEdgeEndpoints(
 
 export function NetworkVisualizationGraph() {
   const [network, setNetwork] = useAtom(networkAtom);
+
   const svgRef = useRef<SVGSVGElement>(null);
+  const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown>>(null);
 
   const graphRootId = useId();
   const [transform, setTransform] = useState(d3.zoomIdentity);
@@ -64,12 +93,19 @@ export function NetworkVisualizationGraph() {
 
   const { nodes, edges } = useMemo(() => {
     const positionedNodes = (network.devices || [])
-      .filter((d) => d.position)
-      .map((d) => ({ ...d, ...d.position })) as PositionedNode[];
+      .filter(
+        (d): d is Device & { position: { x: number; y: number } } =>
+          d.position?.x !== undefined && d.position?.y !== undefined,
+      )
+      .map((d) => ({
+        ...d,
+        x: d.position.x,
+        y: d.position.y,
+      })) as PositionedNode[];
 
     const nodeMap = new Map(positionedNodes.map((n) => [n.id, n]));
 
-    const grouped = new Map<string, any[]>();
+    const grouped = new Map<string, Connection[]>();
 
     (network.connections || []).forEach((edge) => {
       const key1 = `${edge.from.deviceId}-${edge.to.deviceId}`;
@@ -79,7 +115,7 @@ export function NetworkVisualizationGraph() {
       grouped.get(key)?.push(edge);
     });
 
-    const allEdges: any[] = [];
+    const allEdges: ComputedEdge[] = [];
 
     for (const group of grouped.values()) {
       group.forEach((edge, idx) => {
@@ -98,40 +134,8 @@ export function NetworkVisualizationGraph() {
     return { nodes: positionedNodes, edges: allEdges };
   }, [network]);
 
-  useEffect(() => {
-    if (!svgRef.current || nodes.length === 0) return;
-    const svg = d3.select(svgRef.current);
-    const g = svg.select<SVGGElement>(`g#${graphRootId}`);
-
-    const zoom = d3
-      .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.2, 5])
-      .on("zoom", (event) => {
-        g.attr("transform", event.transform.toString());
-        setTransform(event.transform);
-      });
-
-    const drag = d3
-      .drag<SVGGElement, PositionedNode>()
-      .on("start", (event) => {
-        d3.select(event.sourceEvent.target.parentNode).raise();
-      })
-      .on("drag", (event, d) => {
-        setNetwork((prev) => ({
-          ...prev,
-          devices: prev.devices.map((device) =>
-            device.id === d.id
-              ? { ...device, position: { x: event.x, y: event.y } }
-              : device,
-          ),
-        }));
-      })
-      .on("end", () => {
-        setTransform((t) => t.translate(0, 0).scale(1).translate(0, 0));
-      });
-
-    svg.call(zoom);
-    d3.selectAll<SVGGElement, PositionedNode>(".node-group").call(drag);
+  const getFitTransform = useCallback(() => {
+    if (!svgRef.current || nodes.length === 0) return d3.zoomIdentity;
 
     const bounds = {
       minX: Math.min(...nodes.map((n) => n.x)),
@@ -154,21 +158,71 @@ export function NetworkVisualizationGraph() {
     const scaleY = svgHeight / (graphHeight + 100);
     const scale = Math.min(scaleX, scaleY, 1);
 
-    const initialTransform = d3.zoomIdentity
+    return d3.zoomIdentity
       .translate(svgCenterX, svgCenterY)
       .scale(scale)
       .translate(-graphCenterX, -graphCenterY);
+  }, [nodes]);
 
-    svg.call(zoom.transform, initialTransform);
-  }, [nodes, setNetwork, graphRootId]);
+  const handleRecenter = () => {
+    const svg = d3.select(svgRef.current);
+    const zoom = zoomRef.current;
+    if (!svg || !zoom) return;
+
+    const newTransform = getFitTransform();
+    if (newTransform) {
+      svg
+        .transition()
+        .duration(750)
+        .call(zoom.transform as any, newTransform);
+    }
+  };
+
+  useEffect(() => {
+    if (!svgRef.current || nodes.length === 0) return;
+    const svg = d3.select(svgRef.current);
+    const g = svg.select<SVGGElement>(`g#${graphRootId}`);
+
+    const zoom = d3
+      .zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.2, 5])
+      .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+        g.attr("transform", event.transform.toString());
+        setTransform(event.transform);
+      });
+
+    zoomRef.current = zoom;
+
+    const drag = d3
+      .drag<SVGGElement, PositionedNode>()
+      .on(
+        "start",
+        (event: d3.D3DragEvent<SVGGElement, PositionedNode, any>) => {
+          d3.select(event.sourceEvent.target.parentNode).raise();
+        },
+      )
+      .on("drag", (event, d) => {
+        setNetwork((prev) => ({
+          ...prev,
+          devices: prev.devices.map((device) =>
+            device.id === d.id
+              ? { ...device, position: { x: event.x, y: event.y } }
+              : device,
+          ),
+        }));
+      });
+
+    svg.call(zoom);
+    d3.selectAll<SVGGElement, PositionedNode>(".node-group").call(drag);
+
+    const initialTransform = getFitTransform();
+    if (initialTransform) {
+      svg.call(zoom.transform, initialTransform);
+    }
+  }, [nodes, setNetwork, graphRootId, getFitTransform]);
 
   const labelData = useMemo(() => {
-    const results: {
-      key: string;
-      text: string;
-      x: number;
-      y: number;
-    }[] = [];
+    const results: LabelData[] = [];
 
     edges.forEach((edge) => {
       const s = edge.sourceNode;
@@ -273,7 +327,7 @@ export function NetworkVisualizationGraph() {
               <title>{node.name}</title>
               <circle className={getNodeColorClasses(node.deviceType)} r={12} />
               <text
-                className="select-none fill-card-foreground font-medium text-xs"
+                className="pointer-events-none select-none fill-card-foreground font-medium text-xs"
                 textAnchor="middle"
                 dy={24}
               >
@@ -283,6 +337,17 @@ export function NetworkVisualizationGraph() {
           ))}
         </g>
       </svg>
+      <div className="absolute bottom-3 left-3">
+        <Button
+          variant="secondary"
+          size="icon"
+          aria-label="Recenter"
+          title="Recenter"
+          onClick={handleRecenter}
+        >
+          <MaximizeIcon className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 }
