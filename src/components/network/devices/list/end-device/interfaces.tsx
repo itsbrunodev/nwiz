@@ -1,3 +1,4 @@
+import { EnterHint } from "@/components/network/enter-hint";
 import { DeviceInterfaceManager } from "@/components/network/tabs/interfaces";
 import { Input } from "@/components/ui/input";
 
@@ -51,14 +52,7 @@ export function InterfacesTab({ deviceId }: { deviceId: string }) {
                 }
               }}
             />
-            <p className="mx-3 mt-1 text-muted-foreground text-xs">
-              Press{" "}
-              <kbd className="rounded border bg-muted px-1 py-0.5 font-medium text-muted-foreground">
-                Enter
-              </kbd>{" "}
-              to calculate the subnet mask. You can also use a CIDR notation
-              (e.g. 192.168.0.1/24) to calculate the subnet mask.
-            </p>
+            <EnterHint />
           </div>
           <Input
             label="Subnet Mask"

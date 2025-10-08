@@ -1,8 +1,10 @@
 import { XIcon } from "lucide-react";
 
+import { EnterHint } from "@/components/network/enter-hint";
 import { DeviceInterfaceManager } from "@/components/network/tabs/interfaces";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 import { convertCidr } from "@/lib/network";
 
@@ -11,7 +13,6 @@ import type {
   SubInterface,
 } from "@/types/network/config/router";
 import type { Router } from "@/types/network/device";
-import { Separator } from "@/components/ui/separator";
 
 export function InterfacesTab({ routerId }: { routerId: string }) {
   return (
@@ -87,14 +88,7 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
                   }
                 }}
               />
-              <p className="mx-3 mt-1 text-muted-foreground text-xs">
-                Press{" "}
-                <kbd className="rounded border bg-muted px-1 py-0.5 font-medium text-muted-foreground">
-                  Enter
-                </kbd>{" "}
-                to calculate the subnet mask. You can also use a CIDR notation
-                (e.g. 192.168.0.1/24) to calculate the subnet mask.
-              </p>
+              <EnterHint />
             </div>
             <Input
               label="Subnet Mask"
