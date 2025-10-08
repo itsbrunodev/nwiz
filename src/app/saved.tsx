@@ -3,7 +3,7 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useAtom } from "jotai";
 import { SaveIcon } from "lucide-react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 import {
@@ -67,7 +67,7 @@ export function SavedPage() {
           </div>
           <EmptyContent>
             <Button asChild>
-              <a href="/">Get Started</a>
+              <Link to="/">Get Started</Link>
             </Button>
           </EmptyContent>
         </Empty>

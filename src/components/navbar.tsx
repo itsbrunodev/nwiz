@@ -4,6 +4,7 @@ import {
   MenuIcon,
 } from "lucide-react";
 
+import { Link } from "./link";
 import { ExportNetwork } from "./network/export";
 import { ImportNetwork } from "./network/import";
 import { SettingsNetwork } from "./network/settings";
@@ -19,14 +20,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "./ui/drawer";
-import { TauriLink } from "./tauri-link";
 
 export function Navbar() {
   return (
     <div className="mt-3 flex items-center justify-between py-3">
-      <a
+      <Link
         className="flex items-center gap-2 rounded-md outline-none transition-opacity hover:opacity-80 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-        href="/"
+        to="/"
         title="Home"
         aria-label="Home"
       >
@@ -35,7 +35,7 @@ export function Navbar() {
         <span className="mt-1.5 text-muted-foreground text-xs">
           {import.meta.env.APP_VERSION || "0.0.0"}
         </span>
-      </a>
+      </Link>
       <div className="hidden items-center gap-2 text-sm md:flex">
         <div className="space-x-1">
           <AboutButton />
@@ -88,14 +88,14 @@ export function Navbar() {
 function AboutButton() {
   return (
     <Button variant="ghost" asChild>
-      <TauriLink
-        href="https://github.com/itsbrunodev/nwiz#readme"
+      <Link
+        to="https://github.com/itsbrunodev/nwiz#readme"
         target="_blank"
         rel="noopener"
       >
         About
         <ArrowUpRightIcon />
-      </TauriLink>
+      </Link>
     </Button>
   );
 }
@@ -103,7 +103,7 @@ function AboutButton() {
 function SavedButton() {
   return (
     <Button variant="ghost" asChild>
-      <a href="/saved">Saved</a>
+      <Link to="/saved">Saved</Link>
     </Button>
   );
 }

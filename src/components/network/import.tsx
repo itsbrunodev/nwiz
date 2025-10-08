@@ -18,6 +18,7 @@ import type {
   Switch,
 } from "@/types/network/device";
 
+import { Link } from "../link";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Button } from "../ui/button";
 import {
@@ -32,7 +33,6 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { TauriLink } from "../tauri-link";
 
 interface PacketTracerDevice {
   id: string; // full UUID from Packet Tracer
@@ -238,13 +238,13 @@ export function ImportNetwork() {
                     variant="link"
                     asChild
                   >
-                    <TauriLink
-                      href="https://github.com/itsbrunodev/nwiz?tab=readme-ov-file#import-from-packet-tracer"
+                    <Link
+                      to="https://github.com/itsbrunodev/nwiz?tab=readme-ov-file#import-from-packet-tracer"
                       target="_blank"
                       rel="noopener"
                     >
                       Readme <ArrowUpRightIcon />
-                    </TauriLink>
+                    </Link>
                   </Button>{" "}
                   on how to export your network topology from Packet Tracer and
                   import it here.
