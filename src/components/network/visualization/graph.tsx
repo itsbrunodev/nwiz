@@ -41,11 +41,11 @@ interface LabelData {
 function getNodeColorClasses(deviceType: string): string {
   switch (deviceType) {
     case "Router":
-      return "fill-stone-600 dark:fill-stone-400 stroke-white dark:stroke-gray-900";
+      return "fill-slate-500 dark:fill-slate-400 stroke-slate-600";
     case "Switch":
-      return "fill-gray-500 dark:fill-gray-400 stroke-white dark:stroke-gray-900";
+      return "fill-zinc-500 dark:fill-zinc-400 stroke-zinc-600";
     default:
-      return "fill-foreground stroke-background";
+      return "fill-stone-500 dark:fill-stone-400 stroke-stone-600";
   }
 }
 
@@ -278,7 +278,7 @@ export function NetworkVisualizationGraph() {
       <div className="pointer-events-none absolute inset-0">
         {labelData.map((label) => (
           <div
-            className="-translate-1/2 pointer-events-auto absolute cursor-default select-none whitespace-nowrap bg-accent px-0.5 text-accent-foreground tabular-nums shadow-sm hover:z-50 hover:scale-125"
+            className="-translate-1/2 absolute cursor-default select-none whitespace-nowrap bg-accent px-0.5 text-accent-foreground tabular-nums shadow-sm"
             title={label.text}
             style={{
               left: `${label.x}px`,
