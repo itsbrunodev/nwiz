@@ -5,6 +5,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { useDevice } from "@/hooks/use-device";
 import { useRemoveDevice } from "@/hooks/use-remove-device";
+
 import { isNetworkDevice } from "@/lib/network";
 
 import type { Device, Switch as SwitchDevice } from "@/types/network/device";

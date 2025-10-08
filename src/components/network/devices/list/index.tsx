@@ -32,11 +32,12 @@ import { useDevice } from "@/hooks/use-device";
 import { useDevices } from "@/hooks/use-devices";
 import { useRemoveDevice } from "@/hooks/use-remove-device";
 
+import { isEndDevice } from "@/lib/network";
+
 import { AddDeviceButton } from "../add";
 import { EndDeviceContent } from "./end-device";
 import { RouterContent } from "./router";
 import { SwitchContent } from "./switch";
-import { isEndDevice } from "@/lib/network";
 
 export function DevicesList() {
   const [devices] = useDevices();
