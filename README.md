@@ -1,5 +1,5 @@
 > [!WARNING]
-> This is a very early alpha version of the project. It is not fully featured and may contain bugs.
+> This is a very early alpha version of the project. It is not fully featured and may contain bugs. Please report any issues to the [Issues](https://github.com/itsbrunodev/nwiz/issues) page.
 
 # nwiz
 
@@ -8,6 +8,8 @@ A simple, powerful tool for generating Cisco Packet Tracer network configuration
 ## About
 
 nwiz creates Cisco IOS command scripts from a visual network topology. You can import existing networks from Packet Tracer or build your own.
+
+The tool is accessible from [nwiz.itsbruno.dev](https://nwiz.itsbruno.dev/) or by downloading the standalone application from the [Releases](https://github.com/itsbrunodev/nwiz/releases) page.
 
 ## Core Features
 
