@@ -136,7 +136,8 @@ body {
     @apply w-3;
   }
 
-  ::-webkit-scrollbar-track {
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
     @apply bg-background;
   }
 
