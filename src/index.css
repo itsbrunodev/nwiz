@@ -138,10 +138,10 @@ body {
 
   ::-webkit-scrollbar-track,
   ::-webkit-scrollbar-corner {
-    @apply bg-background;
+    @apply bg-transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply rounded-full bg-muted-foreground border-3 border-background;
+    @apply rounded-full bg-muted-foreground border-3 border-transparent bg-clip-padding;
   }
 }
