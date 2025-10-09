@@ -35,12 +35,13 @@ export function Commands({
 
         return (
           <div className="relative" key={deviceId}>
-            <div className="rounded-t-md border-x border-t bg-accent p-3">
+            <div className="rounded-t-md border-x border-t bg-card p-3 text-card-foreground">
               <Label>{deviceName}</Label>
             </div>
             <Pre className="min-h-16 rounded-t-none">{commandString}</Pre>
             <Button
               className="absolute top-13 right-3"
+              variant="secondary"
               size="icon"
               aria-label="Copy to clipboard"
               onClick={() => {
