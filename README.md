@@ -3,11 +3,11 @@
 
 # nwiz
 
-A simple, powerful tool for generating Cisco Packet Tracer network configurations.
+A tool for generating Cisco IOS scripts from a network topology you build or import.
 
 ## About
 
-nwiz creates Cisco IOS command scripts from a visual network topology. You can import existing networks from Packet Tracer or build your own.
+nwiz creates Cisco IOS command scripts from a network topology. You can import existing networks from Packet Tracer or build your own.
 
 The tool is accessible from [nwiz.itsbruno.dev](https://nwiz.itsbruno.dev/) or by downloading the standalone application from the [Releases](https://github.com/itsbrunodev/nwiz/releases) page.
 
@@ -35,6 +35,10 @@ You can import a network you already built in Packet Tracer.
 3. Select the `nwiz` script module from the list. Click `Debug`.
 4. A new window will open. If the console has text, click `Clear`. Click `Start`.
 5. The script will print a JSON object. Select all the text in the console and copy it.
+
+> [!NOTE]
+> The script only generates a list of devices and their interface connections.
+
 6. Go to the nwiz website at [nwiz.itsbruno.dev](https://nwiz.itsbruno.dev/).
 7. Click the `Import` button. Paste your copied text into the "Packet Tracer response" input.
 8. Click `Import` to load your network.
