@@ -17,6 +17,21 @@ The tool is accessible from [nwiz.itsbruno.dev](https://nwiz.itsbruno.dev/) or b
 - Generate complete Cisco IOS configurations from your topology.
 - Import your existing Packet Tracer networks.
 - Export your network as a shareable code.
+- Visualize your network as an interactive graph or a text-based tree.
+- Validate your configuration in real-time to find issues.
+- Save and manage multiple network designs locally in your browser.
+
+## Roadmap to 1.0.0
+
+Here's a look at what I'm working on to get nwiz ready for a stable 1.0.0 release.
+
+- **Dynamic Routing**: Support for OSPF to enable more complex network designs.
+- **More Devices**: Layer 3 switches to allow for inter-VLAN routing.
+- **Advanced Switching**: Configurations for VTP (VLAN Trunking Protocol) and EtherChannel.
+- **Expanded Security**: Add options for DHCP Snooping and Port Security.
+- **NAT (Network Address Translation)**: Support configuration for NAT, including defining inside/outside interfaces, address pools, and rules for translating private IPs to public ones.
+- **ACL Configuration UI**: interface for creating Access Control Lists (standard and extended) and applying them to router interfaces to filter traffic.
+- **IPv6 Addressing**: Support for adding IPv6 addresses to device interfaces.
 
 ## How to Use
 
