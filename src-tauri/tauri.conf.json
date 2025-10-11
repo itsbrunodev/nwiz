@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "nwiz",
-  "version": "1.0.0+102",
+  "version": "1.0.0+103",
   "identifier": "com.bruno.nwiz",
   "build": {
     "frontendDist": "../dist",
