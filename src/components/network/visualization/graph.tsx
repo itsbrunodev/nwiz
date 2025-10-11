@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { useAtom } from "jotai";
-import { MaximizeIcon, TagIcon } from "lucide-react";
+import { MaximizeIcon, RotateCwIcon, TagIcon } from "lucide-react";
 import { useCallback, useEffect, useId, useMemo, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -105,7 +105,9 @@ export function NetworkVisualizationGraph() {
       const key1 = `${edge.from.deviceId}-${edge.to.deviceId}`;
       const key2 = `${edge.to.deviceId}-${edge.from.deviceId}`;
       const key = key1 < key2 ? key1 : key2;
+
       if (!grouped.has(key)) grouped.set(key, []);
+
       grouped.get(key)?.push(edge);
     });
 
@@ -167,9 +169,19 @@ export function NetworkVisualizationGraph() {
     if (newTransform) {
       svg
         .transition()
-        .duration(750)
+        .duration(300)
         .call(zoom.transform as any, newTransform);
     }
+  };
+
+  const handleResimulate = () => {
+    setNetwork((prev) => ({
+      ...prev,
+      devices: prev.devices.map((device) => ({
+        ...device,
+        position: undefined,
+      })),
+    }));
   };
 
   useEffect(() => {
@@ -255,6 +267,7 @@ export function NetworkVisualizationGraph() {
         x: srcX,
         y: srcY,
       });
+
       results.push({
         key: `tgt-${edge.id}`,
         text: edge.targetInterface,
@@ -301,12 +314,23 @@ export function NetworkVisualizationGraph() {
               transform={`translate(${node.x}, ${node.y})`}
               key={node.id}
             >
-              <title>{node.name}</title>
+              <title>
+                {node.model}
+                {"\n"}
+                {node.name}
+              </title>
               <circle className={getNodeColorClasses(node.deviceType)} r={12} />
               <text
-                className="pointer-events-none select-none fill-card-foreground font-medium text-[10px]"
+                className="pointer-events-none select-none fill-card-foreground text-[10px]"
                 textAnchor="middle"
                 dy={24}
+              >
+                {node.model}
+              </text>
+              <text
+                className="pointer-events-none select-none fill-card-foreground text-[10px]"
+                textAnchor="middle"
+                dy={36}
               >
                 {node.name}
               </text>
@@ -364,6 +388,15 @@ export function NetworkVisualizationGraph() {
           }
         >
           <TagIcon />
+        </Button>
+        <Button
+          variant="secondary"
+          size="icon"
+          aria-label="Resimulate"
+          title="Resimulate"
+          onClick={handleResimulate}
+        >
+          <RotateCwIcon className="h-4 w-4" />
         </Button>
         <Button
           variant="secondary"
