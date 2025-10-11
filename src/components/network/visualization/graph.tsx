@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { useAtom } from "jotai";
 import { MaximizeIcon, RotateCwIcon, TagIcon } from "lucide-react";
 import { useCallback, useEffect, useId, useMemo, useRef } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -182,6 +183,8 @@ export function NetworkVisualizationGraph() {
         position: undefined,
       })),
     }));
+
+    toast.success("Successfully resimulated network.");
   };
 
   useEffect(() => {
