@@ -82,10 +82,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
             <p className="font-medium text-card-foreground text-sm">
               {device.name}
             </p>
-            {(device.deviceType === "Router" ||
-              device.deviceType === "Switch") && (
-              <p className="text-muted-foreground text-xs">{device.model}</p>
-            )}
+            <p className="text-muted-foreground text-xs">{device.model}</p>
           </div>
         </div>
         <div className="[&>button]:!flex-1 flex border-t [&>button]:rounded-none">
