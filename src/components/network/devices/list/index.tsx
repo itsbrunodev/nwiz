@@ -120,7 +120,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
               ? device.model
               : device.deviceType === "Switch"
                 ? device.model
-                : "unknown"}
+                : device.deviceType}
           </DialogDescription>
         </DialogHeader>
         {device.deviceType === "Router" && (
