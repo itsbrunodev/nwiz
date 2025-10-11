@@ -148,11 +148,11 @@ export function aliasPortName(name: string): string {
   return name.replace("GigabitEthernet", "Gig").replace("FastEthernet", "Fa");
 }
 
-export function isEndDevice(d: Device): d is EndDevice {
+export function isEndDevice(device: Device): device is EndDevice {
   return (
-    d.deviceType === "PC" ||
-    d.deviceType === "Server" ||
-    d.deviceType === "Laptop"
+    device.deviceType === "PC" ||
+    device.deviceType === "Server" ||
+    device.deviceType === "Laptop"
   );
 }
 
