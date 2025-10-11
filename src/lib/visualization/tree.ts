@@ -63,7 +63,7 @@ export function createNetworkTree(network: Network): string {
   for (const device of sortedDevices) {
     if (!visited.has(device.id)) {
       if (fullTree) fullTree += "\n";
-      fullTree += `${device.name} (${device.deviceType})\n`;
+      fullTree += `${device.name} (${device.model})\n`;
       fullTree += buildSubTree(
         device.id,
         "",
@@ -102,7 +102,7 @@ function buildSubTree(
     const localPort = aliasPortName(conn.localInterface);
     const neighborPort = aliasPortName(conn.neighborInterface);
 
-    subTree += `${prefix}${connector} [${localPort} <-> ${neighborPort}] ${neighbor.name} (${neighbor.deviceType})\n`;
+    subTree += `${prefix}${connector} [${localPort} <-> ${neighborPort}] ${neighbor.name} (${neighbor.model})\n`;
 
     subTree += buildSubTree(
       neighbor.id,
