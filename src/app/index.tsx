@@ -63,14 +63,6 @@ export function IndexPage() {
     }
   }, [network?.name]);
 
-  /* const tree = useMemo(() => {
-    return createNetworkTree(network);
-  }, [network]);
-
-  const graph = useMemo(() => {
-    return createNetworkGraph(network);
-  }, [network]); */
-
   const commands = useMemo(() => {
     return generateCommands(network, {
       verbose: false,
