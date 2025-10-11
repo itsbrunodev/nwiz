@@ -1,6 +1,7 @@
 import lzs from "lz-string";
 
 import type { Network } from "@/types/network";
+import type { Device } from "@/types/network/device";
 
 const keyMap: Record<string, string> = {
   // Original keys
@@ -75,11 +76,12 @@ const reverseKeyMap: Record<string, string> = Object.fromEntries(
   Object.entries(keyMap).map(([k, v]) => [v, k]),
 );
 
-const typeMap: Record<string, string> = {
+const typeMap: Record<Device["deviceType"], string> = {
   Router: "R",
   Switch: "S",
-  Server: "V",
   PC: "P",
+  Server: "V",
+  Laptop: "L",
 };
 const reverseTypeMap: Record<string, string> = Object.fromEntries(
   Object.entries(typeMap).map(([k, v]) => [v, k]),
@@ -97,9 +99,9 @@ function minifyNetworkData(network: Network): unknown {
         if (
           key === "deviceType" &&
           typeof value === "string" &&
-          typeMap[value]
+          typeMap[value as keyof typeof typeMap]
         ) {
-          value = typeMap[value];
+          value = typeMap[value as keyof typeof typeMap];
         }
         newObj[newKey] = recurse(value);
       }
