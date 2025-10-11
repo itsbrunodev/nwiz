@@ -34,15 +34,18 @@ export interface Switch extends BaseDevice {
 
 export interface PC extends BaseDevice {
   deviceType: "PC";
+  model: "PC-PT";
+  config: EndDeviceConfig;
+}
+
+export interface Laptop extends BaseDevice {
+  deviceType: "Laptop";
+  model: "Laptop-PT";
   config: EndDeviceConfig;
 }
 
 export interface Server extends BaseDevice {
   deviceType: "Server";
+  model: "Server-PT";
   config: ServerConfig;
-}
-
-export interface Laptop extends BaseDevice {
-  deviceType: "Laptop";
-  config: EndDeviceConfig;
 }

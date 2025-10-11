@@ -9,15 +9,17 @@ import { networkAtom } from "@/stores/network";
 
 import { decodeCompactBase64 } from "@/lib/encode";
 
+import {
+  ROUTERS,
+  type RouterModel,
+  SWITCHES,
+  type SwitchModel,
+} from "@/constants/devices";
+
 import type { Network } from "@/types/network";
+import type { EndDeviceConfig } from "@/types/network/config/end-device";
 import type { Connection } from "@/types/network/connection";
-import type {
-  Device,
-  PC,
-  Router,
-  Server,
-  Switch,
-} from "@/types/network/device";
+import type { Device, Router, Switch } from "@/types/network/device";
 
 import { Link } from "../link";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
@@ -65,6 +67,7 @@ export function ImportNetwork() {
 
   const handlePacketTracerChange = (value: string) => {
     setPacketTracerResponse(value);
+
     setParsedPtNetwork(null);
 
     if (!value.trim()) {
@@ -84,15 +87,25 @@ export function ImportNetwork() {
 
       const newDevices: Device[] = ptTopology.devices.map((ptDevice) => {
         const newId = short.generate();
+
         ptUuidToShortUuid.set(ptDevice.id, newId);
 
-        let deviceType: Device["deviceType"] = "PC";
-        if (["1841", "1941", "2901", "2911"].includes(ptDevice.model)) {
+        let deviceType: Device["deviceType"] | null = null;
+
+        if (ROUTERS.includes(ptDevice.model as RouterModel)) {
           deviceType = "Router";
-        } else if (["2960", "3560"].includes(ptDevice.model)) {
+        } else if (SWITCHES.includes(ptDevice.model as SwitchModel)) {
           deviceType = "Switch";
-        } else if (ptDevice.model === "Server") {
+        } else if (ptDevice.model === "PC-PT") {
+          deviceType = "PC";
+        } else if (ptDevice.model === "Server-PT") {
           deviceType = "Server";
+        } else if (ptDevice.model === "Laptop-PT") {
+          deviceType = "Laptop";
+        }
+
+        if (deviceType === null) {
+          throw new Error(`Unknown device model: ${ptDevice.model}`);
         }
 
         let config: Device["config"];
@@ -106,21 +119,14 @@ export function ImportNetwork() {
             config = { vlans: [], interfaces: [] } as Switch["config"];
             break;
           }
-          case "PC": {
+          case "PC":
+          case "Server":
+          case "Laptop": {
             config = {
               ipAddress: "",
               subnetMask: "",
               defaultGateway: "",
-            } as PC["config"];
-            break;
-          }
-          case "Server": {
-            config = {
-              ipAddress: "",
-              subnetMask: "",
-              defaultGateway: "",
-              services: {},
-            } as Server["config"];
+            } as EndDeviceConfig;
             break;
           }
         }
@@ -135,46 +141,53 @@ export function ImportNetwork() {
         } as Device;
       });
 
-      const newConnections: Connection[] = ptTopology.connections.map(
-        (ptConn) => {
-          const fromDeviceId = ptUuidToShortUuid.get(ptConn.from.deviceId);
-          const toDeviceId = ptUuidToShortUuid.get(ptConn.to.deviceId);
+      try {
+        const newConnections: Connection[] = ptTopology.connections.map(
+          (ptConn) => {
+            const fromDeviceId = ptUuidToShortUuid.get(ptConn.from.deviceId);
+            const toDeviceId = ptUuidToShortUuid.get(ptConn.to.deviceId);
 
-          if (!fromDeviceId || !toDeviceId) {
-            throw new Error(
-              `Could not map devices for connection: ${ptConn.id}`,
-            );
-          }
+            if (!fromDeviceId || !toDeviceId) {
+              throw new Error(
+                `Could not map devices for connection: ${ptConn.id}`,
+              );
+            }
 
-          return {
-            id: short.generate(),
-            from: {
-              deviceId: fromDeviceId,
-              interfaceName: ptConn.from.interfaceName,
-            },
-            to: {
-              deviceId: toDeviceId,
-              interfaceName: ptConn.to.interfaceName,
-            },
-          };
-        },
-      );
+            return {
+              id: short.generate(),
+              from: {
+                deviceId: fromDeviceId,
+                interfaceName: ptConn.from.interfaceName,
+              },
+              to: {
+                deviceId: toDeviceId,
+                interfaceName: ptConn.to.interfaceName,
+              },
+            };
+          },
+        );
 
-      const now = new Date().toISOString();
+        const now = new Date().toISOString();
 
-      const finalNetwork: Network = {
-        id: short.generate(),
-        devices: newDevices,
-        connections: newConnections,
-        createdAt: now,
-        updatedAt: now,
-      };
+        const finalNetwork: Network = {
+          id: short.generate(),
+          devices: newDevices,
+          connections: newConnections,
+          createdAt: now,
+          updatedAt: now,
+        };
 
-      setParsedPtNetwork(finalNetwork);
+        setParsedPtNetwork(finalNetwork);
+      } catch (connectionError) {
+        setParsedPtNetwork(null);
+
+        toast.error(`${(connectionError as Error).message}`);
+      }
     } catch (error) {
       setParsedPtNetwork(null);
+
       if (!(error instanceof SyntaxError)) {
-        toast.error(`Import Error: ${(error as Error).message}`);
+        toast.error(`${(error as Error).message}`);
       }
     }
   };
@@ -185,9 +198,13 @@ export function ImportNetwork() {
 
       toast.success("Successfully imported network from Packet Tracer.");
     } else if (code) {
-      setNetwork(decodeCompactBase64(code));
+      try {
+        setNetwork(decodeCompactBase64(code));
 
-      toast.success("Successfully imported network from code.");
+        toast.success("Successfully imported network from code.");
+      } catch (error) {
+        toast.error(`${(error as Error).message}`);
+      }
     }
   };
 

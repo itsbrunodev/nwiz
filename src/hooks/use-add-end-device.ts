@@ -7,6 +7,23 @@ import { calculateDeviceName } from "@/lib/network";
 
 import type { EndDevice } from "@/types/network/device";
 
+function createEndDevice(deviceType: EndDevice["deviceType"]): EndDevice {
+  const model = `${deviceType}-PT` as const;
+
+  return {
+    id: short.generate(),
+    name: "",
+    hostname: "",
+    deviceType,
+    model,
+    config: {
+      ipAddress: "",
+      subnetMask: "",
+      defaultGateway: "",
+    },
+  } as EndDevice;
+}
+
 export function useAddEndDevice() {
   const [network, setNetwork] = useAtom(networkAtom);
   const devices = network.devices;
@@ -14,22 +31,13 @@ export function useAddEndDevice() {
   return (deviceType: EndDevice["deviceType"]) => {
     const deviceName = calculateDeviceName(deviceType, deviceType, devices);
 
+    const newDevice = createEndDevice(deviceType);
+    newDevice.name = deviceName;
+    newDevice.hostname = deviceName;
+
     setNetwork({
       ...network,
-      devices: [
-        ...devices,
-        {
-          id: short.generate(),
-          name: deviceName,
-          hostname: deviceName,
-          deviceType,
-          config: {
-            ipAddress: "",
-            subnetMask: "",
-            defaultGateway: "",
-          },
-        },
-      ],
+      devices: [...devices, newDevice],
     });
   };
 }
