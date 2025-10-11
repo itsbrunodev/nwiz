@@ -1,5 +1,5 @@
 > [!WARNING]
-> This is an early beta version of the project. It is not fully featured and may contain bugs. Please report any issues to the [Issues](https://github.com/itsbrunodev/nwiz/issues) page.
+> This is an early beta version of the project. It is not fully featured and may contain bugs. Please submit any issues and/or suggestions to the [Issues](https://github.com/itsbrunodev/nwiz/issues) page.
 
 # nwiz
 
