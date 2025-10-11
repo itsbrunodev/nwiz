@@ -35,6 +35,37 @@ export default defineConfig({
       process.env.TAURI_ENV_PLATFORM === "windows" ? "chrome105" : "safari13",
     minify: !process.env.TAURI_ENV_DEBUG ? "esbuild" : false,
     sourcemap: !!process.env.TAURI_ENV_DEBUG,
+    rollupOptions: {
+      output: {
+        advancedChunks: {
+          groups: [
+            {
+              name: "d3",
+              test: (moduleId) => moduleId.includes("d3"),
+            },
+            {
+              name: "radix",
+              test: (moduleId) => moduleId.includes("@radix-ui"),
+            },
+            {
+              name: "utils",
+              test: (moduleId) =>
+                moduleId.includes("clsx") ||
+                moduleId.includes("tailwind-merge") ||
+                moduleId.includes("class-variance-authority") ||
+                moduleId.includes("date-fns"),
+            },
+            {
+              name: "react-vendor",
+              test: (moduleId) =>
+                moduleId.includes("react") ||
+                moduleId.includes("react-dom") ||
+                moduleId.includes("react-router"),
+            },
+          ],
+        },
+      },
+    },
   },
   plugins: [react(), tailwindcss()],
   resolve: {
