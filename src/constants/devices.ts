@@ -16,7 +16,6 @@ export type RouterModel = (typeof ROUTERS)[number];
 export const SWITCHES = [
   "2960-24TT",
   "Switch-PT",
-  "Switch-PT-Empty",
   "3560-24PS",
   "3650-24PS",
   "IE-2000",
