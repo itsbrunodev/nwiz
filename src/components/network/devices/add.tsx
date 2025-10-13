@@ -1,3 +1,5 @@
+import { ChevronDownIcon } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -24,7 +26,9 @@ export function AddDeviceButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="w-fit">Add Device</Button>
+        <Button className="w-fit">
+          Add Device <ChevronDownIcon />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuSub>
