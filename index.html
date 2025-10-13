@@ -1,44 +1,100 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="nwiz" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preload" href="/fonts/inter/regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/fira-code/regular.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/inter/medium.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/inter/semibold.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/inter/bold.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/fira-code/medium.woff2" as="font" type="font/woff2" crossorigin />
-    <title>nwiz</title>
-    <meta name="description" content="A tool for generating Cisco IOS scripts from a network topology you build or import." />
-    <script>
-      (function() {
-        const storageKey = "nwiz-theme";
-        const theme = localStorage.getItem(storageKey) || "system";
-        const root = document.documentElement;
-        
-        root.classList.remove("light", "dark");
-        
-        if (theme === "system") {
-          const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-            
-          root.classList.add(systemTheme);
-        } else {
-          root.classList.add(theme);
-        }
-      })();
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- seo: meta -->
+  <title>nwiz - Visual Cisco IOS Script Generator</title>
+  <meta name="description"
+    content="A free tool for visually building network topologies and automatically generating Cisco IOS scripts. Import from Packet Tracer, visualize your network, and export your configurations." />
+  <meta name="keywords"
+    content="cisco, cisco ios, network automation, script generator, packet tracer, visual network builder, nwiz, networking tool, network diagram, ccna" />
+  <link rel="canonical" href="https://nwiz.itsbruno.dev/" />
+
+  <!-- seo: og -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="nwiz - Visual Cisco IOS Script Generator" />
+  <meta property="og:description"
+    content="A free tool for visually building network topologies and automatically generating Cisco IOS scripts. Import from Packet Tracer, visualize your network, and export your configurations." />
+  <meta property="og:url" content="https://nwiz.itsbruno.dev/" />
+  <meta property="og:site_name" content="nwiz" />
+
+  <!-- seo: twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="nwiz - Visual Cisco IOS Script Generator" />
+  <meta name="twitter:description"
+    content="A free tool for visually building network topologies and automatically generating Cisco IOS scripts. Import from Packet Tracer, visualize your network, and export your configurations." />
+
+  <!-- favicons and manifest -->
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="nwiz" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- fonts -->
+  <link rel="preload" href="/fonts/inter/regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/fira-code/regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter/medium.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter/semibold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter/bold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/fira-code/medium.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- theme -->
+  <script>
+    (function () {
+      const storageKey = "nwiz-theme";
+      const theme = localStorage.getItem(storageKey) || "system";
+      const root = document.documentElement;
+
+      root.classList.remove("light", "dark");
+
+      if (theme === "system") {
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+
+        root.classList.add(systemTheme);
+      } else {
+        root.classList.add(theme);
+      }
+    })();
+  </script>
+
+  <!-- seo: structured data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "nwiz",
+      "applicationCategory": "Utility",
+      "applicationSubCategory": "Network Configuration Tool",
+      "operatingSystem": "Windows, macOS, Linux, Web",
+      "description": "A free tool for visually building network topologies and automatically generating Cisco IOS scripts.",
+      "url": "https://nwiz.itsbruno.dev/",
+      "installUrl": "https://github.com/itsbrunodev/nwiz/releases",
+      "softwareVersion": "1.0.0-beta.5",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "itsbrunodev",
+        "email": "contact@itsbruno.dev",
+        "url": "https://itsbruno.dev"
+      }
+    }
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
