@@ -71,7 +71,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "useExhaustiveDependencies": "info"
+        "useExhaustiveDependencies": "info",
+        "useUniqueElementIds": "info"
       },
       "nursery": {
         "useSortedClasses": {
