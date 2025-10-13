@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://nwiz.itsbruno.dev/sitemap.xml
