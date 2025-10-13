@@ -9,7 +9,7 @@ import {
 
 import { welcomeStore } from "@/stores/welcome";
 
-import { CRAWLERS } from "@/constants/crawlers";
+import { isCrawler } from "@/lib/utils";
 
 import { Link } from "./link";
 import { Button } from "./ui/button";
@@ -22,7 +22,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import { isCrawler } from "@/lib/utils";
 
 interface Feature {
   icon: React.ComponentType<{ className?: string }>;

@@ -1,6 +1,7 @@
-import { CRAWLERS } from "@/constants/crawlers";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+
+import { CRAWLERS } from "@/constants/crawlers";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
