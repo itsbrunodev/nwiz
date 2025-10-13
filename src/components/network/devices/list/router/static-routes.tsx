@@ -147,7 +147,7 @@ export function StaticRoutesTab({ routerId }: { routerId: string }) {
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <h3 className="font-medium">Add New Static Route</h3>
+        <h2 className="font-medium">Add New Static Route</h2>
         <div className="grid grid-cols-2 gap-2">
           <Input
             label="Destination Network"
@@ -211,7 +211,7 @@ export function StaticRoutesTab({ routerId }: { routerId: string }) {
       <Separator className="my-3" />
       <div className="space-y-3">
         <div>
-          <h3 className="font-medium">Configured Routes</h3>
+          <h2 className="font-medium">Configured Routes</h2>
           <p className="text-muted-foreground text-xs">
             These static routes will be added to the router&apos;s
             configuration.

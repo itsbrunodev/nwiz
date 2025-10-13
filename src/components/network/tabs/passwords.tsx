@@ -123,7 +123,7 @@ export function DevicePasswordsManager<T extends Device>({
     <div className="space-y-6">
       <div className="space-y-3">
         <div>
-          <h3 className="font-medium">Local Users</h3>
+          <h2 className="font-medium">Local Users</h2>
           <p className="text-muted-foreground text-xs">
             Manage local username and password credentials for device access.
           </p>
@@ -163,7 +163,7 @@ export function DevicePasswordsManager<T extends Device>({
       <Separator className="my-3" />
       <div className="space-y-3">
         <div>
-          <h3 className="font-medium">Password Encryption</h3>
+          <h2 className="font-medium">Password Encryption</h2>
           <p className="text-muted-foreground text-xs">
             Toggle whether passwords are stored in an encrypted format within
             the device configuration.
@@ -189,7 +189,7 @@ export function DevicePasswordsManager<T extends Device>({
       <Separator className="my-3" />
       <div className="space-y-3">
         <div>
-          <h3 className="font-medium">Enable Secret</h3>
+          <h2 className="font-medium">Enable Secret</h2>
           <p className="text-muted-foreground text-xs">
             Set the password for privileged (enable) mode.
           </p>
@@ -211,7 +211,7 @@ export function DevicePasswordsManager<T extends Device>({
       <Separator className="my-3" />
       <div className="space-y-3">
         <div>
-          <h3 className="font-medium">Line Passwords</h3>
+          <h2 className="font-medium">Line Passwords</h2>
           <p className="text-muted-foreground text-xs">
             Set passwords for console, VTY, and auxiliary lines.
           </p>

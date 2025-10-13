@@ -39,13 +39,13 @@ export function WelcomeDialog() {
             build or import.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 py-3 [&>div>div>h3]:font-medium [&>div>div>p]:text-muted-foreground [&>div>div>p]:text-sm [&>div>div>svg]:size-4 [&>div>div]:first:rounded-sm [&>div>div]:first:bg-secondary [&>div>div]:first:p-2 [&>div]:flex [&>div]:items-start [&>div]:gap-3">
+        <div className="space-y-3 py-3 [&>div>div>h2]:font-medium [&>div>div>p]:text-muted-foreground [&>div>div>p]:text-sm [&>div>div>svg]:size-4 [&>div>div]:first:rounded-sm [&>div>div]:first:bg-secondary [&>div>div]:first:p-2 [&>div]:flex [&>div]:items-start [&>div]:gap-3">
           <div>
             <div>
               <PlusIcon />
             </div>
             <div>
-              <h3>Build Your Network</h3>
+              <h2>Build Your Network</h2>
               <p>
                 Use the "Add Device" button to place routers, switches, and PCs.
                 Connect them through their interfaces.
@@ -57,7 +57,7 @@ export function WelcomeDialog() {
               <UploadIcon />
             </div>
             <div>
-              <h3>Import Network</h3>
+              <h2>Import Network</h2>
               <p>
                 Click the "Import" button to load a network someone else built
                 or you already created in Cisco Packet Tracer.
@@ -69,7 +69,7 @@ export function WelcomeDialog() {
               <TerminalIcon />
             </div>
             <div>
-              <h3>Generate Configurations</h3>
+              <h2>Generate Configurations</h2>
               <p>
                 The tool generates Cisco IOS commands as you work. View and copy
                 the script for each device.
@@ -81,7 +81,7 @@ export function WelcomeDialog() {
               <MessageSquareWarningIcon />
             </div>
             <div>
-              <h3>Network Validation</h3>
+              <h2>Network Validation</h2>
               <p>
                 Your network is automatically validated, with issues clearly
                 displayed and explained.
@@ -93,7 +93,7 @@ export function WelcomeDialog() {
               <MessageSquareWarningIcon />
             </div>
             <div>
-              <h3>Detailed Guide</h3>
+              <h2>Detailed Guide</h2>
               <p>
                 A complete guide is available for learning how to use the tool
                 on the{" "}

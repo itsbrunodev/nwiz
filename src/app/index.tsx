@@ -58,12 +58,6 @@ export function IndexPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      document.title = `nwiz - ${network?.name || "New Network"}`;
-    }
-  }, [network?.name]);
-
   const commands = useMemo(() => {
     return generateCommands(network, {
       verbose: false,
@@ -73,7 +67,7 @@ export function IndexPage() {
   return (
     <>
       <div className="flex flex-col gap-1 border-b pb-3">
-        <h2 className="font-bold text-2xl">{network?.name || "New Network"}</h2>
+        <h1 className="font-bold text-2xl">{network?.name || "New Network"}</h1>
         <p className="text-muted-foreground text-sm">
           {network?.description || "No description."}
         </p>
@@ -85,19 +79,19 @@ export function IndexPage() {
         <ResetNetworkButton />
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="font-medium text-lg">Devices</h3>
+        <h2 className="font-medium text-lg">Devices</h2>
         <DevicesList />
       </div>
       {issues.length > 0 && (
         <div className="flex flex-col gap-2">
-          <h3 className="font-medium text-lg">Issues</h3>
+          <h2 className="font-medium text-lg">Issues</h2>
           <NetworkIssues />
         </div>
       )}
       {network?.devices && network.devices.length > 0 && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <h3 className="font-medium text-lg">Network Visualization</h3>
+            <h2 className="font-medium text-lg">Network Visualization</h2>
             <ButtonGroup>
               {VISUALIZATION_TYPES.map(({ label, value }) => (
                 <Button
@@ -117,7 +111,7 @@ export function IndexPage() {
       )}
       {commands.size > 0 && (
         <div className="flex flex-col gap-2">
-          <h3 className="font-medium text-lg">Commands</h3>
+          <h2 className="font-medium text-lg">Commands</h2>
           <Commands commandsMap={commands} devices={network?.devices} />
         </div>
       )}

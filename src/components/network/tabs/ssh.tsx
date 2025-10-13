@@ -154,7 +154,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
       />
       <Separator className="my-3" />
       <div className="space-y-3">
-        <h3 className="font-medium">RSA Key Generation</h3>
+        <h2 className="font-medium">RSA Key Generation</h2>
         <Select
           value={
             sshConfig.rsaKey?.modulus ? String(sshConfig.rsaKey.modulus) : ""
@@ -177,7 +177,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
       </div>
       <Separator className="my-3" />
       <div className="space-y-3">
-        <h3 className="font-medium">SSH Timeouts & Retries</h3>
+        <h2 className="font-medium">SSH Timeouts & Retries</h2>
         <div className="space-y-2">
           {sshFields.map((fieldKey) => (
             <Input
@@ -197,7 +197,7 @@ export function DeviceSshManager<T extends SshCapableDevice>({
       </div>
       <Separator className="my-3" />
       <div className="space-y-3">
-        <h3 className="font-medium">User Public Keys (RSA Authentication)</h3>
+        <h2 className="font-medium">User Public Keys (RSA Authentication)</h2>
         {(sshConfig.userPublicKeys ?? []).length > 0 && (
           <div className="rounded-md border bg-card">
             {sshConfig.userPublicKeys?.map((user, index) => (

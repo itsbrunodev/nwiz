@@ -30,7 +30,7 @@ export function Navbar() {
         aria-label="Home"
       >
         <ChevronsLeftRightEllipsisIcon className="size-6" />
-        <h1 className="font-extrabold text-xl">nwiz</h1>
+        <p className="font-extrabold text-xl">nwiz</p>
         <span className="mt-1.5 text-muted-foreground text-xs">
           {import.meta.env.APP_VERSION || "0.0.0"}
         </span>

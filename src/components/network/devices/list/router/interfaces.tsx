@@ -61,7 +61,7 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
         return (
           <div className="space-y-3">
             <div>
-              <h3 className="font-medium">General</h3>
+              <h2 className="font-medium">General</h2>
               <p className="text-muted-foreground text-xs">
                 Configure the general settings for the interface.
               </p>
@@ -98,7 +98,7 @@ export function InterfacesTab({ routerId }: { routerId: string }) {
             <Separator className="my-3" />
             <div className="space-y-3">
               <div>
-                <h3 className="font-medium">Subinterfaces (802.1Q)</h3>
+                <h2 className="font-medium">Subinterfaces (802.1Q)</h2>
                 <p className="text-muted-foreground text-xs">
                   Divide one physical interface into multiple logical
                   interfaces.

@@ -54,7 +54,7 @@ export function SavedPage() {
 
   return (
     <>
-      <h2 className="border-b pb-3 font-bold text-2xl">Saved Networks</h2>
+      <h1 className="border-b pb-3 font-bold text-2xl">Saved Networks</h1>
       {networkCodes?.length === 0 ? (
         <Empty>
           <EmptyHeader>

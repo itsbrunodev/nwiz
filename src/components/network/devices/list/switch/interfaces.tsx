@@ -54,7 +54,7 @@ export function InterfacesTab({ switchId }: { switchId: string }) {
         return (
           <div className="space-y-3">
             <div>
-              <h3 className="font-medium">Switch Ports</h3>
+              <h2 className="font-medium">Switch Ports</h2>
               <p className="text-muted-foreground text-xs">
                 Configure the switch ports for access or trunk mode.
               </p>

@@ -174,7 +174,7 @@ export function DeviceInterfaceManager<T extends Device>({
         <Separator className="my-3" />
         <div className="space-y-3">
           <div>
-            <h3 className="font-medium">Connection</h3>
+            <h2 className="font-medium">Connection</h2>
             <p className="text-muted-foreground text-xs">
               To which device and interface this interface is connected.
             </p>
