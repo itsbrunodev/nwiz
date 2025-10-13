@@ -9,6 +9,8 @@ import {
 
 import { welcomeStore } from "@/stores/welcome";
 
+import { CRAWLERS } from "@/constants/crawlers";
+
 import { Link } from "./link";
 import { Button } from "./ui/button";
 import {
@@ -21,8 +23,62 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 
+interface Feature {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  link?: {
+    url: string;
+    text: string;
+  };
+}
+
+const FEATURES: Feature[] = [
+  {
+    icon: PlusIcon,
+    title: "Build Your Network",
+    description:
+      "Use the 'Add Device' button to place routers, switches, and PCs. Connect them through their interfaces.",
+  },
+  {
+    icon: UploadIcon,
+    title: "Import Network",
+    description:
+      "Click the 'Import' button to load a network someone else built or you already created in Cisco Packet Tracer.",
+  },
+  {
+    icon: TerminalIcon,
+    title: "Generate Configurations",
+    description:
+      "The tool generates Cisco IOS commands as you work. View and copy the script for each device.",
+  },
+  {
+    icon: MessageSquareWarningIcon,
+    title: "Network Validation",
+    description:
+      "Your network is automatically validated, with issues clearly displayed and explained.",
+  },
+  {
+    icon: MessageSquareWarningIcon,
+    title: "Detailed Guide",
+    description:
+      "A complete guide is available for learning how to use the tool on the ",
+    link: {
+      url: "https://github.com/itsbrunodev/nwiz/wiki/How-to-Use",
+      text: "Github wiki",
+    },
+  },
+];
+
 export function WelcomeDialog() {
   const [welcomeAcknowledged, setWelcomeAcknowledged] = useAtom(welcomeStore);
+
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isCrawler = CRAWLERS.some((pattern) => userAgent.includes(pattern));
+
+  if (isCrawler) {
+    return null;
+  }
 
   return (
     <Dialog
@@ -39,82 +95,37 @@ export function WelcomeDialog() {
             build or import.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-3 py-3 [&>div>div>h2]:font-medium [&>div>div>p]:text-muted-foreground [&>div>div>p]:text-sm [&>div>div>svg]:size-4 [&>div>div]:first:rounded-sm [&>div>div]:first:bg-secondary [&>div>div]:first:p-2 [&>div]:flex [&>div]:items-start [&>div]:gap-3">
-          <div>
-            <div>
-              <PlusIcon />
+        <div className="space-y-3 py-3">
+          {FEATURES.map((feature) => (
+            <div className="flex items-start gap-3" key={feature.title}>
+              <div className="rounded-sm bg-secondary p-2">
+                <feature.icon className="size-4" />
+              </div>
+              <div>
+                <h2 className="font-medium">{feature.title}</h2>
+                <p className="text-muted-foreground text-sm">
+                  {feature.description}
+                  {feature.link && (
+                    <Button
+                      className="!p-0 [&_svg]:!size-3.5 h-fit gap-1"
+                      size="sm"
+                      variant="link"
+                      asChild
+                    >
+                      <Link
+                        to={feature.link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {feature.link.text}
+                        <ArrowUpRightIcon />
+                      </Link>
+                    </Button>
+                  )}
+                </p>
+              </div>
             </div>
-            <div>
-              <h2>Build Your Network</h2>
-              <p>
-                Use the "Add Device" button to place routers, switches, and PCs.
-                Connect them through their interfaces.
-              </p>
-            </div>
-          </div>
-          <div>
-            <div>
-              <UploadIcon />
-            </div>
-            <div>
-              <h2>Import Network</h2>
-              <p>
-                Click the "Import" button to load a network someone else built
-                or you already created in Cisco Packet Tracer.
-              </p>
-            </div>
-          </div>
-          <div>
-            <div>
-              <TerminalIcon />
-            </div>
-            <div>
-              <h2>Generate Configurations</h2>
-              <p>
-                The tool generates Cisco IOS commands as you work. View and copy
-                the script for each device.
-              </p>
-            </div>
-          </div>
-          <div>
-            <div>
-              <MessageSquareWarningIcon />
-            </div>
-            <div>
-              <h2>Network Validation</h2>
-              <p>
-                Your network is automatically validated, with issues clearly
-                displayed and explained.
-              </p>
-            </div>
-          </div>
-          <div>
-            <div>
-              <MessageSquareWarningIcon />
-            </div>
-            <div>
-              <h2>Detailed Guide</h2>
-              <p>
-                A complete guide is available for learning how to use the tool
-                on the{" "}
-                <Button
-                  className="!p-0 [&_svg]:!size-3.5 h-fit gap-1"
-                  size="sm"
-                  variant="link"
-                  asChild
-                >
-                  <Link
-                    to="https://github.com/itsbrunodev/nwiz/wiki/How-to-Use"
-                    target="_blank"
-                  >
-                    Github wiki
-                    <ArrowUpRightIcon />
-                  </Link>
-                </Button>
-                .
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
         <DialogFooter>
           <DialogClose asChild>
