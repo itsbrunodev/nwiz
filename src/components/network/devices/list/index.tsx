@@ -85,7 +85,7 @@ function DeviceButton({ deviceId }: { deviceId: string }) {
             <p className="text-muted-foreground text-xs">{device.model}</p>
           </div>
         </div>
-        <div className="[&>button]:!flex-1 flex border-t [&>button]:rounded-none">
+        <div className="[&>button]:!flex-1 flex [&>button]:rounded-none">
           <DialogTrigger asChild>
             <Button variant="secondary">View</Button>
           </DialogTrigger>
