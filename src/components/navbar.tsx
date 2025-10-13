@@ -7,7 +7,6 @@ import {
 import { Link } from "./link";
 import { ExportNetwork } from "./network/export";
 import { ImportNetwork } from "./network/import";
-import { SettingsNetwork } from "./network/settings";
 import { ThemeMenu } from "./theme/menu";
 import { Button } from "./ui/button";
 import { ButtonGroup } from "./ui/button-group";
@@ -41,7 +40,6 @@ export function Navbar() {
           <AboutButton />
           <SavedButton />
         </div>
-        <SettingsNetwork />
         <ButtonGroup>
           <ImportNetwork />
           <ExportNetwork />
@@ -69,7 +67,6 @@ export function Navbar() {
               </div>
               <DrawerFooter>
                 <div className="flex justify-center gap-2">
-                  <SettingsNetwork />
                   <ButtonGroup>
                     <ImportNetwork />
                     <ExportNetwork />

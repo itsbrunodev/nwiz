@@ -21,7 +21,7 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 
-export function SettingsNetwork() {
+export function SettingsNetworkButton() {
   const [network, setNetwork] = useAtom(networkAtom);
 
   const networkCodes = useLiveQuery(() => dexie.networkCodes.toArray());

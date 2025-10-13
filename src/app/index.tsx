@@ -6,6 +6,7 @@ import { AddDeviceButton } from "@/components/network/devices/add";
 import { DevicesList } from "@/components/network/devices/list";
 import { NetworkIssues } from "@/components/network/issues";
 import { ResetNetworkButton } from "@/components/network/reset";
+import { SettingsNetworkButton } from "@/components/network/settings";
 import { NetworkVisualizationGraph } from "@/components/network/visualization/graph";
 import { NetworkVisualizationTree } from "@/components/network/visualization/tree";
 import { Button } from "@/components/ui/button";
@@ -79,6 +80,8 @@ export function IndexPage() {
       </div>
       <div className="flex gap-2">
         <AddDeviceButton />
+        <SettingsNetworkButton />
+        <div className="my-auto h-6 w-px bg-border" />
         <ResetNetworkButton />
       </div>
       <div className="flex flex-col gap-2">
