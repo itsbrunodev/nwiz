@@ -58,6 +58,12 @@ export function IndexPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof document !== "undefined" && network?.name) {
+      document.title = `nwiz - ${network?.name}`;
+    }
+  }, [network?.name]);
+
   const commands = useMemo(() => {
     return generateCommands(network, {
       verbose: false,
