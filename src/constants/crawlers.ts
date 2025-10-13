@@ -30,4 +30,5 @@ export const CRAWLERS = [
   "playwright",
   "puppeteer",
   "webdriver",
+  "vercelbot",
 ] as const;
