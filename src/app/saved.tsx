@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -72,15 +73,18 @@ export function SavedPage() {
           </EmptyContent>
         </Empty>
       ) : (
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           {networkCodes?.map(({ id, code }) => {
             const decodedNetwork = decodeCompactBase64(code);
             const { name, description, createdAt, updatedAt } = decodedNetwork;
+
+            const isLoaded = network.id === id;
 
             return (
               <Card key={id}>
                 <CardHeader>
                   <CardTitle>{name || "New Network"}</CardTitle>
+                  {isLoaded && <Badge className="mb-1">Currently Loaded</Badge>}
                   <CardDescription className="line-clamp-2" title={description}>
                     {description || "No description."}
                   </CardDescription>
@@ -128,7 +132,7 @@ export function SavedPage() {
                     </AlertDialogContent>
                   </AlertDialog>
                   <Button
-                    disabled={network.id === id}
+                    disabled={isLoaded}
                     onClick={() => {
                       setNetwork(decodedNetwork);
                       navigate("/");
