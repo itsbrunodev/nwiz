@@ -22,6 +22,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
+import { isCrawler } from "@/lib/utils";
 
 interface Feature {
   icon: React.ComponentType<{ className?: string }>;
@@ -73,10 +74,7 @@ const FEATURES: Feature[] = [
 export function WelcomeDialog() {
   const [welcomeAcknowledged, setWelcomeAcknowledged] = useAtom(welcomeStore);
 
-  const userAgent = navigator.userAgent.toLowerCase();
-  const isCrawler = CRAWLERS.some((pattern) => userAgent.includes(pattern));
-
-  if (isCrawler) {
+  if (isCrawler(navigator.userAgent.toLowerCase())) {
     return null;
   }
 
