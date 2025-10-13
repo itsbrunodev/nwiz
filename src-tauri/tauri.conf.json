@@ -24,6 +24,8 @@
     }
   },
   "bundle": {
+    "category": "Utility",
+    "license": "GPL-3.0",
     "active": true,
     "targets": "all",
     "icon": [
