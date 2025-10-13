@@ -84,20 +84,29 @@ export function IndexPage() {
         <div className="my-auto h-6 w-px bg-border" />
         <ResetNetworkButton />
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className="font-medium text-lg">Devices</h2>
+      <section className="flex flex-col gap-2" aria-labelledby="devices">
+        <h2 className="font-medium text-lg" id="devices">
+          Devices
+        </h2>
         <DevicesList />
-      </div>
+      </section>
       {issues.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <h2 className="font-medium text-lg">Issues</h2>
+        <section className="flex flex-col gap-2" aria-labelledby="issues">
+          <h2 className="font-medium text-lg" id="issues">
+            Issues
+          </h2>
           <NetworkIssues />
-        </div>
+        </section>
       )}
       {network?.devices && network.devices.length > 0 && (
-        <div className="flex flex-col gap-2">
+        <section
+          className="flex flex-col gap-2"
+          aria-labelledby="visualization"
+        >
           <div className="flex items-center justify-between">
-            <h2 className="font-medium text-lg">Network Visualization</h2>
+            <h2 className="font-medium text-lg" id="visualization">
+              Network Visualization
+            </h2>
             <ButtonGroup>
               {VISUALIZATION_TYPES.map(({ label, value }) => (
                 <Button
@@ -113,13 +122,15 @@ export function IndexPage() {
           </div>
           {visualizationType === "tree" && <NetworkVisualizationTree />}
           {visualizationType === "graph" && <NetworkVisualizationGraph />}
-        </div>
+        </section>
       )}
       {commands.size > 0 && (
-        <div className="flex flex-col gap-2">
-          <h2 className="font-medium text-lg">Commands</h2>
+        <section className="flex flex-col gap-2" aria-labelledby="commands">
+          <h2 className="font-medium text-lg" id="commands">
+            Commands
+          </h2>
           <Commands commandsMap={commands} devices={network?.devices} />
-        </div>
+        </section>
       )}
     </>
   );
