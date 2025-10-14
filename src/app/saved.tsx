@@ -54,7 +54,12 @@ export function SavedPage() {
 
   return (
     <>
-      <h1 className="border-b pb-3 font-bold text-2xl">Saved Networks</h1>
+      <div className="flex flex-col gap-1 border-b pb-3">
+        <h1 className="font-bold text-2xl">Saved Networks</h1>
+        <p className="text-muted-foreground text-sm">
+          Every network you've saved locally.
+        </p>
+      </div>
       {networkCodes?.length === 0 ? (
         <Empty>
           <EmptyHeader>
