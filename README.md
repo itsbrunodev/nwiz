@@ -25,13 +25,15 @@ The tool is accessible from [nwiz.itsbruno.dev](https://nwiz.itsbruno.dev/) or b
 
 Here's a look at what I'm working on to get nwiz ready for a stable 1.0.0 release.
 
-- **Dynamic Routing**: Support for OSPF to enable more complex network designs.
-- **More Devices**: Layer 3 switches to allow for inter-VLAN routing.
-- **Advanced Switching**: Configurations for VTP (VLAN Trunking Protocol) and EtherChannel.
-- **Expanded Security**: Add options for DHCP Snooping and Port Security.
-- **NAT (Network Address Translation)**: Support configuration for NAT, including defining inside/outside interfaces, address pools, and rules for translating private IPs to public ones.
-- **ACL Configuration UI**: interface for creating Access Control Lists (standard and extended) and applying them to router interfaces to filter traffic.
-- **IPv6 Addressing**: Support for adding IPv6 addresses to device interfaces.
+- [x] **Command Highlighting**: Highlight parameters of commands in the UI.
+- [x] **Custom Interfaces**: Ability to add custom interfaces to devices.
+- [ ] **Dynamic Routing**: Support for OSPF to enable more complex network designs.
+- [ ] **More Devices**: Layer 3 switches to allow for inter-VLAN routing.
+- [ ] **Advanced Switching**: Configurations for VTP (VLAN Trunking Protocol) and EtherChannel.
+- [ ] **Expanded Security**: Add options for DHCP Snooping and Port Security.
+- [ ] **NAT (Network Address Translation)**: Support configuration for NAT, including defining inside/outside interfaces, address pools, and rules for translating private IPs to public ones.
+- [ ] **ACL Configuration**: Interface for creating Access Control Lists (standard and extended) and applying them to router interfaces to filter traffic.
+- [ ] **IPv6 Addressing**: Support for adding IPv6 addresses to device interfaces.
 
 ## How to Use
 
