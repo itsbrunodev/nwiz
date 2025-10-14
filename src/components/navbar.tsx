@@ -1,8 +1,4 @@
-import {
-  ArrowUpRightIcon,
-  ChevronsLeftRightEllipsisIcon,
-  MenuIcon,
-} from "lucide-react";
+import { ChevronsLeftRightEllipsisIcon, MenuIcon } from "lucide-react";
 
 import { Link } from "./link";
 import { ExportNetwork } from "./network/export";
@@ -32,14 +28,11 @@ export function Navbar() {
         <ChevronsLeftRightEllipsisIcon className="size-6" />
         <p className="font-extrabold text-xl">nwiz</p>
         <span className="mt-1.5 text-muted-foreground text-xs">
-          {import.meta.env.APP_VERSION || "0.0.0"}
+          v{import.meta.env.APP_VERSION || "0.0.0"}
         </span>
       </Link>
       <div className="hidden items-center gap-2 text-sm md:flex">
-        <div className="space-x-1">
-          <AboutButton />
-          <SavedButton />
-        </div>
+        <SavedButton />
         <ButtonGroup>
           <ImportNetwork />
           <ExportNetwork />
@@ -61,8 +54,7 @@ export function Navbar() {
                   nwiz v{import.meta.env.APP_VERSION || "0.0.0"}
                 </DrawerDescription>
               </DrawerHeader>
-              <div className="flex flex-col gap-3 p-3 pb-0">
-                <AboutButton />
+              <div className="p-3 pb-0">
                 <SavedButton />
               </div>
               <DrawerFooter>
@@ -79,21 +71,6 @@ export function Navbar() {
         </Drawer>
       </div>
     </div>
-  );
-}
-
-function AboutButton() {
-  return (
-    <Button variant="ghost" asChild>
-      <Link
-        to="https://github.com/itsbrunodev/nwiz#readme"
-        target="_blank"
-        rel="noopener"
-      >
-        About
-        <ArrowUpRightIcon />
-      </Link>
-    </Button>
   );
 }
 
