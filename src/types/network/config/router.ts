@@ -35,6 +35,7 @@ export interface RouterInterface {
    */
   name: string;
   description?: string;
+  custom?: boolean;
   /**
    * Whether the interface is enabled (no shutdown)
    */

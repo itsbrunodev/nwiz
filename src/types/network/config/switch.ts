@@ -34,13 +34,10 @@ export interface VLAN {
 export interface SwitchInterface {
   name: string; // e.g., "FastEthernet0/1"
   description?: string;
+  custom?: boolean;
   enabled: boolean;
   mode: "access" | "trunk";
-
-  // Properties for access mode
   accessVlan: number;
-
-  // Properties for trunk mode
   nativeVlan?: number;
   allowedVlans?: "all" | number[];
 }
