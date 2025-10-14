@@ -1,0 +1,8 @@
+/dist
+/node_modules
+/src-tauri
+.github/
+biome.json
+components.json
+README.md
+LICENSE.md
