@@ -145,3 +145,49 @@ body {
     @apply rounded-full bg-muted-foreground border-3 border-transparent bg-clip-padding;
   }
 }
+
+@layer components {
+  .token-command {
+    @apply text-zinc-950 dark:text-zinc-300;
+  }
+
+  .token-subcommand {
+    @apply text-neutral-600 dark:text-neutral-400;
+  }
+
+  .token-parameter {
+    @apply text-blue-700 dark:text-blue-400;
+  }
+
+  .token-action {
+    @apply text-red-700 dark:text-red-400;
+  }
+
+  .token-value-ip {
+    @apply text-cyan-700 dark:text-cyan-400;
+  }
+
+  .token-value-number {
+    @apply text-orange-700 dark:text-orange-400;
+  }
+
+  .token-value-name {
+    @apply text-emerald-700 dark:text-emerald-400;
+  }
+
+  .token-value-interface {
+    @apply text-emerald-700 dark:text-emerald-400;
+  }
+
+  .token-string {
+    @apply text-emerald-700 dark:text-emerald-400;
+  }
+
+  .token-comment {
+    @apply text-zinc-700 dark:text-zinc-400 italic;
+  }
+
+  .token-default {
+    @apply text-zinc-800 dark:text-zinc-300;
+  }
+}
