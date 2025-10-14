@@ -16,6 +16,7 @@ import {
   SWITCHES,
   type SwitchModel,
 } from "@/constants/devices";
+import { URLS } from "@/constants/urls";
 
 import type { Network } from "@/types/network";
 import type { EndDeviceConfig } from "@/types/network/config/end-device";
@@ -313,7 +314,7 @@ export function ImportNetwork() {
                     asChild
                   >
                     <Link
-                      to="https://github.com/itsbrunodev/nwiz?tab=readme-ov-file#import-from-packet-tracer"
+                      to={URLS.importFromPacketTracer}
                       target="_blank"
                       rel="noopener"
                     >

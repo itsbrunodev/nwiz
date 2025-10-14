@@ -11,6 +11,8 @@ import { welcomeStore } from "@/stores/welcome";
 
 import { isCrawler } from "@/lib/utils";
 
+import { URLS } from "@/constants/urls";
+
 import { Link } from "./link";
 import { Button } from "./ui/button";
 import {
@@ -64,7 +66,7 @@ const FEATURES: Feature[] = [
     description:
       "A complete guide is available for learning how to use the tool on the ",
     link: {
-      url: "https://github.com/itsbrunodev/nwiz/wiki/How-to-Use",
+      url: URLS.howToUse,
       text: "Github wiki",
     },
   },
