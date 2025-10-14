@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { networkAtom } from "@/stores/network";
 
 import { decodeCompactBase64 } from "@/lib/encode";
+import { getInterfacesForDevice, isNetworkDevice } from "@/lib/network";
 
 import {
   ROUTERS,
@@ -18,6 +19,8 @@ import {
 
 import type { Network } from "@/types/network";
 import type { EndDeviceConfig } from "@/types/network/config/end-device";
+import type { RouterInterface } from "@/types/network/config/router";
+import type { SwitchInterface } from "@/types/network/config/switch";
 import type { Connection } from "@/types/network/connection";
 import type { Device, Router, Switch } from "@/types/network/device";
 
@@ -139,6 +142,56 @@ export function ImportNetwork() {
           model: ptDevice.model,
           config,
         } as Device;
+      });
+
+      const deviceInterfacesMap = new Map<string, Set<string>>();
+
+      ptTopology.connections.forEach((conn) => {
+        const fromId = ptUuidToShortUuid.get(conn.from.deviceId);
+        const toId = ptUuidToShortUuid.get(conn.to.deviceId);
+
+        if (fromId) {
+          if (!deviceInterfacesMap.has(fromId))
+            deviceInterfacesMap.set(fromId, new Set());
+
+          deviceInterfacesMap.get(fromId)?.add(conn.from.interfaceName);
+        }
+        if (toId) {
+          if (!deviceInterfacesMap.has(toId))
+            deviceInterfacesMap.set(toId, new Set());
+
+          deviceInterfacesMap.get(toId)?.add(conn.to.interfaceName);
+        }
+      });
+
+      newDevices.forEach((device) => {
+        if (!isNetworkDevice(device)) return;
+
+        const interfacesForThisDevice = deviceInterfacesMap.get(device.id);
+        if (!interfacesForThisDevice) return;
+
+        const predefinedInterfaces = getInterfacesForDevice(device);
+
+        for (const interfaceName of interfacesForThisDevice) {
+          if (!predefinedInterfaces.includes(interfaceName)) {
+            const newInterface: RouterInterface | SwitchInterface =
+              device.deviceType === "Router"
+                ? {
+                    name: interfaceName,
+                    enabled: true,
+                    custom: true,
+                  }
+                : {
+                    name: interfaceName,
+                    enabled: true,
+                    mode: "access",
+                    accessVlan: 1,
+                    custom: true,
+                  };
+
+            device.config.interfaces.push(newInterface as any);
+          }
+        }
       });
 
       try {
