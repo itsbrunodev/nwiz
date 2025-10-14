@@ -31,7 +31,34 @@ interface LabelData {
   text: string;
   x: number;
   y: number;
+  width: number;
 }
+
+const memoizedGetTextWidth = () => {
+  const cache = new Map<string, number>();
+
+  if (typeof document === "undefined") {
+    return (text: string) => text.length * 6;
+  }
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("2d");
+
+  if (context) {
+    context.font = "10px sans-serif";
+  }
+
+  return (text: string) => {
+    if (!context) return text.length * 6;
+
+    if (cache.has(text)) {
+      return cache.get(text) as number;
+    }
+
+    const width = context.measureText(text).width;
+    cache.set(text, width);
+    return width;
+  };
+};
 
 function getNodeColorClasses(deviceType: string): string {
   switch (deviceType) {
@@ -78,6 +105,7 @@ export function NetworkVisualizationGraph() {
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown>>(null);
 
   const graphRootId = useId();
+  const getTextWidth = useMemo(() => memoizedGetTextWidth(), []);
 
   useEffect(() => {
     const layout = ensureNetworkLayout(network);
@@ -264,23 +292,28 @@ export function NetworkVisualizationGraph() {
       const tgtX = tx - normX * labelOffset + perpX * labelPerpOffset;
       const tgtY = ty - normY * labelOffset + perpY * labelPerpOffset;
 
+      const sourceText = edge.sourceInterface;
+      const targetText = edge.targetInterface;
+
       results.push({
         key: `src-${edge.id}`,
-        text: edge.sourceInterface,
+        text: sourceText,
         x: srcX,
         y: srcY,
+        width: getTextWidth(sourceText),
       });
 
       results.push({
         key: `tgt-${edge.id}`,
-        text: edge.targetInterface,
+        text: targetText,
         x: tgtX,
         y: tgtY,
+        width: getTextWidth(targetText),
       });
     });
 
     return results;
-  }, [edges]);
+  }, [edges, getTextWidth]);
 
   return (
     <div className="relative overflow-hidden rounded-md border bg-card">
@@ -342,11 +375,11 @@ export function NetworkVisualizationGraph() {
           {graphState.showPortLabels &&
             labelData.map((label) => {
               const displayText =
-                label.text.length > 10
+                label.text.length > 14
                   ? `${label.text.slice(0, 9)}…`
                   : label.text;
 
-              const rectWidth = displayText.length * 6 + 2;
+              const rectWidth = label.width + 6;
               const rectHeight = 14;
               const rectX = -rectWidth / 2;
               const rectY = -rectHeight / 2;
