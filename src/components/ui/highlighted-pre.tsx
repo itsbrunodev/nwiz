@@ -188,7 +188,7 @@ export function HighlightedPre({
       {...props}
       className={cn(
         "w-full overflow-auto rounded-md border bg-card p-3 text-card-foreground",
-        "whitespace-pre font-mono text-sm leading-relaxed",
+        "whitespace-pre font-mono leading-relaxed",
         className,
       )}
     >
