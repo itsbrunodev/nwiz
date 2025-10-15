@@ -23,6 +23,8 @@ export const MESSAGES = {
     `Default gateway ${gateway} does not exist on any router interface.`,
   GATEWAY_SUBNET_MISMATCH: (gateway: string) =>
     `Default gateway ${gateway} is not on the same subnet.`,
+  DUPLICATE_VLAN_ID: (id: number) =>
+    `Duplicate VLAN ID ${id} defined on this switch.`,
   DEVICE_VLAN_MISMATCH: (
     vlan: number,
     vlanSubnet: string,

@@ -5,8 +5,9 @@ import { GeneralTab } from "./general";
 import { InterfacesTab } from "./interfaces";
 import { PasswordsTab } from "./password";
 import { SshTab } from "./ssh";
+import { VlansTab } from "./vlans";
 
-const tabs = ["General", "Interfaces", "Passwords", "SSH"] as const;
+const tabs = ["General", "VLANs", "Interfaces", "Passwords", "SSH"] as const;
 type Tab = (typeof tabs)[number];
 
 export function SwitchContent({ switchId }: { switchId: string }) {
@@ -20,6 +21,7 @@ export function SwitchContent({ switchId }: { switchId: string }) {
         onChange={setCurrentTab}
       />
       {currentTab === "General" && <GeneralTab switchId={switchId} />}
+      {currentTab === "VLANs" && <VlansTab switchId={switchId} />}
       {currentTab === "Interfaces" && <InterfacesTab switchId={switchId} />}
       {currentTab === "Passwords" && <PasswordsTab switchId={switchId} />}
       {currentTab === "SSH" && <SshTab switchId={switchId} />}

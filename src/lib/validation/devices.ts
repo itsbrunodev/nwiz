@@ -61,6 +61,18 @@ export function validateSwitchConfig(
 ): ValidationResult[] {
   const results: ValidationResult[] = [];
   const source = { deviceId: device.id, deviceName: device.name };
+  const definedVlanIds = new Set<number>();
+
+  device.config.vlans.forEach((vlan) => {
+    if (definedVlanIds.has(vlan.id)) {
+      results.push({
+        level: "error",
+        message: MESSAGES.DUPLICATE_VLAN_ID(vlan.id),
+        source,
+      });
+    }
+    definedVlanIds.add(vlan.id);
+  });
 
   device.config.interfaces.forEach((iface) => {
     if (
