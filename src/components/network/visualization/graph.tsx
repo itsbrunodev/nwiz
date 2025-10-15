@@ -1,7 +1,14 @@
 import * as d3 from "d3";
 import { useAtom } from "jotai";
 import { MaximizeIcon, RotateCwIcon, TagIcon } from "lucide-react";
-import { useCallback, useEffect, useId, useMemo, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -104,6 +111,12 @@ export function NetworkVisualizationGraph() {
   const svgRef = useRef<SVGSVGElement>(null);
   const zoomRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown>>(null);
 
+  const [draggingNode, setDraggingNode] = useState<{
+    id: string;
+    x: number;
+    y: number;
+  } | null>(null);
+
   const graphRootId = useId();
   const getTextWidth = useMemo(() => memoizedGetTextWidth(), []);
 
@@ -115,7 +128,7 @@ export function NetworkVisualizationGraph() {
   }, [network, setNetwork]);
 
   const { nodes, edges } = useMemo(() => {
-    const positionedNodes = (network.devices || [])
+    const baseNodes = (network.devices || [])
       .filter(
         (d): d is Device & { position: { x: number; y: number } } =>
           d.position?.x !== undefined && d.position?.y !== undefined,
@@ -126,22 +139,26 @@ export function NetworkVisualizationGraph() {
         y: d.position.y,
       })) as PositionedNode[];
 
-    const nodeMap = new Map(positionedNodes.map((n) => [n.id, n]));
+    const finalNodes = draggingNode
+      ? baseNodes.map((node) =>
+          node.id === draggingNode.id
+            ? { ...node, x: draggingNode.x, y: draggingNode.y }
+            : node,
+        )
+      : baseNodes;
 
+    const nodeMap = new Map(finalNodes.map((n) => [n.id, n]));
     const grouped = new Map<string, Connection[]>();
 
     (network.connections || []).forEach((edge) => {
       const key1 = `${edge.from.deviceId}-${edge.to.deviceId}`;
       const key2 = `${edge.to.deviceId}-${edge.from.deviceId}`;
       const key = key1 < key2 ? key1 : key2;
-
       if (!grouped.has(key)) grouped.set(key, []);
-
       grouped.get(key)?.push(edge);
     });
 
     const allEdges: ComputedEdge[] = [];
-
     for (const group of grouped.values()) {
       group.forEach((edge, idx) => {
         allEdges.push({
@@ -156,8 +173,8 @@ export function NetworkVisualizationGraph() {
       });
     }
 
-    return { nodes: positionedNodes, edges: allEdges };
-  }, [network]);
+    return { nodes: finalNodes, edges: allEdges };
+  }, [network, draggingNode]);
 
   const getFitTransform = useCallback(() => {
     if (!svgRef.current || nodes.length === 0) return d3.zoomIdentity;
@@ -216,7 +233,7 @@ export function NetworkVisualizationGraph() {
   };
 
   useEffect(() => {
-    if (!svgRef.current || nodes.length === 0) return;
+    if (!svgRef.current) return;
     const svg = d3.select(svgRef.current);
     const g = svg.select<SVGGElement>(`g#${graphRootId}`);
 
@@ -230,32 +247,47 @@ export function NetworkVisualizationGraph() {
     zoomRef.current = zoom;
 
     const drag = d3
-      .drag<SVGGElement, PositionedNode>()
-      .on(
-        "start",
-        (event: d3.D3DragEvent<SVGGElement, PositionedNode, any>) => {
-          d3.select(event.sourceEvent.target.parentNode).raise();
-        },
-      )
-      .on("drag", (event, d) => {
+      .drag<SVGGElement, unknown>()
+      .on("start", function (event) {
+        d3.select(this).raise();
+        const draggedId = d3.select(this).attr("data-id");
+        if (draggedId) {
+          setDraggingNode({ id: draggedId, x: event.x, y: event.y });
+        }
+      })
+      .on("drag", function (event) {
+        const draggedId = d3.select(this).attr("data-id");
+        if (draggedId) {
+          setDraggingNode({ id: draggedId, x: event.x, y: event.y });
+        }
+      })
+      .on("end", function (event) {
+        const draggedId = d3.select(this).attr("data-id");
+        if (!draggedId) return;
+
         setNetwork((prev) => ({
           ...prev,
           devices: prev.devices.map((device) =>
-            device.id === d.id
+            device.id === draggedId
               ? { ...device, position: { x: event.x, y: event.y } }
               : device,
           ),
         }));
+
+        setDraggingNode(null);
       });
 
-    svg.call(zoom);
-    d3.selectAll<SVGGElement, PositionedNode>(".node-group").call(drag);
+    g.selectAll(".node-group").call(drag as any);
 
-    const initialTransform = getFitTransform();
-    if (initialTransform) {
-      svg.call(zoom.transform, initialTransform);
+    svg.call(zoom);
+
+    if (nodes.length > 0 && !draggingNode) {
+      const initialTransform = getFitTransform();
+      if (initialTransform) {
+        svg.call(zoom.transform, initialTransform);
+      }
     }
-  }, [nodes, setNetwork, graphRootId, getFitTransform]);
+  }, [nodes, setNetwork, getFitTransform, draggingNode, graphRootId]);
 
   const labelData = useMemo(() => {
     const results: LabelData[] = [];
@@ -344,34 +376,40 @@ export function NetworkVisualizationGraph() {
               />
             );
           })}
-          {nodes.map((node) => (
-            <g
-              className="node-group"
-              transform={`translate(${node.x}, ${node.y})`}
-              key={node.id}
-            >
-              <title>
-                {node.model}
-                {"\n"}
-                {node.name}
-              </title>
-              <circle className={getNodeColorClasses(node.deviceType)} r={12} />
-              <text
-                className="pointer-events-none select-none fill-card-foreground text-[10px]"
-                textAnchor="middle"
-                dy={24}
+          <g className="nodes-container">
+            {nodes.map((node) => (
+              <g
+                className="node-group"
+                transform={`translate(${node.x}, ${node.y})`}
+                key={node.id}
+                data-id={node.id}
               >
-                {node.model}
-              </text>
-              <text
-                className="pointer-events-none select-none fill-card-foreground text-[10px]"
-                textAnchor="middle"
-                dy={36}
-              >
-                {node.name}
-              </text>
-            </g>
-          ))}
+                <title>
+                  {node.model}
+                  {"\n"}
+                  {node.name}
+                </title>
+                <circle
+                  className={getNodeColorClasses(node.deviceType)}
+                  r={12}
+                />
+                <text
+                  className="pointer-events-none select-none fill-card-foreground text-[10px]"
+                  textAnchor="middle"
+                  dy={24}
+                >
+                  {node.model}
+                </text>
+                <text
+                  className="pointer-events-none select-none fill-card-foreground text-[10px]"
+                  textAnchor="middle"
+                  dy={36}
+                >
+                  {node.name}
+                </text>
+              </g>
+            ))}
+          </g>
           {graphState.showPortLabels &&
             labelData.map((label) => {
               const displayText =
@@ -432,7 +470,7 @@ export function NetworkVisualizationGraph() {
           title="Resimulate"
           onClick={handleResimulate}
         >
-          <RotateCwIcon className="h-4 w-4" />
+          <RotateCwIcon />
         </Button>
         <Button
           variant="secondary"
@@ -441,7 +479,7 @@ export function NetworkVisualizationGraph() {
           title="Recenter"
           onClick={handleRecenter}
         >
-          <MaximizeIcon className="h-4 w-4" />
+          <MaximizeIcon />
         </Button>
       </ButtonGroup>
     </div>
