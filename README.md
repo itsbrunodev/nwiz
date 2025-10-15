@@ -21,6 +21,15 @@ The tool is accessible from [nwiz.itsbruno.dev](https://nwiz.itsbruno.dev/) or b
 - Validate your configuration in real-time to find issues.
 - Save and manage multiple network designs locally in your browser.
 
+## Tech Stack
+
+- **UI Library**: [React](https://react.dev/) (via [Vite](https://vitejs.dev/))
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) and [shadcn/ui](https://ui.shadcn.com/)
+- **State Management**: [Jotai](https://jotai.org/)
+- **Data Visualization**: [D3.js](https://d3js.org/)
+- **Desktop App**: [Tauri](https://tauri.app/)
+- **Local Storage**: [Dexie.js](https://dexie.org/)
+
 ## Roadmap to 1.0.0
 
 Here's a look at what I'm working on to get nwiz ready for a stable 1.0.0 release.
@@ -110,3 +119,7 @@ pnpm tauri build
 ```
 
 The installer will be in the `src-tauri/target/release/bundle/` directory.
+
+## License
+
+nwiz is under the [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/) license.
