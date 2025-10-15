@@ -385,7 +385,7 @@ export function DeviceInterfaceManager<T extends Device>({
           <div className="flex gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="w-fit" variant="outline">
+                <Button className="w-fit" variant="outline" size="sm">
                   {(() => {
                     const occupiedConnection = connections.find(
                       (c) =>
@@ -438,6 +438,7 @@ export function DeviceInterfaceManager<T extends Device>({
             </DropdownMenu>
             {isOccupied(deviceId, currentInterface) && (
               <Button
+                className="size-8"
                 variant="destructive"
                 size="icon"
                 title="Disconnect"
