@@ -5,5 +5,5 @@ export const URLS = {
   license: "https://github.com/itsbrunodev/nwiz/blob/main/LICENSE.md",
   howToUse: "https://github.com/itsbrunodev/nwiz/wiki/How-to-Use",
   importFromPacketTracer:
-    "https://github.com/itsbrunodev/nwiz/wiki/Import-from-Packet-Tracer",
+    "https://github.com/itsbrunodev/nwiz?tab=readme-ov-file#import-from-packet-tracer",
 };
