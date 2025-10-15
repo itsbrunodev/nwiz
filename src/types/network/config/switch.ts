@@ -36,7 +36,8 @@ export interface SwitchInterface {
   description?: string;
   custom?: boolean;
   enabled: boolean;
-  mode: "access" | "trunk";
+  mode: "access" | "trunk" | "dynamic auto" | "dynamic desirable";
+  negotiate?: boolean;
   accessVlan: number;
   nativeVlan?: number;
   allowedVlans?: "all" | number[];

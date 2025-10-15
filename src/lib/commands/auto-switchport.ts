@@ -6,7 +6,10 @@ function createGatewayToVlanMap(routers: Router[]): Map<string, number> {
 
   for (const router of routers) {
     for (const iface of router.config.interfaces) {
-      if (iface.ipAddress) {
+      if (
+        iface.ipAddress &&
+        (!iface.subInterfaces || iface.subInterfaces.length === 0)
+      ) {
         gatewayMap.set(iface.ipAddress, 1);
       }
 
@@ -61,6 +64,7 @@ export function addAutoSwitchport(network: Network): Network {
       switch (connectedDevice.deviceType) {
         case "Router": {
           const router = connectedDevice as Router;
+
           const routerInterfaceName =
             connection.from.deviceId === router.id
               ? connection.from.interfaceName
@@ -75,25 +79,33 @@ export function addAutoSwitchport(network: Network): Network {
               routerInterface.subInterfaces.length > 0
             ) {
               iface.mode = "trunk";
+              iface.negotiate = false;
             } else {
               iface.mode = "access";
+              iface.negotiate = false;
               iface.accessVlan =
                 gatewayToVlanMap.get(routerInterface.ipAddress ?? "") ?? 1;
             }
           }
+
           break;
         }
         case "Switch": {
           iface.mode = "trunk";
+          iface.negotiate = false;
           break;
         }
         case "PC":
         case "Server":
         case "Laptop": {
           iface.mode = "access";
+          iface.negotiate = false;
+
           const endDevice = connectedDevice as EndDevice;
           const gatewayIp = endDevice.config.defaultGateway;
+
           iface.accessVlan = gatewayToVlanMap.get(gatewayIp ?? "") ?? 1;
+
           break;
         }
       }

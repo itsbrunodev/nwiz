@@ -38,4 +38,6 @@ export const MESSAGES = {
     correctGateway: string,
   ) =>
     `Device is on VLAN ${vlan}, but its gateway is ${gateway} instead of the correct router IP ${correctGateway}.`,
+  INACTIVE_TRUNK_LINK: (neighborDevice: string, neighborInterface: string) =>
+    `This interface is in "dynamic auto" mode and is connected to an interface (${neighborInterface} on ${neighborDevice}) that is also in "dynamic auto" mode. This will result in an inactive access link, not a trunk.`,
 };
