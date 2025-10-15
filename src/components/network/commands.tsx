@@ -4,8 +4,8 @@ import { toast } from "sonner";
 import type { Device } from "@/types/network/device";
 
 import { Button } from "../ui/button";
-import { HighlightedPre } from "../ui/highlighted-pre";
 import { Label } from "../ui/label";
+import { Pre } from "../ui/pre";
 
 export function Commands({
   commandsMap,
@@ -38,9 +38,7 @@ export function Commands({
             <div className="rounded-t-md border-x border-t bg-card p-3 text-card-foreground">
               <Label>{deviceName}</Label>
             </div>
-            <HighlightedPre className="min-h-16 rounded-t-none">
-              {commandString}
-            </HighlightedPre>
+            <Pre className="min-h-16 rounded-t-none">{commandString}</Pre>
             <Button
               className="absolute top-13 right-3"
               variant="secondary"
